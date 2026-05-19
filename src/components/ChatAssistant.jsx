@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, X, Loader2, Sparkles, MessageSquare, Settings, UserCircle, Shield, Target, BookOpen, Cpu, Zap } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -68,10 +69,7 @@ export default function ChatAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [activeProfileId, setActiveProfileId] = useState(() => localStorage.getItem('wids_active_profile') || 'apn');
-  const [userApiKeys, setUserApiKeys] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('wids_user_api_keys') || '{}'); } catch { return {}; }
-  });
-  
+  const [userApiKeys, setUserApiKeys] = useState({});
   const [messages, setMessages] = useState([{ role: 'model', text: "Hey there! 🚀 I'm your WIDS tutor! Switch profiles in settings to manage your own API key. How can I help you today? 🛡️" }]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -79,8 +77,26 @@ export default function ChatAssistant() {
   const endRef = useRef(null);
 
   useEffect(() => {
+    // Fetch all keys from Supabase
+    const fetchKeys = async () => {
+        const { data } = await supabase.from('profiles').select('id, api_key');
+        if (data) {
+            const keys = {};
+            data.forEach(row => keys[row.id] = row.api_key);
+            setUserApiKeys(keys);
+        }
+    };
+    fetchKeys();
+  }, []);
+
+  useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  const updateApiKeyInSupabase = async (profileId, key) => {
+    await supabase.from('profiles').upsert({ id: profileId, api_key: key });
+    setUserApiKeys(prev => ({ ...prev, [profileId]: key }));
+  };
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -192,11 +208,7 @@ export default function ChatAssistant() {
                 <input 
                   type="password" 
                   value={userApiKeys[activeProfileId] || ''} 
-                  onChange={(e) => {
-                    const newKeys = { ...userApiKeys, [activeProfileId]: e.target.value };
-                    setUserApiKeys(newKeys);
-                    localStorage.setItem('wids_user_api_keys', JSON.stringify(newKeys));
-                  }}
+                  onChange={(e) => updateApiKeyInSupabase(activeProfileId, e.target.value)}
                   className="w-full mt-1 bg-slate-800 border border-slate-700 text-white p-2 rounded text-sm"
                   placeholder="gsk_..."
                 />
