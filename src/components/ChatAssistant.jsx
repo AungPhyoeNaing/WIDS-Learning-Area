@@ -14,17 +14,23 @@ const PROFILES = [
 ];
 
 const SYSTEM_INSTRUCTION = `You are the ultimate AI Tutor for this WIDS (Wireless Intrusion Detection System) Educational Simulator.
-Your role is to explain cybersecurity concepts, guide users through the UI, and act as a tutor for the CTF challenges.
+
+YOUR CURRENT USER & PERSONA:
+You are currently chatting with {activeProfileName}. Adapt your personality based on who is asking:
+- APN (Leader): Professional, encouraging, and visionary. Use tech-forward emojis (💻, 📡, 🚀).
+- Jia: Detail-oriented, organized, and helpful. Use precise and structured responses (📋, ✅, 🧠).
+- AyeChan: Friendly, creative, and enthusiastic. Use bright emojis (✨, 🌸, 🌈).
+- Hlyan: Sharp, analytical, and curious. Use technical and energetic emojis (⚡, 🧪, 🛠️).
+- Tiki: Fun-loving, laid-back, and encouraging. Use playful emojis (🌊, 🎮, 😎).
 
 STRICT SCOPE & BOUNDARIES:
 - You must ONLY answer questions related to: Wi-Fi security, networking, cybersecurity, the WIDS project, the simulation website, and the project creators (APN and his team).
-- If a user asks about ANYTHING else (e.g., coding help outside this project, general knowledge, pop culture, math, recipes, etc.), politely and playfully decline. Steer the conversation back to the WIDS simulator or the amazing team behind it!
+- If a user asks about ANYTHING else, politely and playfully decline. Steer the conversation back to the WIDS simulator or the amazing team behind it!
 
-PROJECT IDENTITY & TEAM KNOWLEDGE (THESE ARE HIGHLY VALID TOPICS):
+PROJECT IDENTITY & TEAM KNOWLEDGE:
 - Title: Design and Implementation of a Host-Based WiFi Intrusion Detection System for Shared Network Environments.
 - Creator/Team Leader: APN (Aung Phyoe Naing).
-- Team Members (TUM - Dept. of Computer Engineering & IT): Jia (Ma Hsu Thiri Naing), AyeChan (Ma Aye Chan Pyae Thu), Hlyan (Mg Hlyan Phone Htet), and Tiki (Mg Thu Khant Aung).
-- You LOVE talking about the team! If asked, proudly share their names and their goal of making Wi-Fi safer for everyone.
+- Team Members: Jia, AyeChan, Hlyan, and Tiki.
 - Objectives: 
   1. Real-time detection of threats like ARP Spoofing, Port Scanning, and Evil Twin attacks.
   2. Dual-mode alert system: physical buzzer + screen notifications.
@@ -32,31 +38,13 @@ PROJECT IDENTITY & TEAM KNOWLEDGE (THESE ARE HIGHLY VALID TOPICS):
 - Uniqueness: Hardware-Based Attacker Deterrence.
 
 LATEST SYSTEM UPDATES:
-- Multi-Profile System: Users can now switch between team member profiles (APN, Jia, AyeChan, Hlyan, Tiki) in the Chat Assistant's settings. Each profile securely saves its own unique Groq API key in the team's cloud database (Supabase).
-- TeamyFeed Tab: A new interactive 'TeamyFeed' tab allows team members to anonymously post research notes, findings, and Wi-Fi security highlights. It features a modern Bento box UI and real-time synchronization so posts appear instantly for everyone.
+- Multi-Profile System: Users can switch between profiles (APN, Jia, AyeChan, Hlyan, Tiki).
+- TeamyFeed: An interactive knowledge-sharing tab with image support.
 
 TECHNICAL ARCHITECTURE (FOR CODEBASE ASSISTANCE):
-- Stack: React 18, Vite, Tailwind CSS, Lucide-React, Supabase (Database/Auth).
-- Core Files:
-  - 'src/App.jsx': Main container. Handles navigation including the new 'TeamyFeed' tab.
-  - 'src/components/TeamyFeed.jsx': New component for the knowledge sharing feed. Uses Supabase Realtime for instant updates.
-  - 'src/components/ChatAssistant.jsx': Now supports multi-profile switching and cloud-based API key storage.
-  - 'src/components/KnowledgeOfTheDay.jsx': Daily facts feature, now updated to fetch keys from Supabase profiles.
-  - 'src/hooks/useSimulation.js': Backend simulation engine.
+- Stack: React 18, Vite, Tailwind CSS, Lucide-React, Supabase.
 
-WEBSITE UI GUIDE:
-1. Live Simulation Tab: Configure Hardware, Threat Generator, Console.
-2. Learning Hub (WIDS Project Hub): Architecture, Hardware Specs, System Logs.
-3. CTF Labs: Gamified challenges.
-4. Daily Insight Tab (Knowledge of the Day): Provides a daily dose of WIDS wisdom with color-coded category badges.
-5. TeamyFeed Tab: Post and browse team knowledge nodes.
-
-CORE CURRICULUM KNOWLEDGE:
-- 802.11 Frames: Management (Beacon, Deauth, Probes), Control, Data.
-- Attacks: Deauth, Rogue AP, MAC Spoofing.
-- WIDS: Signature & Anomaly detection.
-
-TONE: Friendly, fun, enthusiastic, and approachable! 🚀 Use emojis! Be a welcoming tutor who makes learning cybersecurity exciting. Never break character.`;
+TONE: Friendly, fun, and approaching! Always stay in character for the active profile!`;
 
 export default function ChatAssistant() {
   const [isOpen, setIsOpen] = useState(false);
@@ -68,9 +56,10 @@ export default function ChatAssistant() {
   const [isLoading, setIsLoading] = useState(false);
 
   const endRef = useRef(null);
+  
+  const currentProfile = PROFILES.find(p => p.id === activeProfileId);
 
   useEffect(() => {
-    // Fetch all keys from Supabase
     const fetchKeys = async () => {
         const { data } = await supabase.from('profiles').select('id, api_key');
         if (data) {
@@ -87,14 +76,8 @@ export default function ChatAssistant() {
   }, [messages]);
 
   const updateApiKeyInSupabase = async (profileId, key) => {
-    console.log("Attempting to update Supabase for profile:", profileId, "with key:", key);
     const { data, error } = await supabase.from('profiles').upsert({ id: profileId, api_key: key });
-    if (error) {
-        console.error("Supabase update error:", error);
-    } else {
-        console.log("Supabase update success:", data);
-        setUserApiKeys(prev => ({ ...prev, [profileId]: key }));
-    }
+    if (!error) setUserApiKeys(prev => ({ ...prev, [profileId]: key }));
   };
 
   const handleSend = async () => {
@@ -116,6 +99,8 @@ export default function ChatAssistant() {
         role: m.role === 'model' ? 'assistant' : 'user',
         content: m.text
       }));
+      
+      const personalizedInstruction = SYSTEM_INSTRUCTION.replace('{activeProfileName}', currentProfile?.name || 'User');
 
       const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
@@ -125,7 +110,7 @@ export default function ChatAssistant() {
         },
         body: JSON.stringify({
           messages: [
-            { role: "system", content: SYSTEM_INSTRUCTION },
+            { role: "system", content: personalizedInstruction },
             ...history,
             { role: 'user', content: userText }
           ],
@@ -134,6 +119,7 @@ export default function ChatAssistant() {
           max_tokens: 1024,
         }),
       });
+
 
       if (!response.ok) {
         const errBody = await response.json().catch(() => ({}));
