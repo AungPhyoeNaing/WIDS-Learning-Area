@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
-import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network } from 'lucide-react';
+import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network, X } from 'lucide-react';
 
 export default function TeamyFeed() {
   const [posts, setPosts] = useState([]);
@@ -8,6 +8,7 @@ export default function TeamyFeed() {
   const [body, setBody] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   const fetchPosts = useCallback(async () => {
     setIsLoading(true);
@@ -38,6 +39,17 @@ export default function TeamyFeed() {
     };
   }, [fetchPosts]);
 
+  // Handle escape key for closing modal
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setSelectedPost(null);
+    };
+    if (selectedPost) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPost]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title.trim() || !body.trim() || isSubmitting) return;
@@ -62,11 +74,8 @@ export default function TeamyFeed() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // Helper function to create an interlocking Bento grid pattern
   const getBentoSpan = (index) => {
     const pattern = index % 4;
-    // On md (tablet): alternates between spanning full row (2 cols) and 1 col.
-    // On lg (desktop): perfectly packs a 3-column grid without gaps.
     if (pattern === 0) return 'md:col-span-2 lg:col-span-2 bg-gradient-to-br from-slate-900 to-slate-800/80 border-cyber-cyan/20 hover:border-cyber-cyan/50';
     if (pattern === 1) return 'md:col-span-1 lg:col-span-1 bg-slate-900 border-slate-800/80 hover:border-slate-700';
     if (pattern === 2) return 'md:col-span-1 lg:col-span-1 bg-slate-900 border-slate-800/80 hover:border-slate-700';
@@ -75,7 +84,7 @@ export default function TeamyFeed() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto pb-12">
+    <div className="max-w-7xl mx-auto pb-12 relative">
       
       {/* Bento Grid Container */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-auto grid-flow-dense">
@@ -158,7 +167,8 @@ export default function TeamyFeed() {
           posts.map((post, index) => (
             <div 
               key={post.id} 
-              className={`glass-card p-6 sm:p-8 rounded-3xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl flex flex-col justify-between group/card ${getBentoSpan(index)} animate-slide-up`}
+              onClick={() => setSelectedPost(post)}
+              className={`glass-card p-6 sm:p-8 rounded-3xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl flex flex-col justify-between group/card cursor-pointer ${getBentoSpan(index)} animate-slide-up`}
               style={{ animationDelay: `${index * 50}ms` }}
             >
               <div>
@@ -166,17 +176,64 @@ export default function TeamyFeed() {
                   <span className="text-cyber-cyan mt-1">•</span>
                   {post.title}
                 </h4>
-                <p className="text-slate-400 text-sm leading-relaxed whitespace-pre-wrap">{post.body}</p>
+                {/* line-clamp-4 restricts the text to 4 lines with an ellipsis (...) */}
+                <p className="text-slate-400 text-sm leading-relaxed whitespace-pre-wrap line-clamp-4">{post.body}</p>
               </div>
-              <div className="mt-8 flex items-center gap-2 text-xs text-slate-500 font-mono border-t border-slate-800/60 pt-4">
-                <Clock size={14} className="text-cyber-pink/70" />
-                <span>{formatDate(post.created_at)}</span>
+              <div className="mt-8 flex items-center justify-between gap-2 text-xs text-slate-500 font-mono border-t border-slate-800/60 pt-4">
+                <div className="flex items-center gap-2">
+                  <Clock size={14} className="text-cyber-pink/70" />
+                  <span>{formatDate(post.created_at)}</span>
+                </div>
+                <span className="text-cyber-cyan/0 group-hover/card:text-cyber-cyan/100 transition-colors font-sans font-bold">Read full &rarr;</span>
               </div>
             </div>
           ))
         )}
 
       </div>
+
+      {/* --- MODAL FOR FULL POST --- */}
+      {selectedPost && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-sm transition-all"
+          onClick={() => setSelectedPost(null)}
+        >
+          <div 
+            className="glass-card w-full max-w-3xl max-h-[85vh] rounded-3xl border border-cyber-cyan/30 shadow-2xl flex flex-col relative overflow-hidden animate-bounce-in"
+            onClick={e => e.stopPropagation()} // Prevent clicks inside the modal from closing it
+          >
+            {/* Modal Top Decoration */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink"></div>
+            
+            {/* Modal Header */}
+            <div className="flex justify-between items-start p-6 sm:p-8 border-b border-slate-800/60 shrink-0 bg-slate-900/50">
+              <h3 className="text-xl sm:text-2xl font-bold text-white pr-8 leading-tight flex items-start gap-2">
+                <span className="text-cyber-cyan mt-1">•</span>
+                {selectedPost.title}
+              </h3>
+              <button 
+                onClick={() => setSelectedPost(null)}
+                className="absolute top-6 right-6 sm:top-8 sm:right-8 text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-700/50 rounded-full p-2 transition-all btn-press"
+                aria-label="Close modal"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            {/* Modal Body (Scrollable) */}
+            <div className="p-6 sm:p-8 overflow-y-auto scrollbar-thin text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap bg-slate-900/20">
+              {selectedPost.body}
+            </div>
+            
+            {/* Modal Footer */}
+            <div className="p-6 sm:p-8 border-t border-slate-800/60 shrink-0 bg-slate-900/50 flex items-center gap-2 text-xs text-slate-500 font-mono">
+              <Clock size={14} className="text-cyber-pink/70" />
+              <span>Posted on {formatDate(selectedPost.created_at)}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
