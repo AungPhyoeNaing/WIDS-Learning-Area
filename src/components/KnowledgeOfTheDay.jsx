@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Sparkles, Loader2, RefreshCw, AlertCircle, BookOpen, ChevronDown, Tag } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const SYSTEM_PROMPT = `You are a WIDS educator. Generate a SINGLE, UNIQUE, CONCISE fact about Wi-Fi security. 
 DO NOT repeat facts recently provided. 
@@ -43,6 +44,17 @@ export default function KnowledgeOfTheDay() {
 
   const [animateKey, setAnimateKey] = useState(0);
   const lastFactRef = useRef(null);
+
+  const getApiKey = async () => {
+    const profileId = localStorage.getItem('wids_active_profile') || 'apn';
+    try {
+      const { data, error } = await supabase.from('profiles').select('api_key').eq('id', profileId).single();
+      if (error || !data) return null;
+      return data.api_key;
+    } catch {
+      return null;
+    }
+  };
 
   const getNewFact = (availableFacts) => {
     let newFact;
@@ -90,7 +102,7 @@ export default function KnowledgeOfTheDay() {
       }
     }
 
-    const apiKey = localStorage.getItem('groq_user_api_key');
+    const apiKey = await getApiKey();
     setDeepDive(null); // Reset deep dive on new fetch
     setDeepDiveError(null);
 
@@ -158,7 +170,7 @@ export default function KnowledgeOfTheDay() {
 
   const handleDeepDive = async () => {
     if (!factData || deepDive) return; // Don't fetch if already have deep dive
-    const apiKey = localStorage.getItem('groq_user_api_key');
+    const apiKey = await getApiKey();
     
     if (!apiKey) {
       setDeepDiveError("Deep Dive requires a Groq API Key. Please add it in the Chat Assistant settings.");
