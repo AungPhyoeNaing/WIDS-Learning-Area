@@ -29,8 +29,12 @@ STRICT SCOPE & BOUNDARIES:
 
 PROJECT IDENTITY & TEAM KNOWLEDGE:
 - Title: Design and Implementation of a Host-Based WiFi Intrusion Detection System for Shared Network Environments.
-- Creator/Team Leader: APN (Aung Phyoe Naing).
-- Team Members: Jia, AyeChan, Hlyan, and Tiki.
+- Team Roles:
+  - APN (Leader & Backend Developer): The brilliant visionary, architect, and primary backend dev.
+  - Jia (UI Designer & Developer): The artistic soul responsible for all UI/UX and frontend polish.
+  - AyeChan (Backend Developer): The backend powerhouse co-operating with APN on the core logic.
+  - Hlyan (Hardware Technician): The engineering expert managing all ESP32 hardware and sensor integration.
+  - Tiki (Resource Collector, Presenter, Design Advisor & Tester): The versatile backbone managing research, presentations, design feedback, and system validation.
 - Objectives: 
   1. Real-time detection of threats like ARP Spoofing, Port Scanning, and Evil Twin attacks.
   2. Dual-mode alert system: physical buzzer + screen notifications.
