@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Sparkles, Loader2, RefreshCw, AlertCircle, BookOpen, ChevronDown, Tag } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const SYSTEM_PROMPT = `You are a WIDS educator. Generate a SINGLE, UNIQUE, CONCISE fact about Wi-Fi security. 
 DO NOT repeat facts recently provided. 
@@ -189,7 +191,7 @@ export default function KnowledgeOfTheDay() {
         },
         body: JSON.stringify({
           messages: [
-            { role: 'system', content: "You are a senior cybersecurity engineer. Provide a 'Deep Dive' explanation of the provided fact. Go into technical detail, explain the underlying mechanism, and why it matters in WIDS/Networking. Keep it to 2-3 highly informative paragraphs. Do not repeat the original fact verbatim." },
+            { role: 'system', content: "You are a senior cybersecurity engineer. Provide a 'Deep Dive' explanation of the provided fact. Go into technical detail, explain the underlying mechanism, and why it matters in WIDS/Networking. Use Markdown to format your response beautifully (e.g., bold key terms, use bullet points if appropriate). Keep it to 2-3 highly informative paragraphs. Do not repeat the original fact verbatim." },
             { role: 'user', content: `Deep dive into this fact: "${factData.fact}"` },
           ],
           model: 'llama-3.3-70b-versatile',
@@ -286,15 +288,17 @@ export default function KnowledgeOfTheDay() {
             )}
 
             {deepDive && (
-              <div className="mt-6 sm:mt-8 w-full max-w-4xl p-4 sm:p-8 bg-slate-950/80 border border-slate-700/80 rounded-2xl text-left text-sm text-slate-300 leading-loose animate-in slide-in-from-top-6 duration-700 shadow-2xl backdrop-blur-md relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyber-purple to-cyber-cyan"></div>
-                <h4 className="text-cyber-cyan font-bold text-base mb-5 flex items-center gap-3 uppercase tracking-wider">
+              <div className="mt-6 sm:mt-8 w-full max-w-4xl p-5 sm:p-10 bg-slate-950/90 border border-slate-700/80 rounded-3xl text-left shadow-2xl backdrop-blur-md relative overflow-hidden animate-in slide-in-from-top-6 duration-700">
+                <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-cyber-purple via-cyber-cyan to-blue-500"></div>
+                
+                <h4 className="text-cyber-cyan font-bold text-sm sm:text-base mb-6 flex items-center gap-3 uppercase tracking-widest pb-4 border-b border-slate-800/60">
                   <BookOpen className="w-5 h-5 text-cyber-purple" /> Technical Breakdown
                 </h4>
-                <div className="space-y-4 font-sans text-slate-300">
-                  {deepDive.split('\n').filter(p => p.trim() !== '').map((paragraph, idx) => (
-                    <p key={idx} className="leading-relaxed">{paragraph}</p>
-                  ))}
+                
+                <div className="prose prose-invert prose-slate max-w-none prose-p:leading-relaxed prose-p:text-slate-300 prose-strong:text-white prose-strong:font-bold prose-ul:text-slate-300 prose-li:marker:text-cyber-cyan">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {deepDive}
+                  </ReactMarkdown>
                 </div>
               </div>
             )}
