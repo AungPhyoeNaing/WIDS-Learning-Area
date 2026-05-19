@@ -217,9 +217,9 @@ export default function KnowledgeOfTheDay() {
           <Sparkles className="w-6 sm:w-10 h-6 sm:h-10 text-cyber-purple animate-pulse" />
         </div>
         <div className="text-left">
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight mb-1">Daily Insight</h2>
-          <p className="text-xs text-cyber-pink font-bold tracking-widest uppercase flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyber-pink animate-pulse"></span> Wireless Security Intelligence
+          <h2 className="text-lg sm:text-2xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight mb-0.5 sm:mb-1">Daily Insight</h2>
+          <p className="text-[9px] sm:text-xs text-cyber-pink font-bold tracking-widest uppercase flex items-center gap-2">
+            <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-cyber-pink animate-pulse"></span> Wireless Security Intel
           </p>
         </div>
       </div>
@@ -243,12 +243,12 @@ export default function KnowledgeOfTheDay() {
               <Tag className="w-3.5 h-3.5" /> {factData.category || "CONCEPT"}
             </span>
             
-            <div className="relative w-full max-w-3xl mx-auto mb-8">
-              <span className="absolute -top-6 -left-4 md:-left-8 text-6xl text-slate-700/30 font-serif leading-none select-none">"</span>
-              <p className="text-slate-100 text-xl md:text-2xl leading-relaxed font-light italic tracking-wide text-center">
+            <div className="relative w-full max-w-3xl mx-auto mb-6 sm:mb-8">
+              <span className="absolute -top-4 sm:-top-6 -left-2 sm:-left-4 md:-left-8 text-4xl sm:text-6xl text-slate-700/30 font-serif leading-none select-none">"</span>
+              <p className="text-slate-100 text-base sm:text-xl md:text-2xl leading-relaxed font-light italic tracking-wide text-center">
                 {factData.fact}
               </p>
-              <span className="absolute -bottom-10 -right-4 md:-right-8 text-6xl text-slate-700/30 font-serif leading-none select-none">"</span>
+              <span className="absolute -bottom-8 sm:-bottom-10 -right-2 sm:-right-4 md:-right-8 text-4xl sm:text-6xl text-slate-700/30 font-serif leading-none select-none">"</span>
             </div>
             
             {/* Deep Dive Section */}

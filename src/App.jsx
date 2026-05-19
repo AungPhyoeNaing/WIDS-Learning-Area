@@ -101,7 +101,7 @@ export default function App() {
                     <ShieldCheck className="h-8 w-8" />
                   </div>
                 </div>
-                <span className="ml-3 font-extrabold text-xl tracking-tight">
+                <span className="ml-2 sm:ml-3 font-extrabold text-base sm:text-xl tracking-tight">
                   <span className="text-white">WIDS</span>{' '}
                   <span className="bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink bg-clip-text text-transparent animate-gradient">
                     Simulator
@@ -152,20 +152,20 @@ export default function App() {
           {/* Mobile dropdown menu */}
           {mobileMenuOpen && (
             <div className="md:hidden border-t border-slate-800/50 bg-slate-950/90 backdrop-blur-xl">
-              <div className="px-4 py-3 space-y-1">
+              <div className="px-3 sm:px-4 py-2 sm:py-3 space-y-1">
                 {navItems.map((item) => {
                   const Icon = item.icon;
                   return (
                     <button
                       key={item.id}
                       onClick={() => navigate(item.id)}
-                      className={`w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+                      className={`w-full flex items-center px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
                         activeView === item.id
                           ? 'bg-gradient-to-r from-cyber-cyan/20 to-cyber-purple/20 text-cyber-cyan border border-cyber-cyan/30'
                           : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
                       }`}
                     >
-                      <Icon className="mr-3 h-5 w-5" />
+                      <Icon className="mr-2.5 sm:mr-3 h-4 sm:h-5 w-4 sm:w-5" />
                       {item.label}
                       <span className="ml-auto text-[10px] text-slate-600 font-mono">[{item.shortcut}]</span>
                     </button>

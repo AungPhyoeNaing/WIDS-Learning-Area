@@ -53,15 +53,15 @@ function ChannelSpectrum({ sensorChannel, targetChannel, isAttackActive, sensorO
   const canSee = isAttackActive && sensorOn && sensorChannel === targetChannel;
   const wrongCh = isAttackActive && sensorOn && sensorChannel !== targetChannel;
   return (
-    <div className="mt-4">
+    <div className="mt-3 sm:mt-4">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">2.4 GHz Spectrum</span>
-        <div className="flex items-center gap-3 text-[9px] font-mono">
+        <span className="text-[8px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider">2.4 GHz Spectrum</span>
+        <div className="flex items-center gap-2 sm:gap-3 text-[8px] sm:text-[9px] font-mono">
           {sensorOn && <span className="text-cyber-cyan">Sensor: CH {sensorChannel}</span>}
           {isAttackActive && <span className="text-cyber-pink">Attack: CH {targetChannel}</span>}
         </div>
       </div>
-      <div className="flex gap-0.5 rounded-lg overflow-hidden h-8">
+      <div className="flex gap-px sm:gap-0.5 rounded-lg overflow-hidden h-6 sm:h-8">
         {[1,2,3,4,5,6,7,8,9,10,11].map(ch => {
           const isSensor = ch === sensorChannel && sensorOn;
           const isTarget = ch === targetChannel;
@@ -70,7 +70,7 @@ function ChannelSpectrum({ sensorChannel, targetChannel, isAttackActive, sensorO
           const hasInterference = isTarget && wrongCh;
           return (
             <div key={ch} className="flex-1 relative group">
-              <div className={`h-full w-full rounded-sm transition-all duration-300 flex items-center justify-center text-[9px] font-bold font-mono ${
+              <div className={`h-full w-full rounded-sm transition-all duration-300 flex items-center justify-center text-[7px] sm:text-[9px] font-bold font-mono ${
                 isBlocked ? 'bg-emerald-900/60 text-emerald-400 border border-emerald-500' :
                 isActive ? 'bg-cyber-pink/20 text-cyber-pink border border-cyber-pink shadow-[0_0_8px_rgba(255,45,149,0.5)] animate-pulse-fast' :
                 isSensor ? 'bg-cyber-cyan/20 text-cyber-cyan border border-cyber-cyan shadow-[0_0_8px_rgba(0,240,255,0.4)]' :
@@ -133,10 +133,10 @@ function NetworkTopology({ isAttackActive, attackType, isMitigated, sensorOn }) 
   const arrowAnimate = isAttackActive && !isMitigated ? 'animate-pulse' : '';
   const attackLabel = attackType === 'DEAUTH' ? 'Deauth flood' : attackType === 'ROGUE_AP' ? 'Fake Beacon' : 'Spoofed Data';
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center gap-6 py-2">
+    <div className="flex flex-col md:flex-row items-center justify-center gap-3 sm:gap-6 py-2">
       {/* Attacker */}
-      <div className="flex flex-col items-center gap-1.5">
-        <div className={`w-14 h-14 rounded-xl flex items-center justify-center border-2 transition-all ${
+      <div className="flex flex-col items-center gap-1">
+        <div className={`w-12 sm:w-14 h-12 sm:h-14 rounded-xl flex items-center justify-center border-2 transition-all ${
           isAttackActive && !isMitigated ? 'bg-cyber-pink/20 border-cyber-pink shadow-[0_0_15px_rgba(255,45,149,0.3)]' : 'bg-slate-900 border-slate-700'
         }`}>
           <WifiOff className={`w-6 h-6 ${isAttackActive && !isMitigated ? 'text-cyber-pink' : 'text-slate-500'}`} />
@@ -148,24 +148,24 @@ function NetworkTopology({ isAttackActive, attackType, isMitigated, sensorOn }) 
 
       {/* Arrow */}
       <div className="flex flex-col items-center relative">
-        <div className={`w-16 h-0.5 ${isMitigated ? 'bg-emerald-500' : isAttackActive ? 'bg-cyber-pink' : 'bg-slate-700'}`} />
+        <div className={`w-10 sm:w-16 h-0.5 ${isMitigated ? 'bg-emerald-500' : isAttackActive ? 'bg-cyber-pink' : 'bg-slate-700'}`} />
         <div className={`absolute -right-1.5 top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-l-4 border-transparent border-l-current ${isMitigated ? 'text-emerald-500' : isAttackActive ? 'text-cyber-pink' : 'text-slate-700'}`} />
         {isAttackActive && !isMitigated && (
-          <span className="absolute -top-5 text-[8px] text-cyber-pink font-mono whitespace-nowrap animate-pulse">→ malicious frames</span>
+          <span className="absolute -top-5 text-[7px] sm:text-[8px] text-cyber-pink font-mono whitespace-nowrap animate-pulse">→ malicious frames</span>
         )}
         {isMitigated && (
           <div className="absolute -top-6 left-1/2 -translate-x-1/2">
-            <ShieldCheck className="w-5 h-5 text-emerald-400 animate-bounce" />
+            <ShieldCheck className="w-4 sm:w-5 h-4 sm:h-5 text-emerald-400 animate-bounce" />
           </div>
         )}
       </div>
 
       {/* Victim */}
       <div className="flex flex-col items-center gap-1.5">
-        <div className={`w-14 h-14 rounded-xl flex items-center justify-center border-2 ${
+        <div className={`w-12 sm:w-14 h-12 sm:h-14 rounded-xl flex items-center justify-center border-2 ${
           isAttackActive && !isMitigated ? 'bg-yellow-900/30 border-yellow-600' : 'bg-slate-900 border-slate-700'
         }`}>
-          <Activity className={`w-6 h-6 ${isAttackActive && !isMitigated ? 'text-yellow-400' : 'text-slate-500'}`} />
+          <Activity className={`w-5 sm:w-6 h-5 sm:h-6 ${isAttackActive && !isMitigated ? 'text-yellow-400' : 'text-slate-500'}`} />
         </div>
         <span className="text-[10px] font-bold text-slate-400">Victim</span>
         {isAttackActive && !isMitigated && <span className="text-[8px] text-yellow-400 font-mono">Disconnecting</span>}
@@ -182,22 +182,22 @@ function StatsBar({ packets, totalCaptured, isAttackActive, attackType, sensorOn
   const normalPkts = total - attackPkts - blockedPkts;
   const detected = isAttackActive && sensorOn && sensorChannel === targetChannel;
   return (
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 text-sm">
-      <div className="glass-card p-3 rounded-xl text-center card-pop">
-        <p className="text-2xl font-extrabold text-white font-mono">{totalCaptured}</p><p className="text-[10px] text-slate-500 uppercase tracking-wider">Total seen</p>
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-2 sm:gap-3">
+      <div className="glass-card p-2 sm:p-3 rounded-xl text-center card-pop">
+        <p className="text-lg sm:text-2xl font-extrabold text-white font-mono">{totalCaptured}</p><p className="text-[8px] sm:text-[10px] text-slate-500 uppercase tracking-wider">Total seen</p>
       </div>
-      <div className="glass-card p-3 rounded-xl text-center card-pop">
-        <p className="text-2xl font-extrabold text-slate-300 font-mono">{total}</p><p className="text-[10px] text-slate-500 uppercase tracking-wider">In buffer</p>
+      <div className="glass-card p-2 sm:p-3 rounded-xl text-center card-pop">
+        <p className="text-lg sm:text-2xl font-extrabold text-slate-300 font-mono">{total}</p><p className="text-[8px] sm:text-[10px] text-slate-500 uppercase tracking-wider">In buffer</p>
       </div>
-      <div className="glass-card p-3 rounded-xl text-center card-pop">
-        <p className={`text-2xl font-extrabold font-mono ${normalPkts > 0 ? 'text-blue-400' : 'text-slate-600'}`}>{normalPkts}</p><p className="text-[10px] text-slate-500 uppercase tracking-wider">Normal</p>
+      <div className="glass-card p-2 sm:p-3 rounded-xl text-center card-pop">
+        <p className={`text-lg sm:text-2xl font-extrabold font-mono ${normalPkts > 0 ? 'text-blue-400' : 'text-slate-600'}`}>{normalPkts}</p><p className="text-[8px] sm:text-[10px] text-slate-500 uppercase tracking-wider">Normal</p>
       </div>
-      <div className="glass-card p-3 rounded-xl text-center card-pop">
-        <p className={`text-2xl font-extrabold font-mono ${attackPkts > 0 ? 'text-cyber-pink' : 'text-slate-600'}`}>{attackPkts}</p>
-        <p className="text-[10px] text-slate-500 uppercase tracking-wider">{isMitigated ? 'Malicious' : (detected ? 'Attacks' : 'Anomalies')}</p>
+      <div className="glass-card p-2 sm:p-3 rounded-xl text-center card-pop">
+        <p className={`text-lg sm:text-2xl font-extrabold font-mono ${attackPkts > 0 ? 'text-cyber-pink' : 'text-slate-600'}`}>{attackPkts}</p>
+        <p className="text-[8px] sm:text-[10px] text-slate-500 uppercase tracking-wider">{isMitigated ? 'Malicious' : (detected ? 'Attacks' : 'Anomalies')}</p>
       </div>
-      <div className="glass-card p-3 rounded-xl text-center card-pop">
-        <p className={`text-2xl font-extrabold font-mono ${blockedPkts > 0 ? 'text-cyber-lime' : 'text-slate-600'}`}>{blockedPkts}</p><p className="text-[10px] text-slate-500 uppercase tracking-wider">Blocked</p>
+      <div className="glass-card p-2 sm:p-3 rounded-xl text-center card-pop">
+        <p className={`text-lg sm:text-2xl font-extrabold font-mono ${blockedPkts > 0 ? 'text-cyber-lime' : 'text-slate-600'}`}>{blockedPkts}</p><p className="text-[8px] sm:text-[10px] text-slate-500 uppercase tracking-wider">Blocked</p>
       </div>
     </div>
   );
@@ -309,25 +309,25 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
     <div className="space-y-6">
 
       {/* ─── 1. Hardware Control Panel ─── */}
-      <div className="glass-card p-4 sm:p-6 rounded-2xl shadow-xl card-pop">
-        <h2 className="text-xl font-extrabold text-cyber-cyan mb-4 flex items-center">
-          <Settings className="w-5 h-5 mr-2 text-cyber-cyan animate-spin-slow" /> 1. Configure Hardware (WIDS Sensor)
+      <div className="glass-card p-3 sm:p-6 rounded-2xl shadow-xl card-pop">
+        <h2 className="text-base sm:text-xl font-extrabold text-cyber-cyan mb-3 sm:mb-4 flex items-center">
+          <Settings className="w-4 sm:w-5 h-4 sm:h-5 mr-1.5 sm:mr-2 text-cyber-cyan" /> 1. Configure Hardware
         </h2>
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="flex-1 bg-slate-900/50 p-4 rounded-xl border border-slate-700/50">
-            <div className="flex items-center gap-4 mb-4">
+            <div className="flex items-center gap-3 sm:gap-4 mb-4">
               <button
                 onClick={() => setSensorOn(!sensorOn)}
                 aria-label={sensorOn ? 'Power off ESP32 sensor' : 'Power on ESP32 sensor'}
-                className={`w-16 h-16 rounded-full flex items-center justify-center border-4 transition-all duration-300 flex-shrink-0 btn-press ${
+                className={`w-14 sm:w-16 h-14 sm:h-16 rounded-full flex items-center justify-center border-4 transition-all duration-300 flex-shrink-0 btn-press ${
                   sensorOn ? 'bg-cyber-cyan/20 border-cyber-cyan shadow-[0_0_25px_rgba(0,240,255,0.5)] animate-glow' : 'bg-slate-900 border-slate-600 hover:border-slate-500'
                 }`}
               >
-                <Power className={`w-8 h-8 ${sensorOn ? 'text-cyber-cyan' : 'text-slate-500'}`} />
+                <Power className={`w-6 sm:w-8 h-6 sm:h-8 ${sensorOn ? 'text-cyber-cyan' : 'text-slate-500'}`} />
               </button>
               <div>
-                <h3 className="text-white font-extrabold text-lg">ESP32 Power</h3>
-                <p className="text-xs text-slate-400 font-mono mt-1">Status: {sensorOn ? <span className="text-cyber-cyan">ONLINE</span> : <span className="text-slate-500">OFFLINE</span>}</p>
+                <h3 className="text-white font-extrabold text-sm sm:text-lg">ESP32 Power</h3>
+                <p className="text-[10px] sm:text-xs text-slate-400 font-mono mt-0.5 sm:mt-1">Status: {sensorOn ? <span className="text-cyber-cyan">ONLINE</span> : <span className="text-slate-500">OFFLINE</span>}</p>
               </div>
             </div>
             <div className="bg-blue-900/20 border-l-2 border-blue-500 p-3 text-xs text-blue-200 rounded-r">
@@ -428,9 +428,9 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
               <button key={btn.type} onClick={() => triggerAttack(btn.type)} aria-label={`Trigger ${btn.label} attack`}
                 className={`p-4 rounded-xl text-left transition-all flex flex-col justify-start h-full btn-press card-pop ${isActive ? `${btn.activeBg} ${btn.border} border-2 shadow-[0_0_20px_rgba(255,45,149,0.3)]` : 'bg-slate-900/50 border-2 border-slate-700/50 hover:border-slate-500'}`}
               >
-                <div className="font-bold mb-2 flex items-center text-white text-base">
-                  <span className="text-lg mr-2">{btn.emoji}</span>
-                  <Icon className={`mr-2 h-5 w-5 ${isActive ? btn.activeText : 'text-slate-400'}`} /> {btn.label}
+                <div className="font-bold mb-2 flex items-center text-white text-sm sm:text-base">
+                  <span className="text-base sm:text-lg mr-1.5 sm:mr-2">{btn.emoji}</span>
+                  <Icon className={`mr-1.5 sm:mr-2 h-4 sm:h-5 w-4 sm:w-5 ${isActive ? btn.activeText : 'text-slate-400'}`} /> {btn.label}
                   {isActive && <span className={`ml-2 w-2 h-2 rounded-full ${isActive ? btn.activeText.replace('text-', 'bg-') : ''} animate-pulse`} />}
                 </div>
                 <div className="text-xs text-slate-400 border-t border-slate-700/50 pt-2">{btn.desc}</div>
@@ -487,7 +487,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
            </div>
         )}
 
-        <div ref={consoleRef} className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1" style={{ maxHeight: '20rem' }}>
+        <div ref={consoleRef} className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1" style={{ maxHeight: '12rem' }}>
           {!sensorOn ? (
              <div className="text-red-900 font-bold flex flex-col items-center justify-center h-48">
                <span className="text-lg">[SENSOR OFFLINE]</span>

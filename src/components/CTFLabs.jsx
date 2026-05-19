@@ -59,7 +59,7 @@ const CHALLENGES = [
           <span className="text-slate-500">Deauth = Type 00 (Management), Subtype 1100 (decimal 12 = 0xC0)</span>
         </div>
         <p>Below is the raw hex dump. The <strong>Frame Control</strong> byte is highlighted.</p>
-        <div className="bg-black p-4 rounded border border-slate-700 font-mono text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner">
+        <div className="bg-black p-3 sm:p-4 rounded border border-slate-700 font-mono text-[10px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
           0000 &nbsp; 00 00 11 22 33 44 55 66 77 88 99 aa bb cc dd ee <br/>
           0010 &nbsp; ff <span className="text-white font-bold bg-blue-900/50 px-1 border border-blue-500 rounded">c0</span> 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
         </div>
@@ -84,9 +84,9 @@ const CHALLENGES = [
         <p>A company uses three APs on channels <strong>1</strong>, <strong>6</strong>, and <strong>11</strong> — the only non-overlapping 2.4 GHz channels. The security team has budget for <strong>two</strong> ESP32 sensors; each listens to one channel at a time.</p>
         <div className="bg-slate-900 border border-slate-700 rounded p-4 text-sm">
           <p className="text-slate-300 font-bold mb-2">Network Layout</p>
-          <div className="flex items-center gap-1 text-xs font-mono">
+          <div className="flex items-center gap-px sm:gap-1 text-[8px] sm:text-xs font-mono">
             {[1,2,3,4,5,6,7,8,9,10,11].map(ch => (
-              <div key={ch} className={`flex-1 text-center py-1.5 rounded ${ch === 1 || ch === 6 || ch === 11 ? 'bg-emerald-900/60 text-emerald-400 font-bold' : 'bg-slate-800 text-slate-600'}`}>{ch}</div>
+              <div key={ch} className={`flex-1 text-center py-1 sm:py-1.5 rounded ${ch === 1 || ch === 6 || ch === 11 ? 'bg-emerald-900/60 text-emerald-400 font-bold' : 'bg-slate-800 text-slate-600'}`}>{ch}</div>
             ))}
           </div>
           <p className="text-slate-500 text-xs mt-2">Ch 1, 6, and 11 do not overlap.</p>
@@ -114,10 +114,10 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>The 802.11 frame header contains multiple fields in a specific order. Given this hex dump of a captured frame:</p>
-        <div className="bg-black p-4 rounded border border-slate-700 font-mono text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner">
+        <div className="bg-black p-3 sm:p-4 rounded border border-slate-700 font-mono text-[10px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
           <span className="text-emerald-400">08 00</span> <span className="text-blue-400">00 00</span> <span className="text-yellow-400">AA:BB:CC:DD:EE:FF</span> <span className="text-purple-400">11:22:33:44:55:66</span>
         </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-xs font-mono bg-slate-900/50 p-3 rounded border border-slate-700">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-[10px] sm:text-xs font-mono bg-slate-900/50 p-3 rounded border border-slate-700">
           <div><span className="text-emerald-400">08 00</span> = Frame Control</div>
           <div><span className="text-blue-400">00 00</span> = Duration</div>
           <div><span className="text-yellow-400">6 bytes</span> = Address 1 (Destination)</div>
