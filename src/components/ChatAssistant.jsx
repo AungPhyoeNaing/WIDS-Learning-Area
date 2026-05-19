@@ -137,8 +137,6 @@ export default function ChatAssistant() {
     }
   };
 
-  const currentProfile = PROFILES.find(p => p.id === activeProfileId);
-
   return (
     <>
       {!isOpen && (
