@@ -164,7 +164,7 @@ export default function ChatAssistant() {
   return (
     <>
       {!isOpen && (
-        <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end gap-2 animate-float">
+        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end gap-2 animate-float">
           <div className="bg-slate-900 border border-cyber-cyan/50 text-cyber-cyan px-3 py-1.5 rounded-xl shadow-lg text-xs font-bold flex items-center gap-2 relative hidden sm:flex">
             <span>Ask me anything</span>
             <Sparkles className="w-3 h-3 text-cyber-pink animate-pulse" />
@@ -173,58 +173,61 @@ export default function ChatAssistant() {
           <button 
             onClick={() => setIsOpen(true)} 
             aria-label="Open WIDS assistant chat" 
-            className="group relative bg-gradient-to-r from-cyber-cyan via-blue-500 to-cyber-purple p-1.5 rounded-full shadow-[0_0_20px_rgba(0,240,255,0.4)] hover:shadow-[0_0_30px_rgba(0,240,255,0.6)] hover:scale-105 transition-all duration-300 btn-press flex items-center justify-center"
+            className="group relative bg-gradient-to-r from-cyber-cyan via-blue-500 to-cyber-purple p-1 rounded-full sm:p-1.5 shadow-[0_0_20px_rgba(0,240,255,0.4)] hover:shadow-[0_0_30px_rgba(0,240,255,0.6)] hover:scale-105 transition-all duration-300 btn-press flex items-center justify-center"
           >
-            <div className="absolute -top-1 -right-1 w-5 h-5 bg-cyber-pink rounded-full border-2 border-slate-900 animate-bounce z-10" />
-            <img src="/apn_chat_bot.png" alt="AI Assistant" className="w-16 h-16 object-cover rounded-full border-2 border-white/20 group-hover:rotate-12 transition-transform duration-300 drop-shadow-lg bg-slate-900" />
+            <div className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 w-3.5 h-3.5 sm:w-5 sm:h-5 bg-cyber-pink rounded-full border-2 border-slate-900 animate-bounce z-10" />
+            <img src="/apn_chat_bot.png" alt="AI Assistant" className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-full border-2 border-white/20 group-hover:rotate-12 transition-transform duration-300 drop-shadow-lg bg-slate-900" />
           </button>
         </div>
       )}
 
       {isOpen && (
-        <div className="fixed bottom-20 sm:bottom-24 right-2 sm:right-6 w-[calc(100vw-1rem)] sm:w-96 h-[60vh] sm:h-[30rem] glass-card rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden animate-bounce-in">
-          <div className="bg-slate-900/80 p-4 flex justify-between items-center border-b border-slate-700/50">
-            <div className="flex flex-col">
-              <h3 className="font-bold text-cyber-cyan flex items-center"><img src="/apn_chat_bot.png" alt="AI" className="w-6 h-6 mr-2 object-contain" /> AI Assistant (Groq)</h3>
-              <div className="flex flex-col gap-1 mt-1">
-                <div className="text-[10px] text-slate-400 font-mono flex items-center gap-1" title="Requests per day (from Groq response headers)">
-                  <span className="w-8">Day:</span>
-                  <div className="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
-                    <div 
-                      className={`h-full ${rateLimits.rpdRemaining <= 0 ? 'bg-red-500' : 'bg-cyber-lime'}`} 
-                      style={{ width: `${rateLimits.rpdLimit > 0 ? ((rateLimits.rpdLimit - rateLimits.rpdRemaining) / rateLimits.rpdLimit) * 100 : 0}%` }}
-                    />
+        <div className="fixed inset-x-0 bottom-0 sm:bottom-24 sm:right-6 sm:left-auto w-full sm:w-96 h-[85vh] sm:h-[30rem] glass-card rounded-t-2xl sm:rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden animate-bounce-in">
+          <div className="bg-slate-900/80 p-3 sm:p-4 flex justify-between items-center border-b border-slate-700/50">
+            <div className="flex items-center gap-2 min-w-0">
+              <img src="/apn_chat_bot.png" alt="AI" className="w-7 h-7 sm:w-6 sm:h-6 object-contain rounded-full flex-shrink-0" />
+              <div className="min-w-0">
+                <h3 className="font-bold text-cyber-cyan text-sm sm:text-base truncate">AI Assistant</h3>
+                <div className="hidden sm:flex flex-col gap-1 mt-0.5">
+                  <div className="text-[10px] text-slate-400 font-mono flex items-center gap-1" title="Requests per day (from Groq response headers)">
+                    <span className="w-8">Day:</span>
+                    <div className="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+                      <div 
+                        className={`h-full ${rateLimits.rpdRemaining <= 0 ? 'bg-red-500' : 'bg-cyber-lime'}`} 
+                        style={{ width: `${rateLimits.rpdLimit > 0 ? ((rateLimits.rpdLimit - rateLimits.rpdRemaining) / rateLimits.rpdLimit) * 100 : 0}%` }}
+                      />
+                    </div>
+                    <span className={rateLimits.rpdRemaining <= 0 ? 'text-red-500' : 'text-cyber-lime'}>
+                      {rateLimits.rpdRemaining} left
+                    </span>
                   </div>
-                  <span className={rateLimits.rpdRemaining <= 0 ? 'text-red-500' : 'text-cyber-lime'}>
-                    {rateLimits.rpdRemaining} left
-                  </span>
-                </div>
-                <div className="text-[10px] text-slate-400 font-mono flex items-center gap-1" title="Tokens per minute (from Groq response headers)">
-                  <span className="w-8">TPM:</span>
-                  <div className="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
-                    <div 
-                      className={`h-full ${rateLimits.tpmRemaining <= 0 ? 'bg-red-500' : 'bg-cyber-cyan'}`} 
-                      style={{ width: `${rateLimits.tpmLimit > 0 ? ((rateLimits.tpmLimit - rateLimits.tpmRemaining) / rateLimits.tpmLimit) * 100 : 0}%` }}
-                    />
+                  <div className="text-[10px] text-slate-400 font-mono flex items-center gap-1" title="Tokens per minute (from Groq response headers)">
+                    <span className="w-8">TPM:</span>
+                    <div className="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+                      <div 
+                        className={`h-full ${rateLimits.tpmRemaining <= 0 ? 'bg-red-500' : 'bg-cyber-cyan'}`} 
+                        style={{ width: `${rateLimits.tpmLimit > 0 ? ((rateLimits.tpmLimit - rateLimits.tpmRemaining) / rateLimits.tpmLimit) * 100 : 0}%` }}
+                      />
+                    </div>
+                    <span className={rateLimits.tpmRemaining <= 0 ? 'text-red-500' : 'text-cyber-cyan'}>
+                      {rateLimits.tpmRemaining} left
+                    </span>
                   </div>
-                  <span className={rateLimits.tpmRemaining <= 0 ? 'text-red-500' : 'text-cyber-cyan'}>
-                    {rateLimits.tpmRemaining} left
-                  </span>
                 </div>
               </div>
             </div>
-            <div className="flex gap-2 self-start mt-1">
-              <button onClick={() => setShowSettings(!showSettings)} aria-label="Settings" className="text-slate-400 hover:text-white transition-colors">
-                <Settings size={18} className={showSettings ? "text-cyber-cyan" : ""} />
+            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+              <button onClick={() => setShowSettings(!showSettings)} aria-label="Settings" className="text-slate-400 hover:text-white transition-colors p-1.5">
+                <Settings size={16} className={showSettings ? "text-cyber-cyan" : ""} />
               </button>
-              <button onClick={() => setIsOpen(false)} aria-label="Close chat"><X size={18} className="text-slate-400 hover:text-white transition-colors" /></button>
+              <button onClick={() => setIsOpen(false)} aria-label="Close chat" className="text-slate-400 hover:text-white transition-colors p-1.5"><X size={16} /></button>
             </div>
           </div>
           
           {showSettings ? (
-            <div className="flex-1 p-3 sm:p-4 overflow-y-auto space-y-4 bg-slate-900/50">
+            <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-900/50">
               <h4 className="text-cyber-cyan font-bold mb-2 flex items-center gap-2"><Settings size={16} /> Configuration</h4>
-              <p className="text-sm text-slate-300">
+              <p className="text-xs sm:text-sm text-slate-300">
                 To chat, please provide your own Groq API Key. 
                 Your key is stored securely in your browser's local storage and is never sent to our servers.
               </p>
@@ -237,24 +240,24 @@ export default function ChatAssistant() {
                     setUserApiKey(e.target.value);
                     localStorage.setItem('groq_user_api_key', e.target.value);
                   }}
-                  className="bg-slate-800 border border-slate-700 text-white p-2 rounded-lg text-sm focus:outline-none focus:border-cyber-cyan"
+                  className="bg-slate-800 border border-slate-700 text-white p-3 sm:p-2 rounded-lg text-sm focus:outline-none focus:border-cyber-cyan"
                   placeholder="gsk_..."
                 />
               </div>
-              <button onClick={() => setShowSettings(false)} className="w-full mt-4 p-2 bg-cyber-purple/20 hover:bg-cyber-purple/40 text-cyber-purple border border-cyber-purple/50 rounded-lg transition-colors font-bold text-sm">
+              <button onClick={() => setShowSettings(false)} className="w-full mt-4 p-3 sm:p-2 bg-cyber-purple/20 hover:bg-cyber-purple/40 text-cyber-purple border border-cyber-purple/50 rounded-lg transition-colors font-bold text-sm">
                 Save & Return to Chat
               </button>
             </div>
           ) : (
             <>
-              <div className="flex-1 p-2 sm:p-4 overflow-y-auto space-y-3 sm:space-y-4">
+              <div className="flex-1 p-3 sm:p-4 overflow-y-auto space-y-3 sm:space-y-4 scrollbar-thin">
                 {messages.map((m, i) => (
                   <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'} animate-slide-up`}>
-                    <div className={`p-3 rounded-xl text-sm max-w-[85%] overflow-x-auto ${m.role === 'user' ? 'bg-gradient-to-r from-cyber-cyan to-cyber-purple text-white' : 'bg-slate-800 border border-slate-700 text-slate-200'}`}>
+                    <div className={`p-3 rounded-xl text-sm max-w-[80%] sm:max-w-[85%] overflow-x-auto ${m.role === 'user' ? 'bg-gradient-to-r from-cyber-cyan to-cyber-purple text-white' : 'bg-slate-800 border border-slate-700 text-slate-200'}`}>
                       {m.role === 'user' ? (
-                        <div className="whitespace-pre-wrap">{m.text}</div>
+                        <div className="whitespace-pre-wrap break-words">{m.text}</div>
                       ) : (
-                        <div className="prose prose-invert prose-sm max-w-none prose-p:leading-relaxed prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-700">
+                        <div className="prose prose-invert prose-sm max-w-none prose-p:leading-relaxed prose-p:break-words prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-700 prose-pre:overflow-x-auto">
                           <ReactMarkdown remarkPlugins={[remarkGfm]}>
                             {m.text}
                           </ReactMarkdown>
@@ -273,7 +276,7 @@ export default function ChatAssistant() {
                 )}
                 <div ref={endRef} />
               </div>
-              <div className="p-3 bg-slate-900/80 border-t border-slate-700/50 flex items-end gap-2">
+              <div className="p-2 sm:p-3 bg-slate-900/80 border-t border-slate-700/50 flex items-end gap-2">
                 <textarea 
                   value={input} 
                   onChange={e => setInput(e.target.value)}
@@ -284,10 +287,10 @@ export default function ChatAssistant() {
                     }
                   }}
                   rows={1}
-                  className="flex-1 bg-slate-800 text-white p-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-cyber-cyan/50 placeholder-slate-500 resize-none max-h-32" 
+                  className="flex-1 bg-slate-800 text-white p-3 sm:p-2.5 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-cyber-cyan/50 placeholder-slate-500 resize-none max-h-32" 
                   placeholder="Ask anything..."
                 />
-                <button onClick={handleSend} disabled={isLoading || !input.trim()} className="p-2.5 rounded-lg bg-slate-800 text-cyber-cyan hover:bg-slate-700 disabled:opacity-50 transition-colors btn-press">
+                <button onClick={handleSend} disabled={isLoading || !input.trim()} className="p-3 sm:p-2.5 rounded-lg bg-slate-800 text-cyber-cyan hover:bg-slate-700 disabled:opacity-50 transition-colors btn-press flex-shrink-0">
                   <Send size={18} />
                 </button>
               </div>
