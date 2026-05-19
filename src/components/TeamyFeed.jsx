@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
-import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network, X } from 'lucide-react';
+import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network, X, Image as ImageIcon, Upload } from 'lucide-react';
 
 export default function TeamyFeed() {
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [image, setImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPost, setSelectedPost] = useState(null);
@@ -39,7 +40,6 @@ export default function TeamyFeed() {
     };
   }, [fetchPosts]);
 
-  // Handle escape key for closing modal
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') setSelectedPost(null);
@@ -55,16 +55,37 @@ export default function TeamyFeed() {
     if (!title.trim() || !body.trim() || isSubmitting) return;
 
     setIsSubmitting(true);
+    let imageUrl = null;
+
+    if (image) {
+      const fileExt = image.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const { data, error: uploadError } = await supabase.storage
+        .from('feed-images')
+        .upload(fileName, image);
+
+      if (uploadError) {
+        console.error("Upload error:", uploadError);
+        alert("Failed to upload image.");
+        setIsSubmitting(false);
+        return;
+      }
+      
+      const { data: publicUrl } = supabase.storage.from('feed-images').getPublicUrl(fileName);
+      imageUrl = publicUrl.publicUrl;
+    }
+
     const { error } = await supabase
       .from('posts')
-      .insert([{ title: title.trim(), body: body.trim() }]);
+      .insert([{ title: title.trim(), body: body.trim(), image_url: imageUrl }]);
 
     if (!error) {
       setTitle('');
       setBody('');
+      setImage(null);
     } else {
       console.error("Error submitting post:", error);
-      alert("Failed to submit post. Please make sure the Supabase table exists.");
+      alert("Failed to submit post.");
     }
     setIsSubmitting(false);
   };
@@ -76,7 +97,6 @@ export default function TeamyFeed() {
 
   const getBentoSpan = (index) => {
     const pattern = index % 4;
-    // Explicit col-span-1 base class for mobile guarantees correct stacking
     if (pattern === 0) return 'col-span-1 md:col-span-2 lg:col-span-2 bg-gradient-to-br from-slate-900 to-slate-800/80 border-cyber-cyan/20 hover:border-cyber-cyan/50';
     if (pattern === 1) return 'col-span-1 bg-slate-900 border-slate-800/80 hover:border-slate-700';
     if (pattern === 2) return 'col-span-1 bg-slate-900 border-slate-800/80 hover:border-slate-700';
@@ -86,11 +106,8 @@ export default function TeamyFeed() {
 
   return (
     <div className="max-w-7xl mx-auto pb-12 relative w-full">
-      
-      {/* Bento Grid Container */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-auto grid-flow-dense">
 
-        {/* --- BENTO BOX 1: Create Post Form --- */}
         <div className="glass-card p-5 sm:p-8 rounded-3xl col-span-1 md:col-span-2 lg:col-span-2 border border-slate-800 shadow-2xl relative overflow-hidden group flex flex-col justify-between">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink opacity-70 group-hover:opacity-100 transition-opacity"></div>
           
@@ -126,6 +143,13 @@ export default function TeamyFeed() {
                   required
                 />
               </div>
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2 cursor-pointer bg-slate-950/50 border border-slate-800 hover:border-slate-600 px-4 py-2.5 rounded-2xl text-sm transition-all text-slate-400 hover:text-white">
+                  <Upload size={18} />
+                  {image ? image.name : "Attach Image"}
+                  <input type="file" className="hidden" accept="image/*" onChange={(e) => setImage(e.target.files[0])} />
+                </label>
+              </div>
             </div>
             <div className="flex justify-end pt-2">
               <button 
@@ -140,7 +164,6 @@ export default function TeamyFeed() {
           </form>
         </div>
 
-        {/* --- BENTO BOX 2: Stats & Atmosphere --- */}
         <div className="glass-card p-5 sm:p-8 rounded-3xl col-span-1 md:col-span-2 lg:col-span-1 border border-slate-800 shadow-xl bg-gradient-to-br from-slate-900 to-slate-800/50 flex flex-col justify-center items-center text-center relative overflow-hidden group min-h-[160px]">
           <div className="absolute -right-8 -bottom-8 opacity-5 group-hover:opacity-10 transition-opacity duration-700 text-cyber-purple">
             <Network size={160} />
@@ -155,7 +178,6 @@ export default function TeamyFeed() {
           </p>
         </div>
 
-        {/* --- BENTO BOXES 3+: Feed Items --- */}
         {isLoading ? (
           <div className="col-span-1 md:col-span-2 lg:col-span-3 flex justify-center p-12 sm:p-16 glass-card rounded-3xl border border-slate-800">
             <Loader2 className="w-10 h-10 text-cyber-cyan animate-spin" />
@@ -169,15 +191,15 @@ export default function TeamyFeed() {
             <div 
               key={post.id} 
               onClick={() => setSelectedPost(post)}
-              className={`glass-card p-5 sm:p-8 rounded-3xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl flex flex-col justify-between group/card cursor-pointer ${getBentoSpan(index)} animate-slide-up`}
+              className={`glass-card p-5 sm:p-8 rounded-3xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl flex flex-col group/card cursor-pointer ${getBentoSpan(index)} animate-slide-up overflow-hidden`}
               style={{ animationDelay: `${index * 50}ms` }}
             >
+              {post.image_url && <img src={post.image_url} className="w-full h-40 object-cover mb-4" alt="post" />}
               <div>
                 <h4 className="text-base sm:text-xl font-bold text-white mb-3 group-hover/card:text-white transition-colors flex items-start gap-2 break-words">
                   <span className="text-cyber-cyan mt-1 shrink-0">•</span>
                   <span className="line-clamp-2">{post.title}</span>
                 </h4>
-                {/* line-clamp-4 restricts the text to 4 lines with an ellipsis (...) */}
                 <p className="text-slate-400 text-sm leading-relaxed whitespace-pre-wrap line-clamp-4 break-words">{post.body}</p>
               </div>
               <div className="mt-6 sm:mt-8 flex items-center justify-between gap-2 text-[10px] sm:text-xs text-slate-500 font-mono border-t border-slate-800/60 pt-4">
@@ -193,7 +215,6 @@ export default function TeamyFeed() {
 
       </div>
 
-      {/* --- MODAL FOR FULL POST --- */}
       {selectedPost && (
         <div 
           className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-sm transition-all"
@@ -201,12 +222,9 @@ export default function TeamyFeed() {
         >
           <div 
             className="glass-card w-full max-w-3xl max-h-[90vh] sm:max-h-[85vh] rounded-3xl border border-cyber-cyan/30 shadow-2xl flex flex-col relative overflow-hidden animate-bounce-in"
-            onClick={e => e.stopPropagation()} // Prevent clicks inside the modal from closing it
+            onClick={e => e.stopPropagation()}
           >
-            {/* Modal Top Decoration */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink"></div>
-            
-            {/* Modal Header */}
             <div className="flex justify-between items-start p-5 sm:p-8 border-b border-slate-800/60 shrink-0 bg-slate-900/50">
               <h3 className="text-lg sm:text-2xl font-bold text-white pr-10 leading-tight flex items-start gap-2 break-words">
                 <span className="text-cyber-cyan mt-1 shrink-0">•</span>
@@ -215,18 +233,14 @@ export default function TeamyFeed() {
               <button 
                 onClick={() => setSelectedPost(null)}
                 className="absolute top-4 right-4 sm:top-8 sm:right-8 text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-700/50 rounded-full p-2 transition-all btn-press"
-                aria-label="Close modal"
               >
                 <X size={20} className="shrink-0" />
               </button>
             </div>
-            
-            {/* Modal Body (Scrollable) */}
             <div className="p-5 sm:p-8 overflow-y-auto scrollbar-thin text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words bg-slate-900/20">
+              {selectedPost.image_url && <img src={selectedPost.image_url} className="w-full max-h-80 object-contain mb-6 rounded-2xl" alt="post" />}
               {selectedPost.body}
             </div>
-            
-            {/* Modal Footer */}
             <div className="p-5 sm:p-8 border-t border-slate-800/60 shrink-0 bg-slate-900/50 flex flex-wrap items-center gap-2 text-[10px] sm:text-xs text-slate-500 font-mono">
               <Clock size={14} className="text-cyber-pink/70 shrink-0" />
               <span>Posted on {formatDate(selectedPost.created_at)}</span>
@@ -234,7 +248,6 @@ export default function TeamyFeed() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
