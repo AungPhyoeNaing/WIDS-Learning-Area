@@ -32,7 +32,7 @@ TECHNICAL ARCHITECTURE (FOR CODEBASE ASSISTANCE):
   - 'src/components/SimulationDashboard.jsx': The core interactive view. Uses local state for hardware control (sensorOn, sensorChannel, intensity) and rendering of visualizers (ChannelSpectrum, RssiHistory, PacketDistribution).
   - 'src/components/KnowledgeOfTheDay.jsx': Displays a randomized daily educational fact about WIDS/Wi-Fi security. It features Category Tagging (e.g., ATTACK, HARDWARE) and a "Deep Dive" button that makes a secondary AI call to fetch a detailed technical breakdown of the fact.
   - 'src/hooks/useSimulation.js': Custom hook that drives the live simulation logic. Generates randomized packet streams and handles attack-specific packet crafting (Deauth, Rogue AP, MAC Spoofing). It acts as the "backend" simulation layer.
-  - 'src/components/ChatAssistant.jsx': The component you are currently running in. Uses Groq API with Llama-3.3-70b.
+  - 'src/components/ChatAssistant.jsx': The component you are currently running in. Uses Groq API with Llama-3.1-8b-instant.
 
 WEBSITE UI GUIDE:
 1. Live Simulation Tab: 
