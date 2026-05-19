@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ShieldCheck, Activity, BookOpen, Flag, Github, Menu, X, Sparkles } from 'lucide-react';
+import { ShieldCheck, Activity, BookOpen, Flag, Github, Menu, X, Sparkles, MessageSquare } from 'lucide-react';
 import SimulationDashboard from './components/SimulationDashboard';
 import CTFLabs from './components/CTFLabs';
 import LearningHub from './components/LearningHub';
 import KnowledgeOfTheDay from './components/KnowledgeOfTheDay';
 import ChatAssistant from './components/ChatAssistant';
+import TeamyFeed from './components/TeamyFeed';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -71,6 +72,7 @@ export default function App() {
       if (e.key === '2') { setActiveView('ctf'); setMobileMenuOpen(false); }
       if (e.key === '3') { setActiveView('learning'); setMobileMenuOpen(false); }
       if (e.key === '4') { setActiveView('knowledge'); setMobileMenuOpen(false); }
+      if (e.key === '5') { setActiveView('teamyfeed'); setMobileMenuOpen(false); }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
@@ -81,6 +83,7 @@ export default function App() {
     { id: 'ctf', label: 'CTF Labs', icon: Flag, shortcut: '2' },
     { id: 'learning', label: 'Learning Hub', icon: BookOpen, shortcut: '3' },
     { id: 'knowledge', label: 'Daily Insight', icon: Sparkles, shortcut: '4' },
+    { id: 'teamyfeed', label: 'Teamyfeed', icon: MessageSquare, shortcut: '5' },
   ];
 
   const navigate = (id) => {
@@ -110,7 +113,7 @@ export default function App() {
               </div>
 
               {/* Desktop nav */}
-              <div className="hidden md:flex items-center gap-4">
+              <div className="hidden md:flex items-center gap-4 overflow-x-auto">
                 <div className="flex items-baseline space-x-1">
                   {navItems.map((item) => {
                     const Icon = item.icon;
@@ -118,7 +121,7 @@ export default function App() {
                       <button
                         key={item.id}
                         onClick={() => navigate(item.id)}
-                        className={`flex items-center px-2 lg:px-3 py-2 rounded-lg text-xs lg:text-sm font-semibold transition-all btn-press ${
+                        className={`flex items-center px-2 lg:px-3 py-2 rounded-lg text-xs lg:text-sm font-semibold transition-all btn-press whitespace-nowrap ${
                           activeView === item.id
                             ? 'bg-gradient-to-r from-cyber-cyan/20 to-cyber-purple/20 text-cyber-cyan border border-cyber-cyan/30 shadow-[0_0_15px_rgba(0,240,255,0.15)]'
                             : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
@@ -133,7 +136,7 @@ export default function App() {
                     );
                   })}
                 </div>
-                <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub repository" className="text-slate-500 hover:text-cyber-cyan transition-colors">
+                <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub repository" className="text-slate-500 hover:text-cyber-cyan transition-colors ml-2">
                   <Github className="w-5 h-5" />
                 </a>
               </div>
@@ -199,12 +202,18 @@ export default function App() {
                   Daily Insight
                 </span>
               )}
+              {activeView === 'teamyfeed' && (
+                <span className="bg-gradient-to-r from-blue-400 to-cyber-cyan bg-clip-text text-transparent">
+                  Teamyfeed Knowledge Share
+                </span>
+              )}
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 max-w-3xl">
               {activeView === 'simulation' && 'Deploy virtual ESP32 sniffers to detect common 802.11 attacks in real-time. Understand how raw management frames are manipulated by adversaries.'}
               {activeView === 'ctf' && 'Test your understanding of Wi-Fi protocol vulnerabilities through hands-on gamified tasks.'}
               {activeView === 'learning' && 'A deep dive into the project architecture, hardware specs, and system diagnostics.'}
               {activeView === 'knowledge' && 'A daily dose of WIDS wisdom — random educational facts powered by Groq AI.'}
+              {activeView === 'teamyfeed' && 'Post your latest findings, research notes, and cybersecurity highlights for the team.'}
             </p>
           </div>
 
@@ -220,6 +229,7 @@ export default function App() {
               {activeView === 'ctf' && <CTFLabs />}
               {activeView === 'learning' && <LearningHub />}
               {activeView === 'knowledge' && <KnowledgeOfTheDay />}
+              {activeView === 'teamyfeed' && <TeamyFeed />}
             </ViewWrapper>
           </div>
         </main>
