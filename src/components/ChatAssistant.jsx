@@ -94,8 +94,14 @@ export default function ChatAssistant() {
   }, [messages]);
 
   const updateApiKeyInSupabase = async (profileId, key) => {
-    await supabase.from('profiles').upsert({ id: profileId, api_key: key });
-    setUserApiKeys(prev => ({ ...prev, [profileId]: key }));
+    console.log("Attempting to update Supabase for profile:", profileId, "with key:", key);
+    const { data, error } = await supabase.from('profiles').upsert({ id: profileId, api_key: key });
+    if (error) {
+        console.error("Supabase update error:", error);
+    } else {
+        console.log("Supabase update success:", data);
+        setUserApiKeys(prev => ({ ...prev, [profileId]: key }));
+    }
   };
 
   const handleSend = async () => {
@@ -170,13 +176,18 @@ export default function ChatAssistant() {
       {isOpen && (
         <div className="fixed inset-x-0 bottom-0 sm:bottom-24 sm:right-6 sm:left-auto w-full sm:w-96 h-[85vh] sm:h-[30rem] glass-card rounded-t-2xl sm:rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden animate-bounce-in">
           <div className="bg-slate-900/80 p-3 sm:p-4 flex justify-between items-center border-b border-slate-700/50">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <div className={`p-1.5 rounded-full bg-slate-800 ${currentProfile?.color}`}>
                 {currentProfile && <currentProfile.icon size={16} />}
               </div>
-              <div>
-                <h3 className="font-bold text-white text-sm">{currentProfile?.name}</h3>
-                <p className="text-[10px] text-slate-400">WIDS AI Tutor</p>
+              <div className="flex flex-col">
+                <h3 className="font-bold text-white text-sm">WIDS AI Tutor</h3>
+                <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] text-slate-400 uppercase tracking-wider">Profile:</span>
+                    <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold border ${currentProfile?.color.replace('text-', 'border-').replace('400', '500/50')} bg-slate-800/50 ${currentProfile?.color}`}>
+                        {currentProfile?.name}
+                    </span>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-2">
