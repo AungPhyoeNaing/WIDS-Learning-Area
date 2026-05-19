@@ -164,8 +164,8 @@ export default function ChatAssistant() {
   return (
     <>
       {!isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2 animate-float">
-          <div className="bg-slate-900 border border-cyber-cyan/50 text-cyber-cyan px-3 py-1.5 rounded-xl shadow-lg text-xs font-bold flex items-center gap-2 relative">
+        <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end gap-2 animate-float">
+          <div className="bg-slate-900 border border-cyber-cyan/50 text-cyber-cyan px-3 py-1.5 rounded-xl shadow-lg text-xs font-bold flex items-center gap-2 relative hidden sm:flex">
             <span>Ask me anything</span>
             <Sparkles className="w-3 h-3 text-cyber-pink animate-pulse" />
             <div className="absolute -bottom-1.5 right-6 w-3 h-3 bg-slate-900 border-b border-r border-cyber-cyan/50 rotate-45" />
@@ -182,7 +182,7 @@ export default function ChatAssistant() {
       )}
 
       {isOpen && (
-        <div className="fixed bottom-24 right-6 w-96 h-[30rem] glass-card rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden animate-bounce-in">
+        <div className="fixed bottom-20 sm:bottom-24 right-2 sm:right-6 w-[calc(100vw-1rem)] sm:w-96 h-[60vh] sm:h-[30rem] glass-card rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden animate-bounce-in">
           <div className="bg-slate-900/80 p-4 flex justify-between items-center border-b border-slate-700/50">
             <div className="flex flex-col">
               <h3 className="font-bold text-cyber-cyan flex items-center"><img src="/apn_chat_bot.png" alt="AI" className="w-6 h-6 mr-2 object-contain" /> AI Assistant (Groq)</h3>
@@ -222,7 +222,7 @@ export default function ChatAssistant() {
           </div>
           
           {showSettings ? (
-            <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-900/50">
+            <div className="flex-1 p-3 sm:p-4 overflow-y-auto space-y-4 bg-slate-900/50">
               <h4 className="text-cyber-cyan font-bold mb-2 flex items-center gap-2"><Settings size={16} /> Configuration</h4>
               <p className="text-sm text-slate-300">
                 To chat, please provide your own Groq API Key. 
@@ -247,7 +247,7 @@ export default function ChatAssistant() {
             </div>
           ) : (
             <>
-              <div className="flex-1 p-4 overflow-y-auto space-y-4">
+              <div className="flex-1 p-2 sm:p-4 overflow-y-auto space-y-3 sm:space-y-4">
                 {messages.map((m, i) => (
                   <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'} animate-slide-up`}>
                     <div className={`p-3 rounded-xl text-sm max-w-[85%] overflow-x-auto ${m.role === 'user' ? 'bg-gradient-to-r from-cyber-cyan to-cyber-purple text-white' : 'bg-slate-800 border border-slate-700 text-slate-200'}`}>

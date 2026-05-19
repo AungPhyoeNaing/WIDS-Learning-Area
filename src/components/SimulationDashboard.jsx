@@ -309,7 +309,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
     <div className="space-y-6">
 
       {/* ─── 1. Hardware Control Panel ─── */}
-      <div className="glass-card p-6 rounded-2xl shadow-xl card-pop">
+      <div className="glass-card p-4 sm:p-6 rounded-2xl shadow-xl card-pop">
         <h2 className="text-xl font-extrabold text-cyber-cyan mb-4 flex items-center">
           <Settings className="w-5 h-5 mr-2 text-cyber-cyan animate-spin-slow" /> 1. Configure Hardware (WIDS Sensor)
         </h2>
@@ -342,8 +342,8 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
                 <Sliders className="w-4 h-4 mr-2 text-cyber-purple" /> Radio Frequency Tuning
               </label>
               {sensorOn && (
-                <div className="flex items-center gap-3">
-                  <RssiHistory packets={packets} />
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="hidden sm:block"><RssiHistory packets={packets} /></div>
                   <SignalMeter rssi={latestRssi} />
                 </div>
               )}
@@ -365,11 +365,11 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
       </div>
 
       {/* ─── 2. Attack Control Panel ─── */}
-      <div className="glass-card p-6 rounded-2xl shadow-xl relative overflow-hidden">
+      <div className="glass-card p-4 sm:p-6 rounded-2xl shadow-xl relative overflow-hidden">
         {isMitigated && (
-           <div className="absolute inset-0 bg-emerald-900/90 z-20 flex flex-col items-center justify-center backdrop-blur-md border-2 border-emerald-500 rounded-2xl p-6 text-center animate-bounce-in">
-              <ShieldCheck className="w-20 h-20 text-emerald-400 mb-4 animate-bounce" />
-              <h2 className="text-3xl font-extrabold text-white mb-2">Threat Neutralized! 🎉</h2>
+           <div className="absolute inset-0 bg-emerald-900/90 z-20 flex flex-col items-center justify-center backdrop-blur-md border-2 border-emerald-500 rounded-2xl p-4 sm:p-6 text-center animate-bounce-in">
+              <ShieldCheck className="w-16 sm:w-20 h-16 sm:h-20 text-emerald-400 mb-4 animate-bounce" />
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">Threat Neutralized! 🎉</h2>
               <div className="bg-black/30 p-4 rounded-lg text-emerald-200 mb-6 max-w-md">
                 <strong className="flex items-center justify-center text-emerald-400 mb-2"><Lightbulb className="w-4 h-4 mr-2" /> Knowledge: Active Mitigation</strong>
                 Your WIDS has transformed from a passive listener into an active firewall. It generated a rule targeting the attacker's MAC address and is now dropping their malicious frames before they can harm the network.
@@ -378,29 +378,29 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
            </div>
         )}
 
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 border-b border-slate-700/50 pb-4">
-          <h2 className="text-xl font-extrabold text-cyber-pink flex items-center">
-            <MonitorPlay className="mr-2 h-5 w-5" /> 2. Threat Generator
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 border-b border-slate-700/50 pb-3 sm:pb-4">
+          <h2 className="text-lg sm:text-xl font-extrabold text-cyber-pink flex items-center">
+            <MonitorPlay className="mr-2 h-5 w-5 flex-shrink-0" /> <span>2. Threat Generator</span>
           </h2>
-          <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <DetectionBadge isAttackActive={isAttackActive} attackType={attackType} sensorOn={sensorOn} sensorChannel={sensorChannel} targetChannel={targetChannel} isMitigated={isMitigated} />
             {isAttackActive && sensorOn && sensorChannel === targetChannel && !isMitigated && (
-              <button onClick={handleMitigate} aria-label="Deploy active mitigation against attacker" className="bg-gradient-to-r from-emerald-600 to-cyber-lime hover:opacity-90 text-white px-5 py-2 rounded-lg text-sm font-bold flex items-center animate-pulse-fast shadow-[0_0_20px_rgba(16,185,129,0.6)] btn-press">
-                <ShieldCheck className="w-5 h-5 mr-2" /> Deploy Mitigation
+              <button onClick={handleMitigate} aria-label="Deploy active mitigation against attacker" className="bg-gradient-to-r from-emerald-600 to-cyber-lime hover:opacity-90 text-white px-3 sm:px-5 py-2 rounded-lg text-xs sm:text-sm font-bold flex items-center animate-pulse-fast shadow-[0_0_20px_rgba(16,185,129,0.6)] btn-press">
+                <ShieldCheck className="w-4 sm:w-5 h-4 sm:h-5 mr-1 sm:mr-2" /> <span className="hidden sm:inline">Deploy Mitigation</span><span className="sm:hidden">Mitigate</span>
               </button>
             )}
           </div>
         </div>
 
         {/* Attack Intensity */}
-        <div className="flex items-center gap-3 mb-4 text-sm">
-          <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">Intensity:</span>
+        <div className="flex items-center gap-2 sm:gap-3 mb-4 text-sm flex-wrap">
+          <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider">Intensity:</span>
           {['low', 'medium', 'high'].map(level => (
-            <button key={level} onClick={() => setIntensity(level)} className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all btn-press ${intensity === level ? 'bg-gradient-to-r from-cyber-purple/30 to-cyber-pink/30 border-cyber-purple text-white shadow-[0_0_10px_rgba(168,85,247,0.2)]' : 'bg-slate-900 border-slate-700 text-slate-400 hover:bg-slate-800'}`}>
+            <button key={level} onClick={() => setIntensity(level)} className={`px-2 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-xs font-bold border transition-all btn-press ${intensity === level ? 'bg-gradient-to-r from-cyber-purple/30 to-cyber-pink/30 border-cyber-purple text-white shadow-[0_0_10px_rgba(168,85,247,0.2)]' : 'bg-slate-900 border-slate-700 text-slate-400 hover:bg-slate-800'}`}>
               {level === 'low' ? '🐌 Low' : level === 'medium' ? '⚡ Medium' : '🔥 High'}
             </button>
           ))}
-          <span className="text-[10px] text-slate-600 ml-auto">Attack rate: {intensity === 'low' ? '0.8/s' : intensity === 'medium' ? '1.6/s' : '5/s'}</span>
+          <span className="text-[10px] text-slate-600">Attack rate: {intensity === 'low' ? '0.8/s' : intensity === 'medium' ? '1.6/s' : '5/s'}</span>
         </div>
 
         {/* Network Topology Visual */}
@@ -442,7 +442,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
 
       {/* ─── Stats Bar ─── */}
       {(sensorOn || isAttackActive) && (
-        <div className="glass-card p-4 rounded-2xl shadow-xl card-pop">
+        <div className="glass-card p-3 sm:p-4 rounded-2xl shadow-xl card-pop">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Live Packet Statistics</h3>
             {packets.length > 0 && <span className="text-[10px] text-slate-600 font-mono">Click a packet for details</span>}
@@ -454,40 +454,40 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
 
       {/* ─── 3. Live Terminal Log ─── */}
       <div className="bg-[#0D1117] rounded-2xl border border-slate-600/50 font-mono text-sm overflow-hidden flex flex-col shadow-2xl">
-        <div className="bg-slate-800/80 text-slate-300 border-b border-slate-600/50 p-3">
+        <div className="bg-slate-800/80 text-slate-300 border-b border-slate-600/50 p-2 sm:p-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="font-bold flex items-center text-sm">
-              <Terminal className="w-4 h-4 mr-2 text-cyber-cyan" /> 3. Live Sensor Output Console
+            <span className="font-bold flex items-center text-xs sm:text-sm">
+              <Terminal className="w-4 h-4 mr-2 text-cyber-cyan flex-shrink-0" /> <span className="hidden sm:inline">3. Live Sensor Output Console</span><span className="sm:hidden">Console</span>
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
               {packets.length > 0 && (
                 <>
-                  <button onClick={exportLogs} aria-label="Copy session logs to clipboard" className="bg-slate-900 hover:bg-slate-700 text-slate-400 px-2 py-1 rounded-lg text-[10px] font-bold border border-slate-700 flex items-center gap-1 transition-colors btn-press">
-                    <Download className="w-3 h-3" /> Copy
+                  <button onClick={exportLogs} aria-label="Copy session logs to clipboard" className="bg-slate-900 hover:bg-slate-700 text-slate-400 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] font-bold border border-slate-700 flex items-center gap-1 transition-colors btn-press">
+                    <Download className="w-3 h-3" /> <span className="hidden sm:inline">Copy</span>
                   </button>
-                  <button onClick={clearConsole} aria-label="Clear console and stop attack" className="bg-slate-900 hover:bg-red-900/50 text-slate-400 px-2 py-1 rounded-lg text-[10px] font-bold border border-slate-700 flex items-center gap-1 transition-colors btn-press">
-                    <Trash2 className="w-3 h-3" /> Clear
+                  <button onClick={clearConsole} aria-label="Clear console and stop attack" className="bg-slate-900 hover:bg-red-900/50 text-slate-400 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] font-bold border border-slate-700 flex items-center gap-1 transition-colors btn-press">
+                    <Trash2 className="w-3 h-3" /> <span className="hidden sm:inline">Clear</span>
                   </button>
                 </>
               )}
               <div className="relative">
                 <Search className="w-3 h-3 absolute left-2 top-1/2 -translate-y-1/2 text-slate-600" />
-                <input type="text" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter..." aria-label="Filter console packets" className="bg-slate-900 border border-slate-600 rounded-lg text-[11px] text-slate-300 pl-7 pr-2 py-1 w-24 focus:outline-none focus:border-cyber-cyan placeholder-slate-600 transition-colors" />
+                <input type="text" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter..." aria-label="Filter console packets" className="bg-slate-900 border border-slate-600 rounded-lg text-[11px] text-slate-300 pl-7 pr-2 py-1 w-20 sm:w-24 focus:outline-none focus:border-cyber-cyan placeholder-slate-600 transition-colors" />
               </div>
-              <span className="bg-slate-900 px-2 py-1 rounded-lg text-[10px] text-emerald-400 border border-emerald-900">Src</span>
-              <span className="bg-slate-900 px-2 py-1 rounded-lg text-[10px] text-blue-400 border border-blue-900">Dst</span>
-              <span className="bg-slate-900 px-2 py-1 rounded-lg text-[10px] text-slate-400 border border-slate-700">Ch:{sensorChannel}</span>
+              <span className="bg-slate-900 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] text-emerald-400 border border-emerald-900 hidden sm:inline">Src</span>
+              <span className="bg-slate-900 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] text-blue-400 border border-blue-900 hidden sm:inline">Dst</span>
+              <span className="bg-slate-900 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] text-slate-400 border border-slate-700">Ch:{sensorChannel}</span>
             </div>
           </div>
         </div>
 
         {isAttackActive && sensorOn && sensorChannel !== targetChannel && (
-           <div className="bg-yellow-900/80 text-yellow-400 p-2 text-center text-sm font-bold border-b border-yellow-500/50 animate-pulse-fast flex items-center justify-center gap-2">
-             <AlertTriangle className="w-4 h-4" /> SIGNAL INTERFERENCE: Traffic spike on Ch {targetChannel}! Tune to CH {targetChannel} to intercept!
+           <div className="bg-yellow-900/80 text-yellow-400 p-2 text-center text-xs sm:text-sm font-bold border-b border-yellow-500/50 animate-pulse-fast flex items-center justify-center gap-2">
+             <AlertTriangle className="w-4 h-4 flex-shrink-0" /> <span>SIGNAL: Traffic spike on Ch {targetChannel}! Tune to CH {targetChannel}!</span>
            </div>
         )}
 
-        <div ref={consoleRef} className="flex-1 overflow-y-auto p-4 space-y-1" style={{ maxHeight: '20rem' }}>
+        <div ref={consoleRef} className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1" style={{ maxHeight: '20rem' }}>
           {!sensorOn ? (
              <div className="text-red-900 font-bold flex flex-col items-center justify-center h-48">
                <span className="text-lg">[SENSOR OFFLINE]</span>
@@ -500,16 +500,16 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
           ) : (
             filteredPackets.map((pkt) => (
               <button key={pkt.id} onClick={() => setDetailPkt(pkt)}
-                className={`w-full text-left text-slate-300 border-b border-slate-800/50 pb-1.5 pt-1 text-sm hover:bg-slate-800/30 transition-colors cursor-pointer rounded px-1 ${pkt.isBlocked ? 'opacity-50' : ''}`}
+                className={`w-full text-left text-slate-300 border-b border-slate-800/50 pb-1.5 pt-1 text-xs sm:text-sm hover:bg-slate-800/30 transition-colors cursor-pointer rounded px-1 ${pkt.isBlocked ? 'opacity-50' : ''}`}
               >
                 <span className="text-slate-500 mr-2">[{pkt.timestamp}]</span>
-                <span className="text-emerald-400 font-bold">{pkt.source}</span>
-                <span className="text-slate-600 mx-2">→</span>
-                <span className="text-blue-400 font-bold">{pkt.dest}</span>
-                <span className={`mx-2 px-1.5 py-0.5 rounded text-[10px] font-bold ${pkt.isBlocked ? 'bg-emerald-900/60 text-emerald-400 border border-emerald-500' : pkt.isAttack ? 'bg-cyber-pink/20 text-cyber-pink border border-cyber-pink animate-pulse-fast' : 'bg-slate-800 text-slate-400 border border-slate-600'}`}>
+                <span className="text-emerald-400 font-bold break-all">{pkt.source}</span>
+                <span className="text-slate-600 mx-1 sm:mx-2">→</span>
+                <span className="text-blue-400 font-bold break-all">{pkt.dest}</span>
+                <span className={`mx-1 sm:mx-2 px-1 py-0.5 rounded text-[9px] sm:text-[10px] font-bold ${pkt.isBlocked ? 'bg-emerald-900/60 text-emerald-400 border border-emerald-500' : pkt.isAttack ? 'bg-cyber-pink/20 text-cyber-pink border border-cyber-pink animate-pulse-fast' : 'bg-slate-800 text-slate-400 border border-slate-600'}`}>
                   [{pkt.subtype}]
                 </span>
-                <span className={pkt.isBlocked ? 'text-emerald-500 line-through' : 'text-slate-300'}>{pkt.info}</span>
+                <span className={`${pkt.isBlocked ? 'text-emerald-500 line-through' : 'text-slate-300'} break-all`}>{pkt.info}</span>
                 <span className="text-[9px] text-slate-700 ml-1">{pkt.rssi}dBm</span>
               </button>
             ))

@@ -208,23 +208,23 @@ export default function KnowledgeOfTheDay() {
   const badgeColor = factData && CATEGORY_COLORS[factData.category] ? CATEGORY_COLORS[factData.category] : CATEGORY_COLORS.DEFAULT;
 
   return (
-    <div className="glass-card p-8 md:p-12 rounded-[2.5rem] shadow-2xl text-center border border-slate-800/80 bg-slate-950/60 backdrop-blur-xl transition-all duration-500 max-w-5xl mx-auto relative overflow-hidden">
+    <div className="glass-card p-4 sm:p-8 md:p-12 rounded-[2.5rem] shadow-2xl text-center border border-slate-800/80 bg-slate-950/60 backdrop-blur-xl transition-all duration-500 max-w-5xl mx-auto relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-cyber-purple/10 rounded-full blur-[120px] pointer-events-none opacity-50"></div>
 
-      <div className="flex items-center justify-center gap-5 mb-10 relative z-10">
-        <div className="p-4 rounded-3xl bg-gradient-to-br from-cyber-purple/20 to-cyber-pink/20 border border-cyber-purple/30 shadow-[0_0_30px_rgba(180,0,255,0.15)]">
-          <Sparkles className="w-10 h-10 text-cyber-purple animate-pulse" />
+      <div className="flex items-center justify-center gap-3 sm:gap-5 mb-6 sm:mb-10 relative z-10">
+        <div className="p-2 sm:p-4 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-cyber-purple/20 to-cyber-pink/20 border border-cyber-purple/30 shadow-[0_0_30px_rgba(180,0,255,0.15)]">
+          <Sparkles className="w-6 sm:w-10 h-6 sm:h-10 text-cyber-purple animate-pulse" />
         </div>
         <div className="text-left">
-          <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight mb-1">Daily Insight</h2>
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight mb-1">Daily Insight</h2>
           <p className="text-xs text-cyber-pink font-bold tracking-widest uppercase flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-cyber-pink animate-pulse"></span> Wireless Security Intelligence
           </p>
         </div>
       </div>
 
-      <div className="relative min-h-[200px] w-full flex flex-col items-center justify-center bg-slate-900/40 rounded-3xl border border-slate-700/50 p-8 md:p-12 transition-all duration-500 shadow-inner z-10">
+      <div className="relative min-h-[200px] w-full flex flex-col items-center justify-center bg-slate-900/40 rounded-2xl sm:rounded-3xl border border-slate-700/50 p-4 sm:p-8 md:p-12 transition-all duration-500 shadow-inner z-10">
         {loading ? (
           <div className="flex flex-col items-center gap-4 text-cyber-cyan animate-pulse">
             <Loader2 className="w-8 h-8 animate-spin" />
@@ -274,7 +274,7 @@ export default function KnowledgeOfTheDay() {
             )}
 
             {deepDive && (
-              <div className="mt-8 w-full max-w-4xl p-8 bg-slate-950/80 border border-slate-700/80 rounded-2xl text-left text-sm text-slate-300 leading-loose animate-in slide-in-from-top-6 duration-700 shadow-2xl backdrop-blur-md relative overflow-hidden">
+              <div className="mt-6 sm:mt-8 w-full max-w-4xl p-4 sm:p-8 bg-slate-950/80 border border-slate-700/80 rounded-2xl text-left text-sm text-slate-300 leading-loose animate-in slide-in-from-top-6 duration-700 shadow-2xl backdrop-blur-md relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyber-purple to-cyber-cyan"></div>
                 <h4 className="text-cyber-cyan font-bold text-base mb-5 flex items-center gap-3 uppercase tracking-wider">
                   <BookOpen className="w-5 h-5 text-cyber-purple" /> Technical Breakdown
@@ -293,7 +293,7 @@ export default function KnowledgeOfTheDay() {
       <button
         onClick={() => fetchFact(true)}
         disabled={loading}
-        className="mt-10 group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-cyber-purple to-cyber-pink px-10 py-4 font-bold text-white transition-all hover:scale-105 active:scale-95 disabled:opacity-50 shadow-[0_10px_20px_rgba(180,0,255,0.2)] hover:shadow-[0_15px_30px_rgba(180,0,255,0.4)] z-10"
+        className="mt-6 sm:mt-10 group relative inline-flex items-center gap-2 sm:gap-3 overflow-hidden rounded-full bg-gradient-to-r from-cyber-purple to-cyber-pink px-6 sm:px-10 py-3 sm:py-4 font-bold text-white text-sm sm:text-base transition-all hover:scale-105 active:scale-95 disabled:opacity-50 shadow-[0_10px_20px_rgba(180,0,255,0.2)] hover:shadow-[0_15px_30px_rgba(180,0,255,0.4)] z-10"
       >
         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
         <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-700'}`} />

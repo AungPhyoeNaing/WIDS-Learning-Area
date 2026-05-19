@@ -117,7 +117,7 @@ const CHALLENGES = [
         <div className="bg-black p-4 rounded border border-slate-700 font-mono text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner">
           <span className="text-emerald-400">08 00</span> <span className="text-blue-400">00 00</span> <span className="text-yellow-400">AA:BB:CC:DD:EE:FF</span> <span className="text-purple-400">11:22:33:44:55:66</span>
         </div>
-        <div className="grid grid-cols-2 gap-3 text-xs font-mono bg-slate-900/50 p-3 rounded border border-slate-700">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-xs font-mono bg-slate-900/50 p-3 rounded border border-slate-700">
           <div><span className="text-emerald-400">08 00</span> = Frame Control</div>
           <div><span className="text-blue-400">00 00</span> = Duration</div>
           <div><span className="text-yellow-400">6 bytes</span> = Address 1 (Destination)</div>
@@ -166,8 +166,8 @@ const CHALLENGES = [
 
 function ProgressBar({ completed, total }) {
   return (
-    <div className="flex items-center gap-3 mb-6">
-      <span className="text-sm font-bold text-slate-400 flex-shrink-0">
+    <div className="flex items-center gap-2 sm:gap-3 mb-6">
+      <span className="text-xs sm:text-sm font-bold text-slate-400 flex-shrink-0">
         <span className="text-cyber-cyan">{completed}</span>/{total} Flags
       </span>
       <div className="flex-1 h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
@@ -205,15 +205,15 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, sco
 
   if (isCompleted) {
     return (
-      <div className="border border-emerald-500/50 rounded-xl p-6 bg-emerald-900/10 relative overflow-hidden opacity-80 card-pop">
+      <div className="border border-emerald-500/50 rounded-xl p-4 sm:p-6 bg-emerald-900/10 relative overflow-hidden opacity-80 card-pop">
         <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-emerald-400 to-cyber-lime" />
-        <div className="flex items-center gap-4">
-          <div className="p-2 rounded-full bg-emerald-900/50 border border-emerald-500/50"><CheckCircle2 className="w-6 h-6 text-emerald-400" /></div>
-          <div>
-            <h3 className="text-lg font-bold text-emerald-400 flex items-center gap-2">
-              {challenge.title} <span className="text-xs bg-emerald-900/50 px-2 py-0.5 rounded border border-emerald-500/30">Flag captured 🚩</span>
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="p-2 rounded-full bg-emerald-900/50 border border-emerald-500/50 flex-shrink-0"><CheckCircle2 className="w-5 sm:w-6 h-5 sm:h-6 text-emerald-400" /></div>
+          <div className="min-w-0">
+            <h3 className="text-base sm:text-lg font-bold text-emerald-400 flex flex-wrap items-center gap-2">
+              {challenge.title} <span className="text-[10px] sm:text-xs bg-emerald-900/50 px-2 py-0.5 rounded border border-emerald-500/30 whitespace-nowrap">Flag captured 🚩</span>
             </h3>
-            <p className="text-sm text-slate-500 mt-1">Completed — view the next challenge below.</p>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">Completed — view the next challenge below.</p>
           </div>
         </div>
       </div>
@@ -236,19 +236,19 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, sco
   };
 
   return (
-    <div className="glass-card rounded-xl p-6 relative overflow-hidden card-pop">
-      <div className={`absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b ${c.gradient}`} />
-      <div className="flex items-center gap-3 mb-4">
-        <div className={`p-2 rounded-lg ${c.iconBg} border ${c.iconBorder}`}><Icon className={`w-5 h-5 ${c.iconText}`} /></div>
-        <div>
-          <div className="flex items-center gap-2">
-            <h3 className="text-lg font-bold text-white">Challenge {challengeIndex + 1}: {challenge.title}</h3>
-            <span className="text-[10px] font-mono bg-slate-800 text-slate-500 border border-slate-700 px-1.5 py-0.5 rounded uppercase tracking-wider">Flag: {challenge.flag}</span>
-            {challenge.maxScore && <span className="text-[10px] text-cyber-lime font-mono">+{challenge.maxScore}pts</span>}
+      <div className="glass-card rounded-xl p-4 sm:p-6 relative overflow-hidden card-pop">
+        <div className={`absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b ${c.gradient}`} />
+        <div className="flex items-start gap-3 mb-4">
+          <div className={`p-2 rounded-lg ${c.iconBg} border ${c.iconBorder} flex-shrink-0`}><Icon className={`w-4 sm:w-5 h-4 sm:h-5 ${c.iconText}`} /></div>
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="text-base sm:text-lg font-bold text-white">Challenge {challengeIndex + 1}: {challenge.title}</h3>
+              <span className="text-[10px] font-mono bg-slate-800 text-slate-500 border border-slate-700 px-1.5 py-0.5 rounded uppercase tracking-wider">Flag: {challenge.flag}</span>
+              {challenge.maxScore && <span className="text-[10px] text-cyber-lime font-mono">+{challenge.maxScore}pts</span>}
+            </div>
+            <p className="text-xs sm:text-sm text-slate-400">{challenge.subtitle}</p>
           </div>
-          <p className="text-sm text-slate-400">{challenge.subtitle}</p>
         </div>
-      </div>
 
       {challenge.question}
 
@@ -348,9 +348,9 @@ function CompletionBanner({ score, totalPossible, onReset }) {
   const grade = pct >= 90 ? 'S' : pct >= 75 ? 'A' : pct >= 50 ? 'B' : 'C';
   const gradeColor = grade === 'S' ? 'text-cyber-lime' : grade === 'A' ? 'text-cyber-cyan' : grade === 'B' ? 'text-cyber-purple' : 'text-cyber-orange';
   return (
-    <div className="mt-8 p-8 bg-gradient-to-r from-cyber-cyan/10 via-cyber-purple/10 to-cyber-pink/10 border border-cyber-cyan/30 rounded-xl text-center animate-bounce-in">
-      <Flag className="w-12 h-12 text-cyber-lime mx-auto mb-3 animate-bounce" />
-      <h3 className="text-2xl font-extrabold text-white mb-1">Operation Complete 🎉</h3>
+    <div className="mt-6 sm:mt-8 p-4 sm:p-8 bg-gradient-to-r from-cyber-cyan/10 via-cyber-purple/10 to-cyber-pink/10 border border-cyber-cyan/30 rounded-xl text-center animate-bounce-in">
+      <Flag className="w-10 sm:w-12 h-10 sm:h-12 text-cyber-lime mx-auto mb-3 animate-bounce" />
+      <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-1">Operation Complete 🎉</h3>
       <div className="inline-block glass-card border border-slate-700 rounded-xl p-4 my-4 text-center">
         <p className={`text-5xl font-extrabold ${gradeColor} mb-1`}>{grade}</p>
         <p className="text-lg text-white font-bold">{score} / {totalPossible}</p>
@@ -408,12 +408,12 @@ export default function CTFLabs() {
 
   return (
     <div className="space-y-6">
-      <div className="glass-card p-6 rounded-xl shadow-xl">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="p-2 rounded-lg bg-cyber-lime/10 border border-cyber-lime/30"><Flag className="w-6 h-6 text-cyber-lime" /></div>
+      <div className="glass-card p-4 sm:p-6 rounded-xl shadow-xl">
+        <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="p-2 rounded-lg bg-cyber-lime/10 border border-cyber-lime/30"><Flag className="w-5 sm:w-6 h-5 sm:h-6 text-cyber-lime" /></div>
             <div>
-              <h2 className="text-2xl font-extrabold text-white">Capture The Flag Challenges</h2>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-white">Capture The Flag Challenges</h2>
               <p className="text-slate-400 text-sm">Test your Wi-Fi security knowledge. Each challenge awards up to 100pts — wrong answers cost 20pts.</p>
             </div>
           </div>

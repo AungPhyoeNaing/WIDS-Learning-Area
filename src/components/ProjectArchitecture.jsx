@@ -3,9 +3,9 @@ import { Layers, ShieldCheck, Activity, Target } from 'lucide-react';
 
 export default function ProjectArchitecture() {
   return (
-    <div className="glass-card p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md">
-      <h2 className="text-3xl font-bold text-cyber-cyan mb-8 flex items-center gap-3">
-        <Layers className="w-10 h-10" /> WIDS Architecture
+    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md">
+      <h2 className="text-xl sm:text-3xl font-bold text-cyber-cyan mb-6 sm:mb-8 flex items-center gap-2 sm:gap-3">
+        <Layers className="w-6 sm:w-10 h-6 sm:h-10" /> WIDS Architecture
       </h2>
       
       <div className="space-y-8 text-slate-300 leading-relaxed">

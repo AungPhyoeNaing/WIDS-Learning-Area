@@ -118,15 +118,15 @@ export default function App() {
                       <button
                         key={item.id}
                         onClick={() => navigate(item.id)}
-                        className={`flex items-center px-3 py-2 rounded-lg text-sm font-semibold transition-all btn-press ${
+                        className={`flex items-center px-2 lg:px-3 py-2 rounded-lg text-xs lg:text-sm font-semibold transition-all btn-press ${
                           activeView === item.id
                             ? 'bg-gradient-to-r from-cyber-cyan/20 to-cyber-purple/20 text-cyber-cyan border border-cyber-cyan/30 shadow-[0_0_15px_rgba(0,240,255,0.15)]'
                             : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
                         }`}
                       >
-                        <Icon className="mr-2 h-4 w-4" />
+                        <Icon className="mr-1 lg:mr-2 h-4 w-4" />
                         {item.label}
-                        <span className={`ml-2 text-[10px] font-mono px-1.5 py-0.5 rounded border ${
+                        <span className={`ml-2 text-[10px] font-mono px-1.5 py-0.5 rounded border hidden lg:inline ${
                           activeView === item.id ? 'border-cyber-cyan/40 text-cyber-cyan/70' : 'border-slate-700 text-slate-600'
                         }`}>{item.shortcut}</span>
                       </button>
@@ -176,9 +176,9 @@ export default function App() {
           )}
         </nav>
 
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-extrabold mb-2">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold mb-2">
               {activeView === 'simulation' && (
                 <span className="bg-gradient-to-r from-cyber-cyan to-emerald-400 bg-clip-text text-transparent">
                   Wireless Intrusion Detection Sandbox
@@ -200,7 +200,7 @@ export default function App() {
                 </span>
               )}
             </h1>
-            <p className="text-slate-500 max-w-3xl">
+            <p className="text-xs sm:text-sm text-slate-500 max-w-3xl">
               {activeView === 'simulation' && 'Deploy virtual ESP32 sniffers to detect common 802.11 attacks in real-time. Understand how raw management frames are manipulated by adversaries.'}
               {activeView === 'ctf' && 'Test your understanding of Wi-Fi protocol vulnerabilities through hands-on gamified tasks.'}
               {activeView === 'learning' && 'A deep dive into the project architecture, hardware specs, and system diagnostics.'}
@@ -225,12 +225,12 @@ export default function App() {
         </main>
 
         <ChatAssistant />
-        <footer className="border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-xl mt-12 py-6">
+        <footer className="border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-xl mt-8 sm:mt-12 py-4 sm:py-6">
           <div className="max-w-7xl mx-auto px-4 text-center">
-            <p className="text-sm text-slate-600 font-mono">
-              Local Client-Side Instance • React + Tailwind CSS • No backend connected
+            <p className="text-[10px] sm:text-sm text-slate-600 font-mono">
+              Local Client-Side Instance • React + Tailwind CSS
             </p>
-            <p className="text-xs text-slate-700 mt-1">Built with ⚡ for curious minds</p>
+            <p className="text-[10px] sm:text-xs text-slate-700 mt-1">Built with ⚡ for curious minds</p>
           </div>
         </footer>
       </div>

@@ -3,9 +3,9 @@ import { Database, Terminal, AlertTriangle, CheckCircle2, Info } from 'lucide-re
 
 export default function SystemLogs() {
   return (
-    <div className="glass-card p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md">
-      <h2 className="text-3xl font-bold text-cyber-pink mb-8 flex items-center gap-3">
-        <Database className="w-10 h-10" /> Understanding System Logs
+    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md">
+      <h2 className="text-xl sm:text-3xl font-bold text-cyber-pink mb-6 sm:mb-8 flex items-center gap-2 sm:gap-3">
+        <Database className="w-6 sm:w-10 h-6 sm:h-10" /> Understanding System Logs
       </h2>
       
       <div className="space-y-8 text-slate-300 leading-relaxed">
@@ -18,7 +18,7 @@ export default function SystemLogs() {
             <Terminal className="w-5 h-5 text-cyber-cyan" />
             <h3 className="font-bold text-white">Log Entry Anatomy</h3>
           </div>
-          <div className="p-6 font-mono text-sm">
+          <div className="p-4 sm:p-6 font-mono text-xs sm:text-sm">
             <div className="flex flex-wrap gap-2 items-center bg-black/50 p-3 rounded-lg border border-slate-700">
               <span className="text-slate-500">[14:05:22]</span>
               <span className="text-emerald-400">AA:BB:CC:DD:EE:FF</span>
@@ -56,28 +56,28 @@ export default function SystemLogs() {
 
         <section>
           <h3 className="text-xl font-bold text-white mb-4">Event Severity Levels</h3>
-          <div className="grid gap-4">
-            <div className="flex gap-4 items-center bg-slate-900/40 p-4 rounded-xl border-l-4 border-slate-500">
-              <Info className="w-6 h-6 text-slate-400 flex-shrink-0" />
+          <div className="grid gap-3 sm:gap-4">
+            <div className="flex gap-3 sm:gap-4 items-start bg-slate-900/40 p-3 sm:p-4 rounded-xl border-l-4 border-slate-500">
+              <Info className="w-5 sm:w-6 h-5 sm:h-6 text-slate-400 flex-shrink-0 mt-0.5" />
               <div>
-                <strong className="text-slate-300 block mb-1">INFO (Normal Traffic)</strong>
-                <p className="text-sm text-slate-400">Standard beacons from routers or probe requests from phones. The system ignores these unless they form an anomaly pattern.</p>
+                <strong className="text-slate-300 block mb-1 text-sm sm:text-base">INFO (Normal Traffic)</strong>
+                <p className="text-xs sm:text-sm text-slate-400">Standard beacons from routers or probe requests from phones. The system ignores these unless they form an anomaly pattern.</p>
               </div>
             </div>
 
-            <div className="flex gap-4 items-center bg-red-900/20 p-4 rounded-xl border-l-4 border-red-500">
-              <AlertTriangle className="w-6 h-6 text-red-400 flex-shrink-0" />
+            <div className="flex gap-3 sm:gap-4 items-start bg-red-900/20 p-3 sm:p-4 rounded-xl border-l-4 border-red-500">
+              <AlertTriangle className="w-5 sm:w-6 h-5 sm:h-6 text-red-400 flex-shrink-0 mt-0.5" />
               <div>
-                <strong className="text-red-400 block mb-1">WARN (Malicious Activity)</strong>
-                <p className="text-sm text-slate-400">A signature match. For example, detecting a Deauth frame (which should rarely happen in high volumes). This triggers UI alerts and the physical buzzer.</p>
+                <strong className="text-red-400 block mb-1 text-sm sm:text-base">WARN (Malicious Activity)</strong>
+                <p className="text-xs sm:text-sm text-slate-400">A signature match. For example, detecting a Deauth frame (which should rarely happen in high volumes). This triggers UI alerts and the physical buzzer.</p>
               </div>
             </div>
 
-            <div className="flex gap-4 items-center bg-emerald-900/20 p-4 rounded-xl border-l-4 border-emerald-500">
-              <CheckCircle2 className="w-6 h-6 text-emerald-400 flex-shrink-0" />
+            <div className="flex gap-3 sm:gap-4 items-start bg-emerald-900/20 p-3 sm:p-4 rounded-xl border-l-4 border-emerald-500">
+              <CheckCircle2 className="w-5 sm:w-6 h-5 sm:h-6 text-emerald-400 flex-shrink-0 mt-0.5" />
               <div>
-                <strong className="text-emerald-400 block mb-1">SECURE (Mitigation Active)</strong>
-                <p className="text-sm text-slate-400">When mitigation is deployed, the engine creates a dynamic firewall rule. Packets matching the attacker's source MAC are dropped and logged with a strike-through.</p>
+                <strong className="text-emerald-400 block mb-1 text-sm sm:text-base">SECURE (Mitigation Active)</strong>
+                <p className="text-xs sm:text-sm text-slate-400">When mitigation is deployed, the engine creates a dynamic firewall rule. Packets matching the attacker's source MAC are dropped and logged with a strike-through.</p>
               </div>
             </div>
           </div>
