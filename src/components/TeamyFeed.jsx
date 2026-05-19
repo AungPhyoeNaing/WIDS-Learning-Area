@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { MessageSquarePlus, Clock, Send, Loader2, Sparkles } from 'lucide-react';
 
@@ -9,35 +9,47 @@ export default function TeamyFeed() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     setIsLoading(true);
     const { data, error } = await supabase
       .from('posts')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .limit(50); // Optimization: Limit initial load to 50 posts
     
     if (!error && data) {
       setPosts(data);
     }
     setIsLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchPosts();
+
+    // Optimization: Real-time subscription to see new posts instantly
+    const channel = supabase
+      .channel('public:posts')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, (payload) => {
+        setPosts((currentPosts) => [payload.new, ...currentPosts]);
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [fetchPosts]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title.trim() || !body.trim() || isSubmitting) return;
 
     setIsSubmitting(true);
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('posts')
-      .insert([{ title: title.trim(), body: body.trim() }])
-      .select();
+      .insert([{ title: title.trim(), body: body.trim() }]);
 
-    if (!error && data) {
-      setPosts([data[0], ...posts]);
+    // We no longer need to manually update state here because the real-time subscription will catch it
+    if (!error) {
       setTitle('');
       setBody('');
     } else {
@@ -129,4 +141,3 @@ export default function TeamyFeed() {
       </div>
     </div>
   );
-}
