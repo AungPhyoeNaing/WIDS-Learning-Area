@@ -270,80 +270,146 @@ export default function ChatAssistant() {
       )}
 
       {isOpen && (
-        <div className="fixed inset-x-0 bottom-0 sm:bottom-24 sm:right-6 sm:left-auto w-full sm:w-96 h-[85vh] sm:h-[30rem] glass-card rounded-t-2xl sm:rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden animate-bounce-in">
-          <div className="bg-slate-900/80 p-3 sm:p-4 flex justify-between items-center border-b border-slate-700/50">
+        <div className="fixed inset-x-0 bottom-0 sm:bottom-24 sm:right-6 sm:left-auto w-full sm:w-96 h-[95vh] sm:h-[32rem] glass-card rounded-t-[2rem] sm:rounded-2xl shadow-2xl z-[100] flex flex-col overflow-hidden animate-slide-up sm:animate-bounce-in border-t sm:border border-white/10">
+          <div className="bg-slate-900/90 backdrop-blur-md p-4 sm:p-5 flex justify-between items-center border-b border-slate-700/50 shrink-0">
             <div className="flex items-center gap-3">
-              <div className={`p-1.5 rounded-full bg-slate-800 ${currentProfile?.color}`}>
-                {currentProfile && <currentProfile.icon size={16} />}
+              <div className={`p-2 rounded-xl bg-slate-800 shadow-inner ${currentProfile?.color}`}>
+                {currentProfile && <currentProfile.icon size={18} />}
               </div>
               <div className="flex flex-col">
-                <h3 className="font-bold text-white text-sm">WIDS AI Tutor</h3>
-                <div className="flex items-center gap-1.5">
-                    <span className="text-[10px] text-slate-400 uppercase tracking-wider">Profile:</span>
-                    <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold border ${currentProfile?.color.replace('text-', 'border-').replace('400', '500/50')} bg-slate-800/50 ${currentProfile?.color}`}>
+                <h3 className="font-bold text-white text-sm sm:text-base leading-none">WIDS AI Tutor</h3>
+                <div className="flex items-center gap-1.5 mt-1">
+                    <span className="text-[10px] text-slate-500 uppercase tracking-tighter">Active:</span>
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${currentProfile?.color.replace('text-', 'border-').replace('400', '500/30')} bg-slate-800/80 ${currentProfile?.color}`}>
                         {currentProfile?.name}
                     </span>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <button onClick={() => setShowSettings(!showSettings)} className="text-slate-400 hover:text-white p-1.5"><Settings size={16} /></button>
-              <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-white p-1.5"><X size={16} /></button>
+            <div className="flex items-center gap-1 sm:gap-2">
+              <button 
+                onClick={() => setShowSettings(!showSettings)} 
+                className="text-slate-400 hover:text-white p-2 hover:bg-slate-800 rounded-full transition-colors"
+                title="Settings"
+              >
+                <Settings size={18} />
+              </button>
+              <button 
+                onClick={() => setIsOpen(false)} 
+                className="text-slate-400 hover:text-white p-2 hover:bg-slate-800 rounded-full transition-colors"
+                title="Close"
+              >
+                <X size={18} />
+              </button>
             </div>
           </div>
           
           {showSettings ? (
-            <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-900/50">
-              <h4 className="text-white font-bold mb-2">Switch Profile</h4>
-              <div className="grid grid-cols-1 gap-2">
-                {PROFILES.map(p => (
-                  <button 
-                    key={p.id}
-                    onClick={() => {
-                      setActiveProfileId(p.id);
-                      localStorage.setItem('wids_active_profile', p.id);
-                    }}
-                    className={`flex items-center gap-3 p-2 rounded-lg text-sm ${activeProfileId === p.id ? 'bg-slate-800 border border-cyber-cyan/50' : 'hover:bg-slate-800'}`}
-                  >
-                    <p.icon size={16} className={p.color} />
-                    <span className="text-white font-medium">{p.name}</span>
-                  </button>
-                ))}
+            <div className="flex-1 p-5 overflow-y-auto space-y-6 bg-slate-950/40">
+              <div>
+                <h4 className="text-white font-bold mb-3 flex items-center gap-2 text-sm uppercase tracking-wider">
+                  <UserCircle size={16} className="text-cyber-cyan" />
+                  Switch Profile
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-1 gap-2">
+                  {PROFILES.map(p => (
+                    <button 
+                      key={p.id}
+                      onClick={() => {
+                        setActiveProfileId(p.id);
+                        localStorage.setItem('wids_active_profile', p.id);
+                      }}
+                      className={`flex items-center justify-between p-3 rounded-xl text-sm transition-all ${
+                        activeProfileId === p.id 
+                          ? 'bg-slate-800 border border-cyber-cyan/40 shadow-lg' 
+                          : 'bg-slate-900/40 border border-transparent hover:border-slate-700'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <p.icon size={16} className={p.color} />
+                        <span className="text-white font-medium">{p.name}</span>
+                      </div>
+                      {activeProfileId === p.id && <div className="w-2 h-2 rounded-full bg-cyber-cyan shadow-[0_0_8px_rgba(0,240,255,0.8)]" />}
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="pt-4 border-t border-slate-700">
-                <label className="text-xs text-slate-400">API Key for {currentProfile?.name}:</label>
-                <input 
-                  type="password" 
-                  value={userApiKeys[activeProfileId] || ''} 
-                  onChange={(e) => updateApiKeyInSupabase(activeProfileId, e.target.value)}
-                  className="w-full mt-1 bg-slate-800 border border-slate-700 text-white p-2 rounded text-sm"
-                  placeholder="gsk_..."
-                />
+
+              <div className="pt-6 border-t border-slate-800">
+                <h4 className="text-white font-bold mb-3 flex items-center gap-2 text-sm uppercase tracking-wider">
+                  <Shield size={16} className="text-cyber-purple" />
+                  API Configuration
+                </h4>
+                <label className="text-xs text-slate-500 mb-2 block">Personal Groq Key for {currentProfile?.name}:</label>
+                <div className="relative">
+                  <input 
+                    type="password" 
+                    value={userApiKeys[activeProfileId] || ''} 
+                    onChange={(e) => updateApiKeyInSupabase(activeProfileId, e.target.value)}
+                    className="w-full bg-slate-900/60 border border-slate-800 focus:border-cyber-purple text-white p-3 rounded-xl text-sm outline-none transition-all"
+                    placeholder="gsk_..."
+                  />
+                </div>
+                <p className="mt-2 text-[10px] text-slate-500 italic">Keys are synced to your WIDS profile.</p>
               </div>
-              <button onClick={() => setShowSettings(false)} className="w-full mt-4 p-2 bg-cyber-purple/20 text-cyber-purple border border-cyber-purple/50 rounded font-bold text-sm">Done</button>
+
+              <button 
+                onClick={() => setShowSettings(false)} 
+                className="w-full p-3.5 bg-gradient-to-r from-cyber-purple/20 to-blue-900/20 text-white border border-cyber-purple/40 rounded-xl font-bold text-sm btn-press mt-4"
+              >
+                Save & Continue
+              </button>
             </div>
           ) : (
             <>
-              <div className="flex-1 p-3 overflow-y-auto space-y-3">
+              <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-950/20 scrollbar-thin">
                 {messages.map((m, i) => (
-                  <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`p-3 rounded-xl text-sm max-w-[85%] ${m.role === 'user' ? 'bg-cyber-cyan/20 text-white' : 'bg-slate-800 text-slate-200'}`}>
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.text}</ReactMarkdown>
+                  <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}>
+                    <div className={`p-3.5 rounded-2xl text-sm sm:text-[15px] max-w-[90%] sm:max-w-[85%] shadow-lg leading-relaxed ${
+                      m.role === 'user' 
+                        ? 'bg-gradient-to-br from-cyber-cyan/30 to-blue-600/20 text-white border border-cyber-cyan/20' 
+                        : 'bg-slate-800/80 text-slate-200 border border-slate-700/50'
+                    }`}>
+                      <ReactMarkdown 
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                          code: ({node, inline, ...props}) => 
+                            inline 
+                              ? <code className="bg-black/40 px-1 rounded text-cyber-cyan" {...props} />
+                              : <code className="block bg-black/40 p-2 rounded-lg text-xs overflow-x-auto my-2 border border-slate-700" {...props} />
+                        }}
+                      >
+                        {m.text}
+                      </ReactMarkdown>
                     </div>
                   </div>
                 ))}
-                {isLoading && <div className="text-xs text-slate-500 italic p-2">Thinking...</div>}
+                {isLoading && (
+                  <div className="flex items-center gap-2 text-[10px] text-slate-500 italic p-2 bg-slate-900/30 rounded-lg w-fit">
+                    <Loader2 size={12} className="animate-spin text-cyber-cyan" />
+                    <span>Analyzing protocol details...</span>
+                  </div>
+                )}
                 <div ref={endRef} />
               </div>
-              <div className="p-2 border-t border-slate-700 flex gap-2">
-                <input 
-                  value={input} 
-                  onChange={e => setInput(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && handleSend()}
-                  className="flex-1 bg-slate-800 text-white p-2 rounded text-sm focus:outline-none" 
-                  placeholder="Ask anything..."
-                />
-                <button onClick={handleSend} className="bg-slate-800 text-cyber-cyan p-2 rounded hover:bg-slate-700"><Send size={16} /></button>
+              <div className="p-4 bg-slate-900/90 backdrop-blur-md border-t border-slate-700/50 flex gap-2 items-center">
+                <div className="flex-1 relative group">
+                  <input 
+                    value={input} 
+                    onChange={e => setInput(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && handleSend()}
+                    className="w-full bg-slate-800/80 text-white py-3 px-4 rounded-xl text-sm focus:outline-none border border-slate-700 focus:border-cyber-cyan/50 transition-all" 
+                    placeholder="Ask about WIDS..."
+                  />
+                </div>
+                <button 
+                  onClick={handleSend} 
+                  disabled={!input.trim() || isLoading}
+                  className="bg-cyber-cyan/10 hover:bg-cyber-cyan/20 text-cyber-cyan p-3 rounded-xl border border-cyber-cyan/30 hover:border-cyber-cyan transition-all disabled:opacity-30 btn-press"
+                >
+                  <Send size={18} />
+                </button>
               </div>
             </>
           )}
