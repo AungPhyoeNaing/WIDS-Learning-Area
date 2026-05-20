@@ -393,20 +393,20 @@ export default function ChatAssistant() {
                 )}
                 <div ref={endRef} />
               </div>
-              <div className="p-4 bg-slate-900/90 backdrop-blur-md border-t border-slate-700/50 flex gap-2 items-center">
-                <div className="flex-1 relative group">
+              <div className="p-3 sm:p-4 bg-slate-900/95 backdrop-blur-md border-t border-slate-700/50 flex flex-nowrap items-center gap-2 shrink-0">
+                <div className="flex-1 min-w-0">
                   <input 
                     value={input} 
                     onChange={e => setInput(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleSend()}
-                    className="w-full bg-slate-800/80 text-white py-3 px-4 rounded-xl text-sm focus:outline-none border border-slate-700 focus:border-cyber-cyan/50 transition-all" 
+                    className="w-full bg-slate-800/80 text-white py-3 px-4 rounded-xl text-sm focus:outline-none border border-slate-700 focus:border-cyber-cyan/50 transition-colors placeholder:text-slate-600" 
                     placeholder="Ask about WIDS..."
                   />
                 </div>
                 <button 
                   onClick={handleSend} 
                   disabled={!input.trim() || isLoading}
-                  className="bg-cyber-cyan/10 hover:bg-cyber-cyan/20 text-cyber-cyan p-3 rounded-xl border border-cyber-cyan/30 hover:border-cyber-cyan transition-all disabled:opacity-30 btn-press"
+                  className="flex-none w-11 h-11 bg-cyber-cyan/10 hover:bg-cyber-cyan/20 text-cyber-cyan rounded-xl border border-cyber-cyan/30 hover:border-cyber-cyan transition-all disabled:opacity-30 btn-press flex items-center justify-center shadow-lg"
                 >
                   <Send size={18} />
                 </button>
