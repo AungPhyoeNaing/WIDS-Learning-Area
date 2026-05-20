@@ -69,6 +69,9 @@ export const useSimulation = (isAttackActive, attackType, sensorOn, sensorChanne
         } else if (attackType === 'MAC_SPOOF') {
           attackerMac = '11:22:33:44:55:66';
           newPacket = { ...newPacket, source: attackerMac, dest: 'AA:BB:CC:DD:EE:FF', subtype: 'QoS Data', info: 'Spoofed Data Injection from trusted MAC' };
+        } else if (attackType === 'ARP_SPOOF') {
+          attackerMac = 'CC:CC:CC:CC:CC:CC';
+          newPacket = { ...newPacket, source: attackerMac, dest: '11:22:33:44:55:66', subtype: 'ARP Reply', info: 'Poisoning: Gateway 192.168.1.1 is at CC:CC:CC:CC:CC:CC' };
         }
 
         if (isMitigated) {

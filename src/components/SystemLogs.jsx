@@ -28,6 +28,16 @@ export default function SystemLogs() {
               <span className="text-slate-300">Reason Code 7</span>
               <span className="text-slate-500 text-xs">-45dBm</span>
             </div>
+
+            <div className="flex flex-wrap gap-2 items-center bg-black/50 p-3 rounded-lg border border-slate-700 mt-2">
+              <span className="text-slate-500">[14:08:45]</span>
+              <span className="text-emerald-400">CC:CC:CC:CC:CC:CC</span>
+              <span className="text-slate-600">→</span>
+              <span className="text-blue-400">11:22:33:44:55:66</span>
+              <span className="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-600">[ARP Reply]</span>
+              <span className="text-slate-300">Gateway 192.168.1.1 is at CC:CC:CC:CC:CC:CC</span>
+              <span className="text-slate-500 text-xs">-32dBm</span>
+            </div>
             
             <div className="mt-6 grid gap-3 text-xs">
               <div className="flex items-start gap-4">

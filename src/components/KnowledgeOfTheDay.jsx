@@ -4,24 +4,29 @@ import { supabase } from '../lib/supabase';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-const SYSTEM_PROMPT = `You are a WIDS educator. Generate a SINGLE, UNIQUE, CONCISE fact about Wi-Fi security. 
+const SYSTEM_PROMPT = `You are a WIDS and Cybersecurity educator. Generate a SINGLE, UNIQUE, CONCISE fact about Wi-Fi security, hardware, or security programming. 
 DO NOT repeat facts recently provided. 
-Topic pool: deauth attacks, rogue APs, MAC spoofing, channel tuning, promiscuous mode, beacon frames, probe requests, WIDS architecture.
-Keep the fact to 2-3 sentences. Make it engaging.
+Topic pool: 
+- WIDS: Architecture, signature vs anomaly detection, host-based systems.
+- Wi-Fi Technology: 802.11 frames, frequencies (2.4/5GHz), encryption (WPA2/3).
+- ESP32: Low-power sniffing, GPIO triggers, serial communication for security.
+- Python for Security: Scapy for packet manipulation, socket programming, automation.
+- Python Basics: List comprehensions for data filtering, f-strings for logging, try-except for robust scripts.
+Keep the fact to 2-3 sentences. Make it engaging and technically accurate.
 
 IMPORTANT: You MUST return your response as a raw JSON object with TWO keys: "fact" and "category".
 "fact": The string containing the educational fact.
-"category": A single uppercase word representing the category. Choose ONLY from: [ATTACK, HARDWARE, PROTOCOL, DEFENSE, CONCEPT].
+"category": A single uppercase word representing the category. Choose ONLY from: [ATTACK, HARDWARE, PROTOCOL, DEFENSE, CONCEPT, CODING].
 DO NOT wrap the JSON in markdown code blocks. Just return the raw JSON.`;
 
 const STATIC_FACTS = [
-  { fact: "802.11 Deauthentication frames are unencrypted management frames, making them a common target for denial-of-service attacks, even in WPA2-protected networks.", category: "ATTACK" },
-  { fact: "Promiscuous mode is a state that allows a wireless network card to capture all traffic flowing through the air, rather than just traffic addressed to it.", category: "HARDWARE" },
-  { fact: "A 'Rogue AP' (Access Point) is an unauthorized AP installed on a secure network, which can act as a gateway for attackers to intercept sensitive traffic.", category: "ATTACK" },
-  { fact: "MAC address spoofing is a technique where an attacker changes their hardware's MAC address to mimic a trusted device, often used to bypass basic MAC filtering.", category: "ATTACK" },
-  { fact: "Wi-Fi channels in the 2.4GHz band are only 20-22 MHz wide, which is why overlapping channels (like 1, 6, and 11) are often recommended to reduce interference.", category: "PROTOCOL" },
-  { fact: "Probe Requests are frames sent by devices searching for known Wi-Fi networks; an attacker can sniff these to identify which networks a device has previously connected to.", category: "PROTOCOL" },
-  { fact: "Enterprise-grade WIDS (Wireless Intrusion Detection Systems) use distributed sensors to monitor the entire spectrum, providing visibility that a single standard router cannot match.", category: "DEFENSE" }
+  { fact: "The ESP32 is a favorite for WIDS because its Wi-Fi stack can be put into 'Promiscuous Mode', allowing it to sniff raw 802.11 frames without being associated with an AP.", category: "HARDWARE" },
+  { fact: "In Python, the 'Scapy' library is a powerful tool for WIDS developers, enabling the sniffing, dissection, and even forging of custom network packets with just a few lines of code.", category: "CODING" },
+  { fact: "Anomaly-based detection in a WIDS looks for deviations from normal behavior, such as a sudden spike in deauthentication frames, rather than just matching known attack signatures.", category: "DEFENSE" },
+  { fact: "Python f-strings (e.g., f'Detecting {attack_type}...') are not just for readability; they are significantly faster than older %-formatting or .format() methods for real-time logging.", category: "CODING" },
+  { fact: "A Host-Based WIDS runs on a specific computer to protect its immediate environment, often using a dedicated sensor like an ESP32 to feed it raw radio data via Serial.", category: "CONCEPT" },
+  { fact: "Wi-Fi 6 (802.11ax) introduces Target Wake Time (TWT), which allows devices to negotiate when they wake up to send/receive data, drastically improving battery life for IoT sensors.", category: "PROTOCOL" },
+  { fact: "Python's 'try-except' blocks are crucial in network tools to handle 'socket.error' exceptions, ensuring your WIDS doesn't crash when a network connection is abruptly lost.", category: "CODING" }
 ];
 
 const CATEGORY_COLORS = {
@@ -30,6 +35,7 @@ const CATEGORY_COLORS = {
   PROTOCOL: "bg-blue-500/20 text-blue-400 border-blue-500/30",
   DEFENSE: "bg-cyber-lime/20 text-cyber-lime border-cyber-lime/30",
   CONCEPT: "bg-cyber-purple/20 text-cyber-purple border-cyber-purple/30",
+  CODING: "bg-amber-500/20 text-amber-400 border-amber-500/30",
   DEFAULT: "bg-slate-800 text-slate-300 border-slate-600"
 };
 

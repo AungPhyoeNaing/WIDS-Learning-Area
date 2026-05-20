@@ -217,33 +217,60 @@ export default function TeamyFeed() {
 
       {selectedPost && (
         <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-sm transition-all"
+          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6 bg-slate-950/90 backdrop-blur-md transition-all animate-in fade-in duration-300"
           onClick={() => setSelectedPost(null)}
         >
           <div 
-            className="glass-card w-full max-w-3xl max-h-[90vh] sm:max-h-[85vh] rounded-3xl border border-cyber-cyan/30 shadow-2xl flex flex-col relative overflow-hidden animate-bounce-in"
+            className="glass-card w-full max-w-3xl h-[85vh] sm:h-auto sm:max-h-[85vh] rounded-t-[2.5rem] sm:rounded-3xl border-t sm:border border-cyber-cyan/30 shadow-2xl flex flex-col relative overflow-hidden animate-slide-up sm:animate-bounce-in"
             onClick={e => e.stopPropagation()}
           >
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink"></div>
-            <div className="flex justify-between items-start p-5 sm:p-8 border-b border-slate-800/60 shrink-0 bg-slate-900/50">
-              <h3 className="text-lg sm:text-2xl font-bold text-white pr-10 leading-tight flex items-start gap-2 break-words">
-                <span className="text-cyber-cyan mt-1 shrink-0">•</span>
-                {selectedPost.title}
-              </h3>
+            
+            {/* Modal Header */}
+            <div className="flex justify-between items-start p-6 sm:p-8 border-b border-slate-800/60 shrink-0 bg-slate-900/80 backdrop-blur-md z-10">
+              <div className="pr-12">
+                <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight flex items-start gap-2 break-words">
+                  <span className="text-cyber-cyan mt-1.5 shrink-0 block w-2 h-2 rounded-full bg-cyber-cyan shadow-[0_0_8px_rgba(0,240,255,0.8)]"></span>
+                  {selectedPost.title}
+                </h3>
+                <div className="flex items-center gap-2 mt-2 text-[10px] sm:text-xs text-slate-500 font-mono">
+                  <Clock size={12} className="text-cyber-pink/70 shrink-0" />
+                  <span>{formatDate(selectedPost.created_at)}</span>
+                </div>
+              </div>
               <button 
                 onClick={() => setSelectedPost(null)}
-                className="absolute top-4 right-4 sm:top-8 sm:right-8 text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-700/50 rounded-full p-2 transition-all btn-press"
+                className="absolute top-6 right-6 text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 rounded-full p-2.5 transition-all btn-press shadow-lg border border-slate-700/50"
               >
                 <X size={20} className="shrink-0" />
               </button>
             </div>
-            <div className="p-5 sm:p-8 overflow-y-auto scrollbar-thin text-slate-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words bg-slate-900/20">
-              {selectedPost.image_url && <img src={selectedPost.image_url} className="w-full max-h-80 object-contain mb-6 rounded-2xl" alt="post" />}
-              {selectedPost.body}
+
+            {/* Modal Content */}
+            <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+              {selectedPost.image_url && (
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-cyber-cyan/20 to-cyber-purple/20 rounded-2xl blur opacity-75"></div>
+                  <img 
+                    src={selectedPost.image_url} 
+                    className="relative w-full max-h-96 object-contain rounded-xl border border-slate-700/50 shadow-2xl bg-slate-950" 
+                    alt="Knowledge node visual" 
+                  />
+                </div>
+              )}
+              <div className="text-slate-200 text-sm sm:text-lg leading-relaxed whitespace-pre-wrap break-words font-light tracking-wide">
+                {selectedPost.body}
+              </div>
             </div>
-            <div className="p-5 sm:p-8 border-t border-slate-800/60 shrink-0 bg-slate-900/50 flex flex-wrap items-center gap-2 text-[10px] sm:text-xs text-slate-500 font-mono">
-              <Clock size={14} className="text-cyber-pink/70 shrink-0" />
-              <span>Posted on {formatDate(selectedPost.created_at)}</span>
+
+            {/* Modal Footer */}
+            <div className="p-4 sm:p-6 border-t border-slate-800/60 shrink-0 bg-slate-900/80 backdrop-blur-md flex justify-center sm:justify-end">
+              <button 
+                onClick={() => setSelectedPost(null)}
+                className="w-full sm:w-auto px-8 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition-all border border-slate-700 hover:border-cyber-cyan/50 shadow-lg btn-press"
+              >
+                Close Node
+              </button>
             </div>
           </div>
         </div>

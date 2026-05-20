@@ -38,8 +38,8 @@ export default function ProjectArchitecture() {
             <p className="text-xs sm:text-sm text-slate-400">
               Once packets are captured, they are sent to the Host via Serial connection. The host analyzes the packets using two methods:
               <br/><br/>
-              <strong>Signature-Based:</strong> Looking for known malicious hex bytes (e.g., 0xC0 for Deauth).<br/>
-              <strong>Anomaly-Based:</strong> Detecting abnormal behavior (e.g., 3000 deauth frames in 5 seconds).
+              <strong>Signature-Based:</strong> Looking for known malicious hex bytes (e.g., 0xC0 for Deauth or ARP opcode field).<br/>
+              <strong>Anomaly-Based:</strong> Detecting abnormal behavior (e.g., 3000 deauth frames in 5 seconds or rapid ARP poisoning attempts).
             </p>
           </div>
         </div>

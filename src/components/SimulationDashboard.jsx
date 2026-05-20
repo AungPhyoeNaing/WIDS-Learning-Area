@@ -131,7 +131,11 @@ function PacketDistribution({ packets }) {
 function NetworkTopology({ isAttackActive, attackType, isMitigated, sensorOn }) {
   const arrowColor = isMitigated ? '#10b981' : (isAttackActive ? '#ff2d95' : '#64748b');
   const arrowAnimate = isAttackActive && !isMitigated ? 'animate-pulse' : '';
-  const attackLabel = attackType === 'DEAUTH' ? 'Deauth flood' : attackType === 'ROGUE_AP' ? 'Fake Beacon' : 'Spoofed Data';
+  const attackLabel = 
+    attackType === 'DEAUTH' ? 'Deauth flood' : 
+    attackType === 'ROGUE_AP' ? 'Fake Beacon' : 
+    attackType === 'MAC_SPOOF' ? 'Spoofed Data' : 
+    'ARP Poisoning';
   return (
     <div className="flex flex-col md:flex-row items-center justify-center gap-3 sm:gap-6 py-2">
       {/* Attacker */}
@@ -219,13 +223,23 @@ function DetectionBadge({ isAttackActive, attackType, sensorOn, sensorChannel, t
   );
   if (isMitigated) return (
     <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-900/30 border border-emerald-500/30 text-xs text-emerald-400">
-      <ShieldCheck className="w-3 h-3" /> Mitigated — {attackType === 'DEAUTH' ? 'Deauth' : attackType === 'ROGUE_AP' ? 'Rogue AP' : 'MAC Spoof'} blocked
+      <ShieldCheck className="w-3 h-3" /> Mitigated — {
+        attackType === 'DEAUTH' ? 'Deauth' : 
+        attackType === 'ROGUE_AP' ? 'Rogue AP' : 
+        attackType === 'MAC_SPOOF' ? 'MAC Spoof' : 
+        'ARP Spoof'
+      } blocked
     </div>
   );
   if (canSee) return (
     <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyber-pink/10 border border-cyber-pink/30 text-xs text-cyber-pink animate-pulse-fast">
       <div className="w-2 h-2 rounded-full bg-cyber-pink" />
-      {attackType === 'DEAUTH' ? 'Deauth flood detected' : attackType === 'ROGUE_AP' ? 'Rogue AP detected' : 'MAC spoofing detected'}
+      {
+        attackType === 'DEAUTH' ? 'Deauth flood detected' : 
+        attackType === 'ROGUE_AP' ? 'Rogue AP detected' : 
+        attackType === 'MAC_SPOOF' ? 'MAC spoofing detected' : 
+        'ARP spoofing detected'
+      }
     </div>
   );
   return null;
@@ -416,11 +430,12 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { type: 'DEAUTH', icon: WifiOff, label: 'Kick User', desc: 'Deauthentication: Forges a fake "disconnect" command to force a target offline.', emoji: '💥', gradient: 'from-cyber-pink/20 to-red-900/20', border: 'border-cyber-pink', activeText: 'text-cyber-pink', activeBg: 'bg-cyber-pink/20' },
             { type: 'ROGUE_AP', icon: ShieldAlert, label: 'Fake Network', desc: 'Rogue AP / Evil Twin: Broadcasts a fake Wi-Fi name (SSID) to trick victims.', emoji: '🎭', gradient: 'from-cyber-purple/20 to-purple-900/20', border: 'border-cyber-purple', activeText: 'text-cyber-purple', activeBg: 'bg-cyber-purple/20' },
             { type: 'MAC_SPOOF', icon: Activity, label: 'Identity Theft', desc: 'MAC Spoofing: Copies a trusted MAC address to bypass security filters.', emoji: '👤', gradient: 'from-cyber-orange/20 to-orange-900/20', border: 'border-cyber-orange', activeText: 'text-cyber-orange', activeBg: 'bg-cyber-orange/20' },
+            { type: 'ARP_SPOOF', icon: AlertTriangle, label: 'Man-in-the-Middle', desc: 'ARP Spoofing: Links the attacker\'s MAC to the gateway\'s IP to intercept traffic.', emoji: '🕷️', gradient: 'from-cyber-cyan/20 to-blue-900/20', border: 'border-cyber-cyan', activeText: 'text-cyber-cyan', activeBg: 'bg-cyber-cyan/20' },
           ].map(btn => {
             const Icon = btn.icon;
             const isActive = isAttackActive && attackType === btn.type;
