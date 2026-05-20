@@ -129,7 +129,7 @@ export default function TeamyFeed() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="E.g., Bypassing MAC filtering..."
-                  className="w-full bg-slate-950/50 border border-slate-800 focus:border-cyber-cyan text-white p-3.5 rounded-2xl outline-none transition-all placeholder-slate-700 text-sm sm:text-base"
+                  className="w-full bg-slate-950/50 border border-slate-800 focus:border-cyber-cyan text-white p-3.5 rounded-2xl outline-none transition-all placeholder-slate-700 text-base"
                   required
                 />
               </div>
@@ -140,7 +140,7 @@ export default function TeamyFeed() {
                   onChange={(e) => setBody(e.target.value)}
                   placeholder="What did you learn today?"
                   rows={3}
-                  className="w-full bg-slate-950/50 border border-slate-800 focus:border-cyber-purple text-white p-3.5 rounded-2xl outline-none transition-all resize-none placeholder-slate-700 text-sm sm:text-base"
+                  className="w-full bg-slate-950/50 border border-slate-800 focus:border-cyber-purple text-white p-3.5 rounded-2xl outline-none transition-all resize-none placeholder-slate-700 text-base"
                   required
                 />
               </div>

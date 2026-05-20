@@ -399,7 +399,7 @@ export default function ChatAssistant() {
                     value={input} 
                     onChange={e => setInput(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleSend()}
-                    className="w-full bg-slate-800/80 text-white py-3 px-4 rounded-xl text-sm focus:outline-none border border-slate-700 focus:border-cyber-cyan/50 transition-colors placeholder:text-slate-600" 
+                    className="w-full bg-slate-800/80 text-white py-3 px-4 rounded-xl text-base focus:outline-none border border-slate-700 focus:border-cyber-cyan/50 transition-colors placeholder:text-slate-600" 
                     placeholder="Ask about WIDS..."
                   />
                 </div>

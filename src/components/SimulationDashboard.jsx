@@ -489,7 +489,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
               )}
               <div className="relative">
                 <Search className="w-3 h-3 absolute left-2 top-1/2 -translate-y-1/2 text-slate-600" />
-                <input type="text" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter..." aria-label="Filter console packets" className="bg-slate-900 border border-slate-600 rounded-lg text-[11px] text-slate-300 pl-7 pr-2 py-1 w-20 sm:w-24 focus:outline-none focus:border-cyber-cyan placeholder-slate-600 transition-colors" />
+                <input type="text" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter..." aria-label="Filter console packets" className="bg-slate-900 border border-slate-600 rounded-lg text-base sm:text-[11px] text-slate-300 pl-7 pr-2 py-1 w-24 sm:w-24 focus:outline-none focus:border-cyber-cyan placeholder-slate-600 transition-colors" />
               </div>
               <span className="bg-slate-900 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] text-emerald-400 border border-emerald-900 hidden sm:inline">Src</span>
               <span className="bg-slate-900 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] text-blue-400 border border-blue-900 hidden sm:inline">Dst</span>
