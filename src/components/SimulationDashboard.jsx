@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { Activity, WifiOff, ShieldAlert, MonitorPlay, Power, Sliders, ShieldCheck, Lightbulb, Search, Settings, Terminal, Trash2, Download, X, AlertTriangle, Radio, Wifi } from 'lucide-react';
+import { createPortal } from 'react-dom';
+import { Activity, WifiOff, ShieldAlert, MonitorPlay, Power, Sliders, ShieldCheck, Lightbulb, Search, Settings, Terminal, Trash2, Download, X, AlertTriangle } from 'lucide-react';
 import { useSimulation } from '../hooks/useSimulation';
 
 // ─── Signal Meter ──────────────────────────────────────────────
@@ -247,7 +248,7 @@ function DetectionBadge({ isAttackActive, attackType, sensorOn, sensorChannel, t
 
 // ─── Packet Detail Modal ───────────────────────────────────────
 function PacketDetail({ pkt, onClose }) {
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
       <div className="glass-card rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden animate-bounce-in" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between p-4 border-b border-slate-700/50">
@@ -277,7 +278,8 @@ function PacketDetail({ pkt, onClose }) {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

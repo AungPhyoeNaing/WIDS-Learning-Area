@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { supabase } from '../lib/supabase';
 import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network, X, Image as ImageIcon, Upload } from 'lucide-react';
 
@@ -215,7 +216,7 @@ export default function TeamyFeed() {
 
       </div>
 
-      {selectedPost && (
+      {selectedPost && createPortal(
         <div 
           className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6 bg-slate-950/90 backdrop-blur-md transition-all animate-in fade-in duration-300"
           onClick={() => setSelectedPost(null)}
@@ -273,7 +274,8 @@ export default function TeamyFeed() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
