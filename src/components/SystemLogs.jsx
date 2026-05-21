@@ -3,7 +3,8 @@ import { Database, Terminal, AlertTriangle, CheckCircle2, Info } from 'lucide-re
 
 export default function SystemLogs() {
   return (
-    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md">
+    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink" />
       <h2 className="text-xl sm:text-3xl font-bold text-cyber-pink mb-6 sm:mb-8 flex items-center gap-2 sm:gap-3">
         <Database className="w-6 sm:w-10 h-6 sm:h-10" /> Understanding System Logs
       </h2>
@@ -19,7 +20,7 @@ export default function SystemLogs() {
             <h3 className="font-bold text-white">Log Entry Anatomy</h3>
           </div>
           <div className="p-4 sm:p-6 font-mono text-xs sm:text-sm">
-            <div className="flex flex-wrap gap-2 items-center bg-black/50 p-3 rounded-lg border border-slate-700">
+            <div className="flex flex-wrap gap-2 items-center bg-black/50 p-3 rounded-lg border border-slate-700 border-l-2 border-l-red-500">
               <span className="text-slate-500">[14:05:22]</span>
               <span className="text-emerald-400">AA:BB:CC:DD:EE:FF</span>
               <span className="text-slate-600">→</span>
@@ -29,7 +30,7 @@ export default function SystemLogs() {
               <span className="text-slate-500 text-xs">-45dBm</span>
             </div>
 
-            <div className="flex flex-wrap gap-2 items-center bg-black/50 p-3 rounded-lg border border-slate-700 mt-2">
+            <div className="flex flex-wrap gap-2 items-center bg-black/50 p-3 rounded-lg border border-slate-700 border-l-2 border-l-yellow-500 mt-2">
               <span className="text-slate-500">[14:08:45]</span>
               <span className="text-emerald-400">CC:CC:CC:CC:CC:CC</span>
               <span className="text-slate-600">→</span>
@@ -67,7 +68,7 @@ export default function SystemLogs() {
         <section>
           <h3 className="text-xl font-bold text-white mb-4">Event Severity Levels</h3>
           <div className="grid gap-3 sm:gap-4">
-            <div className="flex gap-3 sm:gap-4 items-start bg-slate-900/40 p-3 sm:p-4 rounded-xl border-l-4 border-slate-500">
+            <div className="flex gap-3 sm:gap-4 items-start bg-slate-900/40 p-3 sm:p-4 rounded-xl border-l-4 border-slate-500 hover:bg-slate-900/60 transition-all duration-200">
               <Info className="w-5 sm:w-6 h-5 sm:h-6 text-slate-400 flex-shrink-0 mt-0.5" />
               <div>
                 <strong className="text-slate-300 block mb-1 text-sm sm:text-base">INFO (Normal Traffic)</strong>
@@ -75,7 +76,7 @@ export default function SystemLogs() {
               </div>
             </div>
 
-            <div className="flex gap-3 sm:gap-4 items-start bg-red-900/20 p-3 sm:p-4 rounded-xl border-l-4 border-red-500">
+            <div className="flex gap-3 sm:gap-4 items-start bg-red-900/20 p-3 sm:p-4 rounded-xl border-l-4 border-red-500 hover:bg-slate-900/60 transition-all duration-200">
               <AlertTriangle className="w-5 sm:w-6 h-5 sm:h-6 text-red-400 flex-shrink-0 mt-0.5" />
               <div>
                 <strong className="text-red-400 block mb-1 text-sm sm:text-base">WARN (Malicious Activity)</strong>
@@ -83,7 +84,7 @@ export default function SystemLogs() {
               </div>
             </div>
 
-            <div className="flex gap-3 sm:gap-4 items-start bg-emerald-900/20 p-3 sm:p-4 rounded-xl border-l-4 border-emerald-500">
+            <div className="flex gap-3 sm:gap-4 items-start bg-emerald-900/20 p-3 sm:p-4 rounded-xl border-l-4 border-emerald-500 hover:bg-slate-900/60 transition-all duration-200">
               <CheckCircle2 className="w-5 sm:w-6 h-5 sm:h-6 text-emerald-400 flex-shrink-0 mt-0.5" />
               <div>
                 <strong className="text-emerald-400 block mb-1 text-sm sm:text-base">SECURE (Mitigation Active)</strong>

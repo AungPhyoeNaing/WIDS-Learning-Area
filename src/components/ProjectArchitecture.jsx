@@ -3,7 +3,8 @@ import { Layers, ShieldCheck, Activity, Target } from 'lucide-react';
 
 export default function ProjectArchitecture() {
   return (
-    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md">
+    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink" />
       <h2 className="text-xl sm:text-3xl font-bold text-cyber-cyan mb-6 sm:mb-8 flex items-center gap-2 sm:gap-3">
         <Layers className="w-6 sm:w-10 h-6 sm:h-10" /> WIDS Architecture
       </h2>
@@ -22,18 +23,20 @@ export default function ProjectArchitecture() {
         </section>
 
         <div className="grid md:grid-cols-2 gap-3 sm:gap-6">
-          <div className="bg-slate-900/60 p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-lg">
+          <div className="bg-slate-900/60 p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-lg hover:shadow-[0_0_20px_rgba(0,240,255,0.1)] transition-all duration-300 hover:-translate-y-0.5">
             <h4 className="font-bold text-cyber-cyan mb-2 flex items-center gap-1.5 sm:gap-2">
-              <Activity className="w-4 sm:w-5 h-4 sm:h-5" /> 1. Promiscuous Mode
+              <span className="w-6 h-6 rounded-full bg-cyber-cyan/20 text-cyber-cyan text-xs font-bold flex items-center justify-center shrink-0">1</span>
+              <Activity className="w-4 sm:w-5 h-4 sm:h-5" /> Promiscuous Mode
             </h4>
             <p className="text-xs sm:text-sm text-slate-400">
               Normally, a Wi-Fi card only processes packets addressed specifically to it. We reprogram the ESP32 to enter "Promiscuous Mode." In this state, it intercepts <em>every</em> radio wave passing through the air on its current channel, regardless of the intended destination.
             </p>
           </div>
 
-          <div className="bg-slate-900/60 p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-lg">
+          <div className="bg-slate-900/60 p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-lg hover:shadow-[0_0_20px_rgba(255,45,149,0.1)] transition-all duration-300 hover:-translate-y-0.5">
             <h4 className="font-bold text-cyber-pink mb-2 flex items-center gap-1.5 sm:gap-2">
-              <ShieldCheck className="w-4 sm:w-5 h-4 sm:h-5" /> 2. Dual-Engine Detection
+              <span className="w-6 h-6 rounded-full bg-cyber-pink/20 text-cyber-pink text-xs font-bold flex items-center justify-center shrink-0">2</span>
+              <ShieldCheck className="w-4 sm:w-5 h-4 sm:h-5" /> Dual-Engine Detection
             </h4>
             <p className="text-xs sm:text-sm text-slate-400">
               Once packets are captured, they are sent to the Host via Serial connection. The host analyzes the packets using two methods:

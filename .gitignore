@@ -5,3 +5,7 @@ build/
 *.local
 .DS_Store
 Thumbs.db
+
+# Backup / experimental files
+*.bak
+*.bak.jsx

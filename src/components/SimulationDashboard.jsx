@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { Activity, WifiOff, ShieldAlert, MonitorPlay, Power, Sliders, ShieldCheck, Lightbulb, Search, Settings, Terminal, Trash2, Download, X, AlertTriangle } from 'lucide-react';
+import { Activity, WifiOff, ShieldAlert, MonitorPlay, Power, Sliders, ShieldCheck, Lightbulb, Search, Settings, Terminal, Trash2, Download, X, AlertTriangle, Radio } from 'lucide-react';
 import { useSimulation } from '../hooks/useSimulation';
 
 // ─── Signal Meter ──────────────────────────────────────────────
@@ -322,10 +322,11 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
     : packets;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in-up">
 
       {/* ─── 1. Hardware Control Panel ─── */}
-      <div className="glass-card p-3 sm:p-6 rounded-2xl shadow-xl card-pop">
+      <div className="glass-card p-3 sm:p-6 rounded-2xl shadow-xl card-pop relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-blue-500 to-cyber-purple" />
         <h2 className="text-base sm:text-xl font-extrabold text-cyber-cyan mb-3 sm:mb-4 flex items-center">
           <Settings className="w-4 sm:w-5 h-4 sm:h-5 mr-1.5 sm:mr-2 text-cyber-cyan" /> 1. Configure Hardware
         </h2>
@@ -382,6 +383,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
 
       {/* ─── 2. Attack Control Panel ─── */}
       <div className="glass-card p-4 sm:p-6 rounded-2xl shadow-xl relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-pink via-red-500 to-cyber-orange" />
         {isMitigated && (
            <div className="absolute inset-0 bg-emerald-900/90 z-20 flex flex-col items-center justify-center backdrop-blur-md border-2 border-emerald-500 rounded-2xl p-4 sm:p-6 text-center animate-bounce-in">
               <ShieldCheck className="w-16 sm:w-20 h-16 sm:h-20 text-emerald-400 mb-4 animate-bounce" />
@@ -443,7 +445,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
             const isActive = isAttackActive && attackType === btn.type;
             return (
               <button key={btn.type} onClick={() => triggerAttack(btn.type)} aria-label={`Trigger ${btn.label} attack`}
-                className={`p-4 rounded-xl text-left transition-all flex flex-col justify-start h-full btn-press card-pop ${isActive ? `${btn.activeBg} ${btn.border} border-2 shadow-[0_0_20px_rgba(255,45,149,0.3)]` : 'bg-slate-900/50 border-2 border-slate-700/50 hover:border-slate-500'}`}
+                className={`p-4 rounded-xl text-left transition-all duration-300 flex flex-col justify-start h-full btn-press ${isActive ? `${btn.activeBg} ${btn.border} border-2 shadow-[0_0_20px_rgba(255,45,149,0.3)]` : 'bg-slate-900/50 border-2 border-slate-700/50 hover:border-slate-500 hover:-translate-y-0.5 hover:shadow-lg'}`}
               >
                 <div className="font-bold mb-2 flex items-center text-white text-sm sm:text-base">
                   <span className="text-base sm:text-lg mr-1.5 sm:mr-2">{btn.emoji}</span>
@@ -459,7 +461,8 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
 
       {/* ─── Stats Bar ─── */}
       {(sensorOn || isAttackActive) && (
-        <div className="glass-card p-3 sm:p-4 rounded-2xl shadow-xl card-pop">
+        <div className="glass-card p-3 sm:p-4 rounded-2xl shadow-xl card-pop relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-cyber-purple to-emerald-500" />
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Live Packet Statistics</h3>
             {packets.length > 0 && <span className="text-[10px] text-slate-600 font-mono">Click a packet for details</span>}
@@ -504,7 +507,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
            </div>
         )}
 
-        <div ref={consoleRef} className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1" style={{ maxHeight: '12rem' }}>
+        <div ref={consoleRef} className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1 max-h-48">
           {!sensorOn ? (
              <div className="text-red-900 font-bold flex flex-col items-center justify-center h-48">
                <span className="text-lg">[SENSOR OFFLINE]</span>

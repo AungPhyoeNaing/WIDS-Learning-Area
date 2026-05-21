@@ -106,7 +106,7 @@ export default function TeamyFeed() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto pb-12 relative w-full">
+    <div className="max-w-7xl mx-auto pb-12 relative w-full animate-fade-in-up">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-auto grid-flow-dense">
 
         <div className="glass-card p-5 sm:p-8 rounded-3xl col-span-1 md:col-span-2 lg:col-span-2 border border-slate-800 shadow-2xl relative overflow-hidden group flex flex-col justify-between">
@@ -195,7 +195,7 @@ export default function TeamyFeed() {
               className={`glass-card p-5 sm:p-8 rounded-3xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl flex flex-col group/card cursor-pointer ${getBentoSpan(index)} animate-slide-up overflow-hidden`}
               style={{ animationDelay: `${index * 50}ms` }}
             >
-              {post.image_url && <img src={post.image_url} className="w-full h-40 object-cover mb-4" alt="post" />}
+              {post.image_url && <img src={post.image_url} className="w-full h-40 object-cover mb-4 rounded-xl" alt={`Image for: ${post.title}`} />}
               <div>
                 <h4 className="text-base sm:text-xl font-bold text-white mb-3 group-hover/card:text-white transition-colors flex items-start gap-2 break-words">
                   <span className="text-cyber-cyan mt-1 shrink-0">•</span>

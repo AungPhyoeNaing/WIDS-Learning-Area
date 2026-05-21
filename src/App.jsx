@@ -93,13 +93,13 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-slate-950 cyber-grid-bg text-slate-300 font-sans">
-        <nav className="bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/50 sticky top-0 z-50">
+      <div className="min-h-screen bg-slate-950 cyber-grid-bg noise-bg text-slate-300 font-sans">
+        <nav className="bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/50 sticky top-0 z-50 animate-border-glow">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
                 <div className="relative">
-                  <ShieldCheck className="h-8 w-8 text-cyber-cyan animate-glow" />
+                  <ShieldCheck className="h-8 w-8 text-cyber-cyan animate-svg-glow" />
                   <div className="absolute inset-0 h-8 w-8 text-cyber-cyan blur-sm opacity-50">
                     <ShieldCheck className="h-8 w-8" />
                   </div>
@@ -180,7 +180,7 @@ export default function App() {
         </nav>
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-          <div className="mb-6 sm:mb-8">
+          <div className="mb-6 sm:mb-8 animate-fade-in-up">
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold mb-2">
               {activeView === 'simulation' && (
                 <span className="bg-gradient-to-r from-cyber-cyan to-emerald-400 bg-clip-text text-transparent">
@@ -220,27 +220,34 @@ export default function App() {
           <div key={activeView}>
             <ViewWrapper>
               {activeView === 'simulation' && (
-                <SimulationDashboard
-                  isAttackActive={isAttackActive}
-                  attackType={attackType}
-                  setAttackState={setAttackState}
-                />
+                <ErrorBoundary>
+                  <SimulationDashboard
+                    isAttackActive={isAttackActive}
+                    attackType={attackType}
+                    setAttackState={setAttackState}
+                  />
+                </ErrorBoundary>
               )}
-              {activeView === 'ctf' && <CTFLabs />}
-              {activeView === 'learning' && <LearningHub />}
-              {activeView === 'knowledge' && <KnowledgeOfTheDay />}
-              {activeView === 'teamyfeed' && <TeamyFeed />}
+              {activeView === 'ctf' && <ErrorBoundary><CTFLabs /></ErrorBoundary>}
+              {activeView === 'learning' && <ErrorBoundary><LearningHub /></ErrorBoundary>}
+              {activeView === 'knowledge' && <ErrorBoundary><KnowledgeOfTheDay /></ErrorBoundary>}
+              {activeView === 'teamyfeed' && <ErrorBoundary><TeamyFeed /></ErrorBoundary>}
             </ViewWrapper>
           </div>
         </main>
 
         <ChatAssistant />
-        <footer className="border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-xl mt-8 sm:mt-12 py-4 sm:py-6">
-          <div className="max-w-7xl mx-auto px-4 text-center">
-            <p className="text-[10px] sm:text-sm text-slate-600 font-mono">
-              Local Client-Side Instance • React + Tailwind CSS
+        <footer className="border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-xl mt-8 sm:mt-12 py-6 sm:py-8 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyber-cyan/30 to-transparent" />
+          <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-cyber-cyan/40" />
+              <span className="text-[10px] sm:text-xs text-slate-600 font-mono">WIDS Simulator v1.0</span>
+            </div>
+            <p className="text-[10px] sm:text-xs text-slate-700 font-mono flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50 animate-pulse" />
+              Local Client-Side • React + Tailwind CSS • Built with ⚡ for curious minds
             </p>
-            <p className="text-[10px] sm:text-xs text-slate-700 mt-1">Built with ⚡ for curious minds</p>
           </div>
         </footer>
       </div>

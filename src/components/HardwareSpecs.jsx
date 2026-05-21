@@ -3,7 +3,8 @@ import { Cpu, Wifi, Zap, TerminalSquare } from 'lucide-react';
 
 export default function HardwareSpecs() {
   return (
-    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md">
+    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink" />
       <h2 className="text-xl sm:text-3xl font-bold text-cyber-lime mb-6 sm:mb-8 flex items-center gap-2 sm:gap-3">
         <Cpu className="w-6 sm:w-10 h-6 sm:h-10" /> Hardware: The ESP32 Sensor
       </h2>
@@ -14,7 +15,7 @@ export default function HardwareSpecs() {
         </p>
 
         <div className="grid md:grid-cols-3 gap-3 sm:gap-6">
-          <div className="bg-slate-900/60 p-3 sm:p-5 rounded-2xl border border-emerald-900/50 hover:border-emerald-500 transition-colors">
+          <div className="bg-slate-900/60 p-3 sm:p-5 rounded-2xl border border-emerald-900/50 hover:border-emerald-500 transition-colors hover:-translate-y-1 transition-all duration-300">
             <Wifi className="w-6 sm:w-8 h-6 sm:h-8 text-emerald-400 mb-2 sm:mb-3" />
             <h3 className="font-bold text-white mb-1 sm:mb-2 text-sm sm:text-base">2.4 GHz Band</h3>
             <p className="text-[11px] sm:text-xs text-slate-400">
@@ -22,7 +23,7 @@ export default function HardwareSpecs() {
             </p>
           </div>
 
-          <div className="bg-slate-900/60 p-3 sm:p-5 rounded-2xl border border-blue-900/50 hover:border-blue-500 transition-colors">
+          <div className="bg-slate-900/60 p-3 sm:p-5 rounded-2xl border border-blue-900/50 hover:border-blue-500 transition-colors hover:-translate-y-1 transition-all duration-300">
             <Zap className="w-6 sm:w-8 h-6 sm:h-8 text-blue-400 mb-2 sm:mb-3" />
             <h3 className="font-bold text-white mb-1 sm:mb-2 text-sm sm:text-base">Low Cost & Low Power</h3>
             <p className="text-[11px] sm:text-xs text-slate-400">
@@ -30,7 +31,7 @@ export default function HardwareSpecs() {
             </p>
           </div>
 
-          <div className="bg-slate-900/60 p-3 sm:p-5 rounded-2xl border border-purple-900/50 hover:border-purple-500 transition-colors">
+          <div className="bg-slate-900/60 p-3 sm:p-5 rounded-2xl border border-purple-900/50 hover:border-purple-500 transition-colors hover:-translate-y-1 transition-all duration-300">
             <TerminalSquare className="w-6 sm:w-8 h-6 sm:h-8 text-purple-400 mb-2 sm:mb-3" />
             <h3 className="font-bold text-white mb-1 sm:mb-2 text-sm sm:text-base">Serial Output</h3>
             <p className="text-[11px] sm:text-xs text-slate-400">
@@ -38,6 +39,8 @@ export default function HardwareSpecs() {
             </p>
           </div>
         </div>
+
+        <div className="w-16 h-0.5 bg-gradient-to-r from-cyber-lime to-transparent mx-auto" />
 
         <section className="bg-slate-900/80 p-4 sm:p-6 rounded-2xl border border-slate-700 mt-6 sm:mt-8">
           <h3 className="text-base sm:text-xl font-bold text-white mb-3 sm:mb-4">Why not just use the laptop's Wi-Fi card?</h3>

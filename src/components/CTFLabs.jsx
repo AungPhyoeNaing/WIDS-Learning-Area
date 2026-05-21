@@ -192,11 +192,15 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, sco
   const [selection, setSelection] = useState(null);
   const [textValue, setTextValue] = useState('');
   const [submitAttempts, setSubmitAttempts] = useState(0);
+  // Guard: ensure captureFlag only fires once per card, even under rapid clicks
+  const flagCaptured = React.useRef(false);
 
   const Icon = challenge.icon;
   const c = COLOR_MAP[challenge.color] || COLOR_MAP.emerald;
 
   const captureFlag = () => {
+    if (flagCaptured.current || isCompleted) return; // prevent double-scoring
+    flagCaptured.current = true;
     const deduction = submitAttempts * 20;
     const earned = Math.max(20, challenge.maxScore - deduction);
     setScore(prev => prev + earned);
@@ -407,8 +411,9 @@ export default function CTFLabs() {
   const totalPossible = CHALLENGES.length * 100;
 
   return (
-    <div className="space-y-6">
-      <div className="glass-card p-4 sm:p-6 rounded-xl shadow-xl">
+    <div className="space-y-6 animate-fade-in-up">
+      <div className="glass-card p-4 sm:p-6 rounded-xl shadow-xl relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-lime via-emerald-400 to-cyber-cyan" />
         <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="p-2 rounded-lg bg-cyber-lime/10 border border-cyber-lime/30"><Flag className="w-5 sm:w-6 h-5 sm:h-6 text-cyber-lime" /></div>
@@ -421,7 +426,8 @@ export default function CTFLabs() {
         </div>
       </div>
 
-      <div className="glass-card p-6 rounded-xl shadow-xl">
+      <div className="glass-card p-6 rounded-xl shadow-xl relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink" />
         <ProgressBar completed={completed.length} total={CHALLENGES.length} />
 
         <div className="space-y-6">
