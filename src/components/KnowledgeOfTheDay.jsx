@@ -228,7 +228,7 @@ export default function KnowledgeOfTheDay() {
   const badgeColor = factData && CATEGORY_COLORS[factData.category] ? CATEGORY_COLORS[factData.category] : CATEGORY_COLORS.DEFAULT;
 
   return (
-    <div className="glass-card p-4 sm:p-8 md:p-12 rounded-[2.5rem] shadow-2xl text-center border border-slate-800/80 bg-slate-950/60 backdrop-blur-xl transition-all duration-500 max-w-5xl mx-auto relative overflow-hidden">
+    <div className="glass-card px-3 py-6 sm:p-8 md:p-12 rounded-3xl sm:rounded-[2.5rem] shadow-2xl text-center border border-slate-800/80 bg-slate-950/60 backdrop-blur-xl transition-all duration-500 max-w-5xl mx-auto relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-cyber-purple/10 rounded-full blur-[120px] pointer-events-none opacity-50"></div>
 
@@ -294,7 +294,7 @@ export default function KnowledgeOfTheDay() {
             )}
 
             {deepDive && (
-              <div className="mt-6 sm:mt-8 w-full max-w-4xl p-5 sm:p-10 bg-slate-950/90 border border-slate-700/80 rounded-3xl text-left shadow-2xl backdrop-blur-md relative overflow-hidden animate-in slide-in-from-top-6 duration-700">
+              <div className="mt-6 sm:mt-8 w-full max-w-4xl p-4 sm:p-10 bg-slate-950/90 border border-slate-700/80 rounded-2xl sm:rounded-3xl text-left shadow-2xl backdrop-blur-md relative overflow-hidden animate-in slide-in-from-top-6 duration-700">
                 <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-cyber-purple via-cyber-cyan to-blue-500"></div>
                 
                 <h4 className="text-cyber-cyan font-bold text-base sm:text-lg mb-6 flex items-center gap-3 uppercase tracking-widest pb-4 border-b border-slate-800/60">

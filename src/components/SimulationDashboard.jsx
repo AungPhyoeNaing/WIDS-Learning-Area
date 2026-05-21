@@ -325,13 +325,13 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
     <div className="space-y-6 animate-fade-in-up">
 
       {/* ─── 1. Hardware Control Panel ─── */}
-      <div className="glass-card p-3 sm:p-6 rounded-2xl shadow-xl card-pop relative overflow-hidden">
+      <div className="glass-card p-2 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl card-pop relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-blue-500 to-cyber-purple" />
         <h2 className="text-base sm:text-xl font-extrabold text-cyber-cyan mb-3 sm:mb-4 flex items-center">
           <Settings className="w-4 sm:w-5 h-4 sm:h-5 mr-1.5 sm:mr-2 text-cyber-cyan" /> 1. Configure Hardware
         </h2>
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="flex-1 bg-slate-900/50 p-4 rounded-xl border border-slate-700/50">
+        <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
+          <div className="flex-1 sm:bg-slate-900/50 p-1 sm:p-4 rounded-xl sm:border border-slate-700/50">
             <div className="flex items-center gap-3 sm:gap-4 mb-4">
               <button
                 onClick={() => setSensorOn(!sensorOn)}
@@ -353,7 +353,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
             </div>
           </div>
 
-          <div className="flex-1 bg-slate-900/50 p-4 rounded-xl border border-slate-700/50">
+          <div className="flex-1 sm:bg-slate-900/50 p-1 sm:p-4 rounded-xl sm:border border-slate-700/50">
             <div className="flex items-center justify-between mb-4">
               <label className="text-sm font-bold text-slate-300 flex items-center">
                 <Sliders className="w-4 h-4 mr-2 text-cyber-purple" /> Radio Frequency Tuning
@@ -382,7 +382,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
       </div>
 
       {/* ─── 2. Attack Control Panel ─── */}
-      <div className="glass-card p-4 sm:p-6 rounded-2xl shadow-xl relative overflow-hidden">
+      <div className="glass-card p-2 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-pink via-red-500 to-cyber-orange" />
         {isMitigated && (
            <div className="absolute inset-0 bg-emerald-900/90 z-20 flex flex-col items-center justify-center backdrop-blur-md border-2 border-emerald-500 rounded-2xl p-4 sm:p-6 text-center animate-bounce-in">
@@ -461,7 +461,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
 
       {/* ─── Stats Bar ─── */}
       {(sensorOn || isAttackActive) && (
-        <div className="glass-card p-3 sm:p-4 rounded-2xl shadow-xl card-pop relative overflow-hidden">
+        <div className="glass-card p-2 sm:p-4 rounded-xl sm:rounded-2xl shadow-xl card-pop relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-cyber-purple to-emerald-500" />
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Live Packet Statistics</h3>

@@ -24,7 +24,7 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>A WIDS sensor captured these frames from the air. Analyze the output and determine what type of attack is happening.</p>
-        <div className="bg-[#0D1117] border border-slate-600 rounded font-mono text-xs sm:text-sm leading-relaxed p-3 sm:p-4 space-y-2 sm:space-y-3 shadow-inner overflow-x-auto">
+        <div className="bg-[#0D1117] border border-slate-600 rounded font-mono text-xs sm:text-sm leading-relaxed p-2 sm:p-4 space-y-2 sm:space-y-3 shadow-inner overflow-x-auto">
           <div className="text-slate-500 whitespace-nowrap">[12:34:56] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-900/60 text-red-400 border border-red-500 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold">[Dot11Deauth]</span> Reason Code 7</div>
           <div className="text-slate-500 whitespace-nowrap">[12:34:56] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-900/60 text-red-400 border border-red-500 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold">[Dot11Deauth]</span> Reason Code 7</div>
           <div className="text-slate-500 whitespace-nowrap">[12:34:57] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-900/60 text-red-400 border border-red-500 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold">[Dot11Deauth]</span> Reason Code 7</div>
@@ -52,14 +52,14 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>Every 802.11 frame starts with a <strong>Frame Control</strong> field. The first byte encodes the <strong>Type</strong> and <strong>Subtype</strong>.</p>
-        <div className="bg-black border border-slate-700 rounded p-3 sm:p-4 font-mono text-xs sm:text-sm text-slate-400 shadow-inner overflow-x-auto whitespace-nowrap">
+        <div className="bg-black border border-slate-700 rounded p-2 sm:p-4 font-mono text-xs sm:text-sm text-slate-400 shadow-inner overflow-x-auto whitespace-nowrap">
           <span className="text-slate-500">/* Frame Control byte breakdown */</span><br/>
           <span className="text-slate-400">Bit:&nbsp;&nbsp; 7&nbsp;&nbsp; 6&nbsp;&nbsp; 5&nbsp;&nbsp; 4&nbsp;&nbsp; 3&nbsp;&nbsp; 2&nbsp;&nbsp; 1&nbsp;&nbsp; 0</span><br/>
           <span className="text-white">| Protocol | Type | Subtype |</span><br/>
           <span className="text-slate-500">Deauth = Type 00 (Management), Subtype 1100 (decimal 12 = 0xC0)</span>
         </div>
         <p>Below is the raw hex dump. The <strong>Frame Control</strong> byte is highlighted.</p>
-        <div className="bg-black p-3 sm:p-4 rounded border border-slate-700 font-mono text-[11px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
+        <div className="bg-black p-2 sm:p-4 rounded border border-slate-700 font-mono text-[11px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
           0000 &nbsp; 00 00 11 22 33 44 55 66 77 88 99 aa bb cc dd ee <br/>
           0010 &nbsp; ff <span className="text-white font-bold bg-blue-900/50 px-1 border border-blue-500 rounded">c0</span> 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
         </div>
@@ -114,7 +114,7 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>The 802.11 frame header contains multiple fields in a specific order. Given this hex dump of a captured frame:</p>
-        <div className="bg-black p-3 sm:p-4 rounded border border-slate-700 font-mono text-[11px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
+        <div className="bg-black p-2 sm:p-4 rounded border border-slate-700 font-mono text-[11px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
           <span className="text-emerald-400">08 00</span> <span className="text-blue-400">00 00</span> <span className="text-yellow-400">AA:BB:CC:DD:EE:FF</span> <span className="text-purple-400">11:22:33:44:55:66</span>
         </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-[11px] sm:text-sm font-mono bg-slate-900/50 p-3 sm:p-4 rounded border border-slate-700">
@@ -412,7 +412,7 @@ export default function CTFLabs() {
 
   return (
     <div className="space-y-6 animate-fade-in-up">
-      <div className="glass-card p-4 sm:p-6 rounded-xl shadow-xl relative overflow-hidden">
+      <div className="glass-card p-3 sm:p-6 md:p-8 rounded-2xl sm:rounded-[2rem] shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-lime via-emerald-400 to-cyber-cyan" />
         <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
           <div className="flex items-center gap-3 sm:gap-4">
