@@ -137,7 +137,7 @@ export default function KnowledgeOfTheDay() {
             { role: 'system', content: SYSTEM_PROMPT },
             { role: 'user', content: `Give me a random WIDS/Wi-Fi security fact. The last fact was: "${lastFactRef.current || 'none'}". Give me a completely different one.` },
           ],
-          model: 'llama-3.3-70b-versatile',
+          model: 'llama-3.1-8b-instant',
           temperature: 0.95,
           max_tokens: 300,
           response_format: { type: "json_object" }
@@ -200,7 +200,7 @@ export default function KnowledgeOfTheDay() {
             { role: 'system', content: "You are a senior cybersecurity engineer. Provide a 'Deep Dive' explanation of the provided fact. Go into technical detail, explain the underlying mechanism, and why it matters in WIDS/Networking. Use Markdown to format your response beautifully (e.g., bold key terms, use bullet points if appropriate). Keep it to 2-3 highly informative paragraphs. Do not repeat the original fact verbatim." },
             { role: 'user', content: `Deep dive into this fact: "${factData.fact}"` },
           ],
-          model: 'llama-3.3-70b-versatile',
+          model: 'llama-3.1-8b-instant',
           temperature: 0.7,
           max_tokens: 600,
         }),
