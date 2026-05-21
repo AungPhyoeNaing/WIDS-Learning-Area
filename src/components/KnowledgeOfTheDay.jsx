@@ -270,47 +270,51 @@ export default function KnowledgeOfTheDay() {
               </p>
               <span className="absolute -bottom-8 sm:-bottom-10 -right-2 sm:-right-4 md:-right-8 text-4xl sm:text-6xl text-slate-700/30 font-serif leading-none select-none">"</span>
             </div>
-            
-            {/* Deep Dive Section */}
-            {!deepDive && !deepDiveLoading && !deepDiveError && (
-              <button 
-                onClick={handleDeepDive}
-                className="mt-2 text-sm sm:text-base font-bold text-cyber-cyan hover:text-white flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-cyber-cyan/10 to-blue-500/10 hover:from-cyber-cyan/20 hover:to-blue-500/20 border border-cyber-cyan/30 transition-all shadow-[0_0_15px_rgba(0,240,255,0.1)] hover:shadow-[0_0_25px_rgba(0,240,255,0.25)] hover:-translate-y-0.5 active:translate-y-0"
-              >
-                Deep Dive <ChevronDown className="w-4 sm:w-5 h-4 sm:h-5" />
-              </button>
-            )}
-
-            {deepDiveLoading && (
-              <div className="flex items-center gap-3 text-slate-400 text-xs font-mono mt-4 bg-slate-900/50 px-4 py-2 rounded-full border border-slate-700">
-                <Loader2 className="w-4 h-4 animate-spin text-cyber-purple" /> Accessing deeper archives...
-              </div>
-            )}
-
-            {deepDiveError && (
-              <div className="text-xs text-red-400 mt-4 flex items-center gap-2 bg-red-900/20 px-4 py-2 rounded-lg border border-red-500/30">
-                <AlertCircle className="w-4 h-4" /> {deepDiveError}
-              </div>
-            )}
-
-            {deepDive && (
-              <div className="mt-6 sm:mt-8 w-full max-w-4xl p-4 sm:p-10 bg-slate-950/90 border border-slate-700/80 rounded-2xl sm:rounded-3xl text-left shadow-2xl backdrop-blur-md relative overflow-hidden animate-in slide-in-from-top-6 duration-700">
-                <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-cyber-purple via-cyber-cyan to-blue-500"></div>
-                
-                <h4 className="text-cyber-cyan font-bold text-base sm:text-lg mb-6 flex items-center gap-3 uppercase tracking-widest pb-4 border-b border-slate-800/60">
-                  <BookOpen className="w-5 sm:w-6 h-5 sm:h-6 text-cyber-purple" /> Technical Breakdown
-                </h4>
-                
-                <div className="prose prose-sm sm:prose-base prose-invert prose-slate max-w-none prose-p:leading-relaxed prose-p:text-slate-300 prose-strong:text-white prose-strong:font-bold prose-ul:text-slate-300 prose-li:marker:text-cyber-cyan text-sm sm:text-base">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {deepDive}
-                  </ReactMarkdown>
-                </div>
-              </div>
-            )}
           </div>
         ) : null}
       </div>
+
+      {factData && (
+        <div className="w-full flex flex-col items-center z-10 relative">
+          {/* Deep Dive Section */}
+          {!deepDive && !deepDiveLoading && !deepDiveError && (
+            <button 
+              onClick={handleDeepDive}
+              className="mt-6 sm:mt-8 text-sm sm:text-base font-bold text-cyber-cyan hover:text-white flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-cyber-cyan/10 to-blue-500/10 hover:from-cyber-cyan/20 hover:to-blue-500/20 border border-cyber-cyan/30 transition-all shadow-[0_0_15px_rgba(0,240,255,0.1)] hover:shadow-[0_0_25px_rgba(0,240,255,0.25)] hover:-translate-y-0.5 active:translate-y-0"
+            >
+              Deep Dive <ChevronDown className="w-4 sm:w-5 h-4 sm:h-5" />
+            </button>
+          )}
+
+          {deepDiveLoading && (
+            <div className="flex items-center gap-3 text-slate-400 text-xs font-mono mt-6 sm:mt-8 bg-slate-900/50 px-4 py-2 rounded-full border border-slate-700">
+              <Loader2 className="w-4 h-4 animate-spin text-cyber-purple" /> Accessing deeper archives...
+            </div>
+          )}
+
+          {deepDiveError && (
+            <div className="text-xs text-red-400 mt-6 sm:mt-8 flex items-center gap-2 bg-red-900/20 px-4 py-2 rounded-lg border border-red-500/30">
+              <AlertCircle className="w-4 h-4" /> {deepDiveError}
+            </div>
+          )}
+
+          {deepDive && (
+            <div className="mt-6 sm:mt-8 w-full max-w-4xl mx-auto p-5 sm:p-10 bg-slate-950/90 border border-slate-700/80 rounded-2xl sm:rounded-3xl text-left shadow-2xl backdrop-blur-md relative overflow-hidden animate-in slide-in-from-top-6 duration-700">
+              <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-cyber-purple via-cyber-cyan to-blue-500"></div>
+              
+              <h4 className="text-cyber-cyan font-bold text-base sm:text-lg mb-4 sm:mb-6 flex items-center gap-3 uppercase tracking-widest pb-4 border-b border-slate-800/60">
+                <BookOpen className="w-5 sm:w-6 h-5 sm:h-6 text-cyber-purple" /> Technical Breakdown
+              </h4>
+              
+              <div className="prose prose-sm sm:prose-base prose-invert prose-slate max-w-none prose-p:leading-relaxed prose-p:text-slate-300 prose-strong:text-white prose-strong:font-bold prose-ul:text-slate-300 prose-li:marker:text-cyber-cyan text-sm sm:text-base">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {deepDive}
+                </ReactMarkdown>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       <button
         onClick={() => fetchFact(true)}
