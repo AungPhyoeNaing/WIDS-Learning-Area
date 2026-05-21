@@ -20,8 +20,8 @@ export default function LearningHub() {
 
   return (
     <div className="space-y-6">
-      <div className="glass-card p-1.5 sm:p-2 rounded-2xl flex items-center gap-1 border border-slate-800 bg-slate-900/50 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyber-purple/30 to-transparent" />
+      <div className="glass-card p-2 sm:p-2.5 rounded-2xl flex overflow-x-auto snap-x scroll-p-2 items-center gap-2 border border-slate-800 bg-slate-900/50 relative hide-scrollbar">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyber-purple/30 to-transparent pointer-events-none" />
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -29,16 +29,16 @@ export default function LearningHub() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 relative flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 ${
+              className={`flex-none sm:flex-1 relative flex items-center justify-center gap-2 px-4 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-bold transition-all duration-300 snap-start ${
                 isActive
                   ? 'bg-slate-800 text-white shadow-lg border border-slate-700/80'
                   : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
               }`}
             >
-              <Icon className={`w-3.5 sm:w-4 h-3.5 sm:h-4 transition-colors ${
+              <Icon className={`w-4 h-4 transition-colors ${
                 isActive ? `text-${tab.color}` : ''
               }`} />
-              {tab.label}
+              <span className="whitespace-nowrap">{tab.label}</span>
               {isActive && (
                 <span className={`absolute -bottom-px left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-${tab.color}`} />
               )}

@@ -24,10 +24,10 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>A WIDS sensor captured these frames from the air. Analyze the output and determine what type of attack is happening.</p>
-        <div className="bg-[#0D1117] border border-slate-600 rounded font-mono text-xs leading-relaxed p-3 space-y-2 shadow-inner">
-          <div className="text-slate-500">[12:34:56] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-900/60 text-red-400 border border-red-500 px-1.5 py-0.5 rounded text-[10px] font-bold">[Dot11Deauth]</span> Reason Code 7</div>
-          <div className="text-slate-500">[12:34:56] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-900/60 text-red-400 border border-red-500 px-1.5 py-0.5 rounded text-[10px] font-bold">[Dot11Deauth]</span> Reason Code 7</div>
-          <div className="text-slate-500">[12:34:57] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-900/60 text-red-400 border border-red-500 px-1.5 py-0.5 rounded text-[10px] font-bold">[Dot11Deauth]</span> Reason Code 7</div>
+        <div className="bg-[#0D1117] border border-slate-600 rounded font-mono text-xs sm:text-sm leading-relaxed p-3 sm:p-4 space-y-2 sm:space-y-3 shadow-inner overflow-x-auto">
+          <div className="text-slate-500 whitespace-nowrap">[12:34:56] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-900/60 text-red-400 border border-red-500 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold">[Dot11Deauth]</span> Reason Code 7</div>
+          <div className="text-slate-500 whitespace-nowrap">[12:34:56] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-900/60 text-red-400 border border-red-500 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold">[Dot11Deauth]</span> Reason Code 7</div>
+          <div className="text-slate-500 whitespace-nowrap">[12:34:57] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-900/60 text-red-400 border border-red-500 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold">[Dot11Deauth]</span> Reason Code 7</div>
         </div>
         <div className="bg-blue-900/20 border-l-4 border-blue-500 p-3 rounded-r text-sm text-blue-200">
           <strong className="text-blue-300">🔬 From the Simulator:</strong> This matches the <strong>Live Sensor Console</strong> when the <strong>Kick User</strong> attack is active. Each line: <span className="text-slate-300">timestamp</span>, <span className="text-emerald-400">source MAC</span>, <span className="text-blue-400">destination MAC</span>, <span className="text-red-400">attack tag</span>.
@@ -52,14 +52,14 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>Every 802.11 frame starts with a <strong>Frame Control</strong> field. The first byte encodes the <strong>Type</strong> and <strong>Subtype</strong>.</p>
-        <div className="bg-black border border-slate-700 rounded p-3 font-mono text-xs text-slate-400 shadow-inner">
+        <div className="bg-black border border-slate-700 rounded p-3 sm:p-4 font-mono text-xs sm:text-sm text-slate-400 shadow-inner overflow-x-auto whitespace-nowrap">
           <span className="text-slate-500">/* Frame Control byte breakdown */</span><br/>
           <span className="text-slate-400">Bit:&nbsp;&nbsp; 7&nbsp;&nbsp; 6&nbsp;&nbsp; 5&nbsp;&nbsp; 4&nbsp;&nbsp; 3&nbsp;&nbsp; 2&nbsp;&nbsp; 1&nbsp;&nbsp; 0</span><br/>
           <span className="text-white">| Protocol | Type | Subtype |</span><br/>
           <span className="text-slate-500">Deauth = Type 00 (Management), Subtype 1100 (decimal 12 = 0xC0)</span>
         </div>
         <p>Below is the raw hex dump. The <strong>Frame Control</strong> byte is highlighted.</p>
-        <div className="bg-black p-3 sm:p-4 rounded border border-slate-700 font-mono text-[10px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
+        <div className="bg-black p-3 sm:p-4 rounded border border-slate-700 font-mono text-[11px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
           0000 &nbsp; 00 00 11 22 33 44 55 66 77 88 99 aa bb cc dd ee <br/>
           0010 &nbsp; ff <span className="text-white font-bold bg-blue-900/50 px-1 border border-blue-500 rounded">c0</span> 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
         </div>
@@ -84,12 +84,12 @@ const CHALLENGES = [
         <p>A company uses three APs on channels <strong>1</strong>, <strong>6</strong>, and <strong>11</strong> — the only non-overlapping 2.4 GHz channels. The security team has budget for <strong>two</strong> ESP32 sensors; each listens to one channel at a time.</p>
         <div className="bg-slate-900 border border-slate-700 rounded p-4 text-sm">
           <p className="text-slate-300 font-bold mb-2">Network Layout</p>
-          <div className="flex items-center gap-px sm:gap-1 text-[8px] sm:text-xs font-mono">
+          <div className="flex items-center gap-px sm:gap-1 text-[10px] sm:text-xs font-mono">
             {[1,2,3,4,5,6,7,8,9,10,11].map(ch => (
               <div key={ch} className={`flex-1 text-center py-1 sm:py-1.5 rounded ${ch === 1 || ch === 6 || ch === 11 ? 'bg-emerald-900/60 text-emerald-400 font-bold' : 'bg-slate-800 text-slate-600'}`}>{ch}</div>
             ))}
           </div>
-          <p className="text-slate-500 text-xs mt-2">Ch 1, 6, and 11 do not overlap.</p>
+          <p className="text-slate-500 text-xs sm:text-sm mt-2">Ch 1, 6, and 11 do not overlap.</p>
         </div>
         <div className="bg-yellow-900/20 border-l-4 border-yellow-500 p-3 rounded-r text-sm text-yellow-200">
           <strong className="text-yellow-300">⚠️ Constraint:</strong> A sensor on channel 1 <strong>cannot</strong> hear traffic on channel 6 or 11.
@@ -114,10 +114,10 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>The 802.11 frame header contains multiple fields in a specific order. Given this hex dump of a captured frame:</p>
-        <div className="bg-black p-3 sm:p-4 rounded border border-slate-700 font-mono text-[10px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
+        <div className="bg-black p-3 sm:p-4 rounded border border-slate-700 font-mono text-[11px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
           <span className="text-emerald-400">08 00</span> <span className="text-blue-400">00 00</span> <span className="text-yellow-400">AA:BB:CC:DD:EE:FF</span> <span className="text-purple-400">11:22:33:44:55:66</span>
         </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-[10px] sm:text-xs font-mono bg-slate-900/50 p-3 rounded border border-slate-700">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-[11px] sm:text-sm font-mono bg-slate-900/50 p-3 sm:p-4 rounded border border-slate-700">
           <div><span className="text-emerald-400">08 00</span> = Frame Control</div>
           <div><span className="text-blue-400">00 00</span> = Duration</div>
           <div><span className="text-yellow-400">6 bytes</span> = Address 1 (Destination)</div>
@@ -167,7 +167,7 @@ const CHALLENGES = [
 function ProgressBar({ completed, total }) {
   return (
     <div className="flex items-center gap-2 sm:gap-3 mb-6">
-      <span className="text-xs sm:text-sm font-bold text-slate-400 flex-shrink-0">
+      <span className="text-sm sm:text-base font-bold text-slate-400 flex-shrink-0">
         <span className="text-cyber-cyan">{completed}</span>/{total} Flags
       </span>
       <div className="flex-1 h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
@@ -250,7 +250,7 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, sco
               <span className="text-[10px] font-mono bg-slate-800 text-slate-500 border border-slate-700 px-1.5 py-0.5 rounded uppercase tracking-wider">Flag: {challenge.flag}</span>
               {challenge.maxScore && <span className="text-[10px] text-cyber-lime font-mono">+{challenge.maxScore}pts</span>}
             </div>
-            <p className="text-xs sm:text-sm text-slate-400">{challenge.subtitle}</p>
+            <p className="text-sm sm:text-base text-slate-400 mt-1">{challenge.subtitle}</p>
           </div>
         </div>
 
@@ -268,7 +268,7 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, sco
                 key={opt.value}
                 onClick={() => handleMultiChoice(opt.value)}
                 disabled={isRevealed}
-                className={`w-full text-left p-3 rounded-lg text-sm font-medium border transition-all flex items-start gap-3 ${
+                className={`w-full text-left p-3 sm:p-4 rounded-lg text-sm sm:text-base font-medium border transition-all flex items-start gap-3 ${
                   isCorrect ? 'bg-emerald-900/30 border-emerald-500 text-emerald-200' :
                   isWrong ? 'bg-red-900/30 border-red-500 text-red-200' :
                   isRevealed && opt.correct ? 'bg-emerald-900/20 border-emerald-500/50 text-emerald-300' :
@@ -282,7 +282,7 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, sco
                 }`}>{isCorrect ? '✓' : isWrong ? '✗' : ''}</span>
                 <div>
                   <span className={isCorrect || (isRevealed && opt.correct) ? 'text-emerald-300' : isWrong ? 'text-red-200' : 'text-slate-200'}>{opt.label}</span>
-                  {isRevealed && <p className={`text-xs mt-1 ${opt.correct ? 'text-emerald-400' : 'text-slate-400'}`}>{opt.hint}</p>}
+                  {isRevealed && <p className={`text-xs sm:text-sm mt-1 sm:mt-2 ${opt.correct ? 'text-emerald-400' : 'text-slate-400'}`}>{opt.hint}</p>}
                 </div>
               </button>
             );
@@ -298,9 +298,9 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, sco
               value={textValue} onChange={(e) => setTextValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleTextSubmit()}
               aria-label="Enter hex flag answer"
-              className="bg-slate-900 border-2 border-slate-600 rounded px-4 py-2.5 text-white font-mono text-center uppercase focus:outline-none focus:border-blue-500 w-32"
+              className="bg-slate-900 border-2 border-slate-600 rounded px-4 py-3 sm:py-2.5 text-white font-mono text-center uppercase focus:outline-none focus:border-blue-500 w-full sm:w-32"
             />
-            <button onClick={handleTextSubmit} aria-label="Submit answer" className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded font-bold text-sm transition-colors shadow-lg">
+            <button onClick={handleTextSubmit} aria-label="Submit answer" className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 sm:py-2.5 rounded font-bold text-sm transition-colors shadow-lg">
               Submit Flag
             </button>
           </div>
@@ -308,8 +308,8 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, sco
             <div className="mt-3 p-3 bg-red-900/30 border border-red-500/50 rounded flex items-start gap-2">
               <XCircle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
               <div>
-                <p className="text-sm text-red-200 font-bold">Incorrect flag (-20 pts)</p>
-                <p className="text-xs text-red-300 mt-0.5">Hint: Look for the byte highlighted in <span className="text-blue-300">blue</span> in the hex dump above. The Frame Control byte uses hex digits (0-9, A-F).</p>
+                <p className="text-sm sm:text-base text-red-200 font-bold">Incorrect flag (-20 pts)</p>
+                <p className="text-xs sm:text-sm text-red-300 mt-1">Hint: Look for the byte highlighted in <span className="text-blue-300">blue</span> in the hex dump above. The Frame Control byte uses hex digits (0-9, A-F).</p>
               </div>
             </div>
           )}

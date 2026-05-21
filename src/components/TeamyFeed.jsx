@@ -117,13 +117,13 @@ export default function TeamyFeed() {
               <MessageSquarePlus className="text-cyber-cyan shrink-0" />
               Share Knowledge
             </h2>
-            <p className="text-slate-400 text-xs sm:text-sm mt-1">Broadcast new findings to the team instantly.</p>
+            <p className="text-slate-400 text-sm mt-1">Broadcast new findings to the team instantly.</p>
           </div>
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <label className="block text-[10px] sm:text-xs font-mono text-slate-400 mb-1.5 ml-1">Highlight Title</label>
+                <label className="block text-xs sm:text-sm font-mono text-slate-400 mb-1.5 ml-1">Highlight Title</label>
                 <input 
                   type="text" 
                   value={title}
@@ -134,7 +134,7 @@ export default function TeamyFeed() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] sm:text-xs font-mono text-slate-400 mb-1.5 ml-1">Main Text Body</label>
+                <label className="block text-xs sm:text-sm font-mono text-slate-400 mb-1.5 ml-1">Main Text Body</label>
                 <textarea 
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
@@ -173,7 +173,7 @@ export default function TeamyFeed() {
             <Database className="text-cyber-cyan w-6 h-6 sm:w-8 sm:h-8 animate-pulse" />
           </div>
           <h3 className="text-4xl sm:text-5xl font-black text-white tracking-tighter mb-2">{posts.length}</h3>
-          <p className="text-[10px] sm:text-xs text-slate-400 font-mono uppercase tracking-[0.2em] flex items-center justify-center gap-1.5">
+          <p className="text-xs sm:text-sm text-slate-400 font-mono uppercase tracking-[0.2em] flex items-center justify-center gap-1.5">
             <Sparkles size={12} className="text-cyber-pink shrink-0" />
             Knowledge Nodes
           </p>
@@ -197,13 +197,13 @@ export default function TeamyFeed() {
             >
               {post.image_url && <img src={post.image_url} className="w-full h-40 object-cover mb-4 rounded-xl" alt={`Image for: ${post.title}`} />}
               <div>
-                <h4 className="text-base sm:text-xl font-bold text-white mb-3 group-hover/card:text-white transition-colors flex items-start gap-2 break-words">
+                <h4 className="text-lg sm:text-xl font-bold text-white mb-3 group-hover/card:text-white transition-colors flex items-start gap-2 break-words">
                   <span className="text-cyber-cyan mt-1 shrink-0">•</span>
                   <span className="line-clamp-2">{post.title}</span>
                 </h4>
-                <p className="text-slate-400 text-sm leading-relaxed whitespace-pre-wrap line-clamp-4 break-words">{post.body}</p>
+                <p className="text-slate-400 text-sm sm:text-base leading-relaxed whitespace-pre-wrap line-clamp-4 break-words">{post.body}</p>
               </div>
-              <div className="mt-6 sm:mt-8 flex items-center justify-between gap-2 text-[10px] sm:text-xs text-slate-500 font-mono border-t border-slate-800/60 pt-4">
+              <div className="mt-6 sm:mt-8 flex items-center justify-between gap-2 text-xs sm:text-sm text-slate-500 font-mono border-t border-slate-800/60 pt-4">
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <Clock size={14} className="text-cyber-pink/70 shrink-0" />
                   <span>{formatDate(post.created_at)}</span>
@@ -234,7 +234,7 @@ export default function TeamyFeed() {
                   <span className="text-cyber-cyan mt-1.5 shrink-0 block w-2 h-2 rounded-full bg-cyber-cyan shadow-[0_0_8px_rgba(0,240,255,0.8)]"></span>
                   {selectedPost.title}
                 </h3>
-                <div className="flex items-center gap-2 mt-2 text-[10px] sm:text-xs text-slate-500 font-mono">
+                <div className="flex items-center gap-2 mt-2 text-xs sm:text-sm text-slate-500 font-mono">
                   <Clock size={12} className="text-cyber-pink/70 shrink-0" />
                   <span>{formatDate(selectedPost.created_at)}</span>
                 </div>
@@ -259,7 +259,7 @@ export default function TeamyFeed() {
                   />
                 </div>
               )}
-              <div className="text-slate-200 text-sm sm:text-lg leading-relaxed whitespace-pre-wrap break-words font-light tracking-wide">
+              <div className="text-slate-200 text-base sm:text-lg leading-relaxed whitespace-pre-wrap break-words font-light tracking-wide">
                 {selectedPost.body}
               </div>
             </div>

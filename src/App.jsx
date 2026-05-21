@@ -22,7 +22,7 @@ class ErrorBoundary extends React.Component {
           <div className="glass-card p-8 rounded-2xl border border-red-500/50 max-w-lg text-center shadow-2xl animate-bounce-in">
             <ShieldCheck className="w-12 h-12 text-cyber-pink mx-auto mb-4 animate-wiggle" />
             <h2 className="text-xl font-bold text-white mb-2">Oops! Something broke 🛠️</h2>
-            <p className="text-slate-400 text-sm mb-4">{this.state.error?.message || 'An unexpected error occurred.'}</p>
+            <p className="text-slate-400 text-sm sm:text-base mb-4">{this.state.error?.message || 'An unexpected error occurred.'}</p>
             <button onClick={() => window.location.reload()} className="bg-gradient-to-r from-cyber-cyan to-cyber-purple hover:opacity-90 text-white px-6 py-2 rounded-lg font-bold transition-all btn-press shadow-lg">
               Reload Application
             </button>
@@ -121,7 +121,7 @@ export default function App() {
                       <button
                         key={item.id}
                         onClick={() => navigate(item.id)}
-                        className={`flex items-center px-2 lg:px-3 py-2 rounded-lg text-xs lg:text-sm font-semibold transition-all btn-press whitespace-nowrap ${
+                        className={`flex items-center px-3 lg:px-4 py-2.5 rounded-lg text-sm lg:text-base font-semibold transition-all btn-press whitespace-nowrap ${
                           activeView === item.id
                             ? 'bg-gradient-to-r from-cyber-cyan/20 to-cyber-purple/20 text-cyber-cyan border border-cyber-cyan/30 shadow-[0_0_15px_rgba(0,240,255,0.15)]'
                             : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
@@ -162,7 +162,7 @@ export default function App() {
                     <button
                       key={item.id}
                       onClick={() => navigate(item.id)}
-                      className={`w-full flex items-center px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
+                      className={`w-full flex items-center px-3 sm:px-4 py-3 sm:py-3.5 rounded-lg text-sm sm:text-base font-semibold transition-all ${
                         activeView === item.id
                           ? 'bg-gradient-to-r from-cyber-cyan/20 to-cyber-purple/20 text-cyber-cyan border border-cyber-cyan/30'
                           : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
@@ -170,7 +170,7 @@ export default function App() {
                     >
                       <Icon className="mr-2.5 sm:mr-3 h-4 sm:h-5 w-4 sm:w-5" />
                       {item.label}
-                      <span className="ml-auto text-[10px] text-slate-600 font-mono">[{item.shortcut}]</span>
+                      <span className="ml-auto text-xs text-slate-500 font-mono">[{item.shortcut}]</span>
                     </button>
                   );
                 })}
@@ -181,7 +181,7 @@ export default function App() {
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
           <div className="mb-6 sm:mb-8 animate-fade-in-up">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold mb-2">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-3 sm:mb-4">
               {activeView === 'simulation' && (
                 <span className="bg-gradient-to-r from-cyber-cyan to-emerald-400 bg-clip-text text-transparent">
                   Wireless Intrusion Detection Sandbox
@@ -208,7 +208,7 @@ export default function App() {
                 </span>
               )}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 max-w-3xl">
+            <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-3xl">
               {activeView === 'simulation' && 'Deploy virtual ESP32 sniffers to detect common 802.11 attacks in real-time. Understand how raw management frames are manipulated by adversaries.'}
               {activeView === 'ctf' && 'Test your understanding of Wi-Fi protocol vulnerabilities through hands-on gamified tasks.'}
               {activeView === 'learning' && 'A deep dive into the project architecture, hardware specs, and system diagnostics.'}
@@ -242,9 +242,9 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-cyber-cyan/40" />
-              <span className="text-[10px] sm:text-xs text-slate-600 font-mono">WIDS Simulator v1.0</span>
+              <span className="text-xs sm:text-sm text-slate-500 font-mono">WIDS Simulator v1.0</span>
             </div>
-            <p className="text-[10px] sm:text-xs text-slate-700 font-mono flex items-center gap-1.5">
+            <p className="text-xs sm:text-sm text-slate-600 font-mono flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50 animate-pulse" />
               Local Client-Side • React + Tailwind CSS • Built with ⚡ for curious minds
             </p>

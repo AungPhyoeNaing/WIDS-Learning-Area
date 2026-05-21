@@ -167,13 +167,13 @@ function NetworkTopology({ isAttackActive, attackType, isMitigated, sensorOn }) 
 
       {/* Victim */}
       <div className="flex flex-col items-center gap-1.5">
-        <div className={`w-12 sm:w-14 h-12 sm:h-14 rounded-xl flex items-center justify-center border-2 ${
+        <div className={`w-12 sm:w-16 h-12 sm:h-16 rounded-xl flex items-center justify-center border-2 ${
           isAttackActive && !isMitigated ? 'bg-yellow-900/30 border-yellow-600' : 'bg-slate-900 border-slate-700'
         }`}>
           <Activity className={`w-5 sm:w-6 h-5 sm:h-6 ${isAttackActive && !isMitigated ? 'text-yellow-400' : 'text-slate-500'}`} />
         </div>
-        <span className="text-[10px] font-bold text-slate-400">Victim</span>
-        {isAttackActive && !isMitigated && <span className="text-[8px] text-yellow-400 font-mono">Disconnecting</span>}
+        <span className="text-xs sm:text-sm font-bold text-slate-400">Victim</span>
+        {isAttackActive && !isMitigated && <span className="text-[10px] sm:text-xs text-yellow-400 font-mono">Disconnecting</span>}
       </div>
     </div>
   );
@@ -187,22 +187,22 @@ function StatsBar({ packets, totalCaptured, isAttackActive, attackType, sensorOn
   const normalPkts = total - attackPkts - blockedPkts;
   const detected = isAttackActive && sensorOn && sensorChannel === targetChannel;
   return (
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-2 sm:gap-3">
-      <div className="glass-card p-2 sm:p-3 rounded-xl text-center card-pop">
-        <p className="text-lg sm:text-2xl font-extrabold text-white font-mono">{totalCaptured}</p><p className="text-[8px] sm:text-[10px] text-slate-500 uppercase tracking-wider">Total seen</p>
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
+      <div className="glass-card p-3 sm:p-4 rounded-xl text-center card-pop">
+        <p className="text-xl sm:text-2xl font-extrabold text-white font-mono">{totalCaptured}</p><p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">Total seen</p>
       </div>
-      <div className="glass-card p-2 sm:p-3 rounded-xl text-center card-pop">
-        <p className="text-lg sm:text-2xl font-extrabold text-slate-300 font-mono">{total}</p><p className="text-[8px] sm:text-[10px] text-slate-500 uppercase tracking-wider">In buffer</p>
+      <div className="glass-card p-3 sm:p-4 rounded-xl text-center card-pop">
+        <p className="text-xl sm:text-2xl font-extrabold text-slate-300 font-mono">{total}</p><p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">In buffer</p>
       </div>
-      <div className="glass-card p-2 sm:p-3 rounded-xl text-center card-pop">
-        <p className={`text-lg sm:text-2xl font-extrabold font-mono ${normalPkts > 0 ? 'text-blue-400' : 'text-slate-600'}`}>{normalPkts}</p><p className="text-[8px] sm:text-[10px] text-slate-500 uppercase tracking-wider">Normal</p>
+      <div className="glass-card p-3 sm:p-4 rounded-xl text-center card-pop">
+        <p className={`text-xl sm:text-2xl font-extrabold font-mono ${normalPkts > 0 ? 'text-blue-400' : 'text-slate-600'}`}>{normalPkts}</p><p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">Normal</p>
       </div>
-      <div className="glass-card p-2 sm:p-3 rounded-xl text-center card-pop">
-        <p className={`text-lg sm:text-2xl font-extrabold font-mono ${attackPkts > 0 ? 'text-cyber-pink' : 'text-slate-600'}`}>{attackPkts}</p>
-        <p className="text-[8px] sm:text-[10px] text-slate-500 uppercase tracking-wider">{isMitigated ? 'Malicious' : (detected ? 'Attacks' : 'Anomalies')}</p>
+      <div className="glass-card p-3 sm:p-4 rounded-xl text-center card-pop">
+        <p className={`text-xl sm:text-2xl font-extrabold font-mono ${attackPkts > 0 ? 'text-cyber-pink' : 'text-slate-600'}`}>{attackPkts}</p>
+        <p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">{isMitigated ? 'Malicious' : (detected ? 'Attacks' : 'Anomalies')}</p>
       </div>
-      <div className="glass-card p-2 sm:p-3 rounded-xl text-center card-pop">
-        <p className={`text-lg sm:text-2xl font-extrabold font-mono ${blockedPkts > 0 ? 'text-cyber-lime' : 'text-slate-600'}`}>{blockedPkts}</p><p className="text-[8px] sm:text-[10px] text-slate-500 uppercase tracking-wider">Blocked</p>
+      <div className="glass-card p-3 sm:p-4 rounded-xl text-center card-pop">
+        <p className={`text-xl sm:text-2xl font-extrabold font-mono ${blockedPkts > 0 ? 'text-cyber-lime' : 'text-slate-600'}`}>{blockedPkts}</p><p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">Blocked</p>
       </div>
     </div>
   );
@@ -412,13 +412,13 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
 
         {/* Attack Intensity */}
         <div className="flex items-center gap-2 sm:gap-3 mb-4 text-sm flex-wrap">
-          <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-wider">Intensity:</span>
+          <span className="text-xs sm:text-sm text-slate-500 font-bold uppercase tracking-wider">Intensity:</span>
           {['low', 'medium', 'high'].map(level => (
-            <button key={level} onClick={() => setIntensity(level)} className={`px-2 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-xs font-bold border transition-all btn-press ${intensity === level ? 'bg-gradient-to-r from-cyber-purple/30 to-cyber-pink/30 border-cyber-purple text-white shadow-[0_0_10px_rgba(168,85,247,0.2)]' : 'bg-slate-900 border-slate-700 text-slate-400 hover:bg-slate-800'}`}>
+            <button key={level} onClick={() => setIntensity(level)} className={`px-3 py-2 rounded-lg text-xs sm:text-sm font-bold border transition-all btn-press ${intensity === level ? 'bg-gradient-to-r from-cyber-purple/30 to-cyber-pink/30 border-cyber-purple text-white shadow-[0_0_10px_rgba(168,85,247,0.2)]' : 'bg-slate-900 border-slate-700 text-slate-400 hover:bg-slate-800'}`}>
               {level === 'low' ? '🐌 Low' : level === 'medium' ? '⚡ Medium' : '🔥 High'}
             </button>
           ))}
-          <span className="text-[10px] text-slate-600">Attack rate: {intensity === 'low' ? '0.8/s' : intensity === 'medium' ? '1.6/s' : '5/s'}</span>
+          <span className="text-xs text-slate-500 font-mono ml-2">Attack rate: {intensity === 'low' ? '0.8/s' : intensity === 'medium' ? '1.6/s' : '5/s'}</span>
         </div>
 
         {/* Network Topology Visual */}
@@ -476,8 +476,8 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
       <div className="bg-[#0D1117] rounded-2xl border border-slate-600/50 font-mono text-sm overflow-hidden flex flex-col shadow-2xl">
         <div className="bg-slate-800/80 text-slate-300 border-b border-slate-600/50 p-2 sm:p-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="font-bold flex items-center text-xs sm:text-sm">
-              <Terminal className="w-4 h-4 mr-2 text-cyber-cyan flex-shrink-0" /> <span className="hidden sm:inline">3. Live Sensor Output Console</span><span className="sm:hidden">Console</span>
+            <span className="font-bold flex items-center text-sm sm:text-base">
+              <Terminal className="w-5 h-5 mr-2 text-cyber-cyan flex-shrink-0" /> <span className="hidden sm:inline">3. Live Sensor Output Console</span><span className="sm:hidden">Console</span>
             </span>
             <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
               {packets.length > 0 && (
@@ -491,12 +491,12 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
                 </>
               )}
               <div className="relative">
-                <Search className="w-3 h-3 absolute left-2 top-1/2 -translate-y-1/2 text-slate-600" />
-                <input type="text" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter..." aria-label="Filter console packets" className="bg-slate-900 border border-slate-600 rounded-lg text-base sm:text-[11px] text-slate-300 pl-7 pr-2 py-1 w-24 sm:w-24 focus:outline-none focus:border-cyber-cyan placeholder-slate-600 transition-colors" />
+                <Search className="w-4 h-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-600" />
+                <input type="text" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter..." aria-label="Filter console packets" className="bg-slate-900 border border-slate-600 rounded-lg text-sm sm:text-sm text-slate-300 pl-8 pr-3 py-1.5 w-24 sm:w-32 focus:outline-none focus:border-cyber-cyan placeholder-slate-600 transition-colors" />
               </div>
-              <span className="bg-slate-900 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] text-emerald-400 border border-emerald-900 hidden sm:inline">Src</span>
-              <span className="bg-slate-900 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] text-blue-400 border border-blue-900 hidden sm:inline">Dst</span>
-              <span className="bg-slate-900 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] text-slate-400 border border-slate-700">Ch:{sensorChannel}</span>
+              <span className="bg-slate-900 px-2 py-1 rounded-lg text-xs text-emerald-400 border border-emerald-900 hidden sm:inline">Src</span>
+              <span className="bg-slate-900 px-2 py-1 rounded-lg text-xs text-blue-400 border border-blue-900 hidden sm:inline">Dst</span>
+              <span className="bg-slate-900 px-2 py-1 rounded-lg text-xs text-slate-400 border border-slate-700">Ch:{sensorChannel}</span>
             </div>
           </div>
         </div>
@@ -520,17 +520,17 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
           ) : (
             filteredPackets.map((pkt) => (
               <button key={pkt.id} onClick={() => setDetailPkt(pkt)}
-                className={`w-full text-left text-slate-300 border-b border-slate-800/50 pb-1.5 pt-1 text-xs sm:text-sm hover:bg-slate-800/30 transition-colors cursor-pointer rounded px-1 ${pkt.isBlocked ? 'opacity-50' : ''}`}
+                className={`w-full text-left text-slate-300 border-b border-slate-800/50 py-2 sm:py-2.5 hover:bg-slate-800/30 transition-colors cursor-pointer rounded px-2 text-sm sm:text-base ${pkt.isBlocked ? 'opacity-50' : ''}`}
               >
                 <span className="text-slate-500 mr-2">[{pkt.timestamp}]</span>
                 <span className="text-emerald-400 font-bold break-all">{pkt.source}</span>
-                <span className="text-slate-600 mx-1 sm:mx-2">→</span>
+                <span className="text-slate-600 mx-1.5 sm:mx-2">→</span>
                 <span className="text-blue-400 font-bold break-all">{pkt.dest}</span>
-                <span className={`mx-1 sm:mx-2 px-1 py-0.5 rounded text-[9px] sm:text-[10px] font-bold ${pkt.isBlocked ? 'bg-emerald-900/60 text-emerald-400 border border-emerald-500' : pkt.isAttack ? 'bg-cyber-pink/20 text-cyber-pink border border-cyber-pink animate-pulse-fast' : 'bg-slate-800 text-slate-400 border border-slate-600'}`}>
+                <span className={`mx-2 sm:mx-3 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold uppercase ${pkt.isBlocked ? 'bg-emerald-900/60 text-emerald-400 border border-emerald-500' : pkt.isAttack ? 'bg-cyber-pink/20 text-cyber-pink border border-cyber-pink animate-pulse-fast' : 'bg-slate-800 text-slate-400 border border-slate-600'}`}>
                   [{pkt.subtype}]
                 </span>
                 <span className={`${pkt.isBlocked ? 'text-emerald-500 line-through' : 'text-slate-300'} break-all`}>{pkt.info}</span>
-                <span className="text-[9px] text-slate-700 ml-1">{pkt.rssi}dBm</span>
+                <span className="text-xs text-slate-600 ml-2">{pkt.rssi}dBm</span>
               </button>
             ))
           )}

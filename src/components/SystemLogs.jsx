@@ -10,7 +10,7 @@ export default function SystemLogs() {
       </h2>
       
       <div className="space-y-8 text-slate-300 leading-relaxed">
-        <p className="text-lg">
+        <p className="text-base sm:text-lg">
           The console logs in the <strong>Live Simulation</strong> tab are the direct output of our detection engine. Learning to read these logs is the core skill of a WIDS operator. Here is a breakdown of what the system outputs and why.
         </p>
 
@@ -19,28 +19,28 @@ export default function SystemLogs() {
             <Terminal className="w-5 h-5 text-cyber-cyan" />
             <h3 className="font-bold text-white">Log Entry Anatomy</h3>
           </div>
-          <div className="p-4 sm:p-6 font-mono text-xs sm:text-sm">
-            <div className="flex flex-wrap gap-2 items-center bg-black/50 p-3 rounded-lg border border-slate-700 border-l-2 border-l-red-500">
+          <div className="p-4 sm:p-6 font-mono text-sm sm:text-base">
+            <div className="flex flex-wrap gap-2 items-center bg-black/50 p-3 sm:p-4 rounded-lg border border-slate-700 border-l-2 border-l-red-500 overflow-x-auto whitespace-nowrap">
               <span className="text-slate-500">[14:05:22]</span>
               <span className="text-emerald-400">AA:BB:CC:DD:EE:FF</span>
               <span className="text-slate-600">→</span>
               <span className="text-blue-400">FF:FF:FF:FF:FF:FF</span>
-              <span className="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-600">[Dot11Deauth]</span>
+              <span className="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-600 text-xs sm:text-sm">[Dot11Deauth]</span>
               <span className="text-slate-300">Reason Code 7</span>
-              <span className="text-slate-500 text-xs">-45dBm</span>
+              <span className="text-slate-500 text-xs sm:text-sm">-45dBm</span>
             </div>
 
-            <div className="flex flex-wrap gap-2 items-center bg-black/50 p-3 rounded-lg border border-slate-700 border-l-2 border-l-yellow-500 mt-2">
+            <div className="flex flex-wrap gap-2 items-center bg-black/50 p-3 sm:p-4 rounded-lg border border-slate-700 border-l-2 border-l-yellow-500 mt-2 sm:mt-3 overflow-x-auto whitespace-nowrap">
               <span className="text-slate-500">[14:08:45]</span>
               <span className="text-emerald-400">CC:CC:CC:CC:CC:CC</span>
               <span className="text-slate-600">→</span>
               <span className="text-blue-400">11:22:33:44:55:66</span>
-              <span className="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-600">[ARP Reply]</span>
-              <span className="text-slate-300">Gateway 192.168.1.1 is at CC:CC:CC:CC:CC:CC</span>
-              <span className="text-slate-500 text-xs">-32dBm</span>
+              <span className="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-600 text-xs sm:text-sm">[ARP Reply]</span>
+              <span className="text-slate-300">Gateway 192.168.1.1 is at CC...</span>
+              <span className="text-slate-500 text-xs sm:text-sm">-32dBm</span>
             </div>
             
-            <div className="mt-6 grid gap-3 text-xs">
+            <div className="mt-6 sm:mt-8 grid gap-3 sm:gap-4 text-sm sm:text-base">
               <div className="flex items-start gap-4">
                 <strong className="text-slate-500 w-24">Timestamp:</strong>
                 <span className="text-slate-400">When the packet was captured by the ESP32.</span>
@@ -66,7 +66,7 @@ export default function SystemLogs() {
         </section>
 
         <section>
-          <h3 className="text-xl font-bold text-white mb-4">Event Severity Levels</h3>
+          <h3 className="text-lg sm:text-xl font-bold text-white mb-4">Event Severity Levels</h3>
           <div className="grid gap-3 sm:gap-4">
             <div className="flex gap-3 sm:gap-4 items-start bg-slate-900/40 p-3 sm:p-4 rounded-xl border-l-4 border-slate-500 hover:bg-slate-900/60 transition-all duration-200">
               <Info className="w-5 sm:w-6 h-5 sm:h-6 text-slate-400 flex-shrink-0 mt-0.5" />
