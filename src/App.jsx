@@ -59,13 +59,6 @@ export default function App() {
   const [attackType, setAttackType] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // ── Gate: show profile selector if no identity selected ──
-  if (!isProfileSelected) {
-    return <ProfileSelector />;
-  }
-
-  const ProfileIcon = activeProfile.icon;
-
   useEffect(() => {
     localStorage.setItem('wids_view', activeView);
   }, [activeView]);
@@ -100,6 +93,13 @@ export default function App() {
     setActiveView(id);
     setMobileMenuOpen(false);
   };
+
+  // ── Gate: show profile selector if no identity selected ──
+  if (!isProfileSelected) {
+    return <ProfileSelector />;
+  }
+
+  const ProfileIcon = activeProfile.icon;
 
   return (
     <ErrorBoundary>
