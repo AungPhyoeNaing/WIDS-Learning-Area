@@ -52,7 +52,7 @@ export default function SystemLogs() {
               <span className="text-blue-400">print</span>(top_targets.head(<span className="text-blue-400">5</span>))<br/><br/>
               <span className="text-slate-500"># Calculate average signal strength of attacker</span><br/>
               avg_rssi = df[df[<span className="text-emerald-400">'attack_type'</span>] == <span className="text-emerald-400">'ROGUE_AP'</span>][<span className="text-emerald-400">'rssi'</span>].mean()<br/>
-              <span className="text-blue-400">print</span>(<span className="text-emerald-400">f"Average Rogue AP RSSI: {avg_rssi} dBm"</span>)
+              <span className="text-blue-400">print</span>(<span className="text-emerald-400">{`f"Average Rogue AP RSSI: {avg_rssi} dBm"`}</span>)
             </div>
           </div>
         </Accordion>
