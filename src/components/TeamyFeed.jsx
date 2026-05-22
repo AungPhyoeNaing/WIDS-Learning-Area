@@ -18,19 +18,49 @@ export default function TeamyFeed() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPost, setSelectedPost] = useState(null);
 
+  const POSTS_PER_PAGE = 6;
+  const [hasMore, setHasMore] = useState(true);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+
   const fetchPosts = useCallback(async () => {
     setIsLoading(true);
     const { data, error } = await supabase
       .from('posts')
       .select('*')
       .order('created_at', { ascending: false })
-      .limit(50);
+      .limit(POSTS_PER_PAGE);
     
     if (!error && data) {
       setPosts(data);
+      setHasMore(data.length === POSTS_PER_PAGE);
     }
     setIsLoading(false);
   }, []);
+
+  const loadMore = async () => {
+    if (isFetchingMore || !hasMore || posts.length === 0) return;
+    setIsFetchingMore(true);
+    
+    // Use the created_at of the last currently loaded post as the cursor
+    const lastPostDate = posts[posts.length - 1].created_at;
+
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .lt('created_at', lastPostDate)
+      .order('created_at', { ascending: false })
+      .limit(POSTS_PER_PAGE);
+
+    if (!error && data) {
+      setPosts(prev => {
+        // Filter out any duplicates that might have trickled in via realtime
+        const newPosts = data.filter(d => !prev.some(p => p.id === d.id));
+        return [...prev, ...newPosts];
+      });
+      setHasMore(data.length === POSTS_PER_PAGE);
+    }
+    setIsFetchingMore(false);
+  };
 
   useEffect(() => {
     fetchPosts();
@@ -235,6 +265,29 @@ export default function TeamyFeed() {
         )}
 
       </div>
+
+      {/* Load More Button */}
+      {hasMore && posts.length > 0 && !isLoading && (
+        <div className="flex justify-center mt-8 sm:mt-12 animate-fade-in-up">
+          <button
+            onClick={loadMore}
+            disabled={isFetchingMore}
+            className="group relative px-8 py-3.5 bg-slate-900 border border-slate-700 hover:border-cyber-cyan text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none overflow-hidden flex items-center justify-center min-w-[220px] btn-press"
+          >
+            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyber-cyan/10 via-cyber-purple/10 to-cyber-pink/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            {isFetchingMore ? (
+              <span className="flex items-center gap-2 text-slate-300">
+                <Loader2 className="w-5 h-5 animate-spin text-cyber-cyan" />
+                Accessing archives...
+              </span>
+            ) : (
+              <span className="flex items-center gap-2 relative z-10">
+                Load More Nodes <Sparkles size={16} className="text-cyber-cyan" />
+              </span>
+            )}
+          </button>
+        </div>
+      )}
 
       {selectedPost && createPortal(
         <div 
