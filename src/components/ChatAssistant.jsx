@@ -9,14 +9,14 @@ import { useProfile } from '../contexts/ProfileContext';
 const QUICK_PROMPTS = {
   apn: [
     { label: '📡 Sim architecture', text: 'Walk me through the full architecture of the WIDS simulator we built.' },
-    { label: '⚡ useSimulation hook', text: 'Explain how the useSimulation.js packet engine works internally.' },
+    { label: '🧠 Global Context', text: 'Explain the new Global Identity System (ProfileContext) we just implemented.' },
     { label: '🔴 ARP Spoof deep-dive', text: 'Give me a deep technical breakdown of ARP spoofing and how our WIDS detects it.' },
     { label: '🛡️ Mitigation logic', text: 'How does the Deploy Mitigation feature work in the simulation?' },
   ],
   jia: [
     { label: '🌸 How do I start?', text: 'Can you gently walk me through how to use the simulator step by step?' },
     { label: '💖 What is a Deauth?', text: 'Can you explain what a deauthentication attack is in simple terms?' },
-    { label: '🌷 What is Teamyfeed?', text: 'What is the Teamyfeed section and how do I post on it?' },
+    { label: '🌷 TeamyFeed Badges', text: 'How do the new glowing "New" badges work in TeamyFeed?' },
     { label: '🥰 What is the project?', text: 'Can you explain what the WIDS project is about in a friendly way?' },
   ],
   ayechan: [
@@ -39,7 +39,7 @@ const QUICK_PROMPTS = {
   ],
   eiei: [
     { label: '📋 Project overview', text: 'Give me an overview of the WIDS project progress and what has been built.' },
-    { label: '👥 Team roles', text: 'Summarize each team member\'s role and contribution to the WIDS project.' },
+    { label: '📚 The Learning Hub', text: 'Show me the Full Course curriculum that was recently added to the Learning Hub.' },
     { label: '🎯 Learning outcomes', text: 'What are the key learning outcomes from this WIDS project?' },
     { label: '🔒 Security concepts', text: 'Explain the core cybersecurity concepts demonstrated in this simulator.' },
   ],
@@ -59,14 +59,15 @@ CURRENT USER: {activeProfileName}. Adapt your tone to them:
 PROJECT TEAM: APN (Leader/Backend), Jia (UI), AyeChan (Backend), Hlyan (Hardware), Tiki (Design/Testing).
 PROJECT WIDS: Host-based WiFi Intrusion Detection System using ESP32 to detect attacks (Deauth, Rogue AP, MAC Spoof, ARP Spoof) with physical buzzer alerts.
 
-APP VIEWS:
+APP VIEWS & CURRENT STATE:
 1. Live Simulation: Interactive packet engine (Deauth, Rogue AP, MAC/ARP Spoofing), channel tuning, mitigation.
-2. CTF Labs: 5 cybersecurity challenges.
-3. Learning Hub: WIDS Architecture, Hardware Specs, System Logs docs.
-4. Daily Insight: AI-generated Wi-Fi facts.
-5. Teamyfeed: Social knowledge feed.
+2. CTF Labs: 6 Gamified cybersecurity challenges (including Rogue AP Detection). Features progressive unlocking, a "Decrypt Hint" system (-10pts), and persistent per-profile score tracking.
+3. Learning Hub: "Full Course" knowledge library with 5 modules (Architecture, Protocol Security, Sensor Hardware with PySerial, Physical Deterrence with escalation matrices, and System Logs with Python pandas forensics). Uses an interactive Accordion UI with Mark-As-Read tracking.
+4. Daily Insight: AI-generated Wi-Fi security facts.
+5. TeamyFeed: A social knowledge feed where team members post insights. Features author attribution and an intelligent "Mark as Read" system with glowing unread badges.
+6. Global Identity System: Users lock in their identity on the "Who Are You?" welcome screen. The entire app (Scores, Read Receipts, and Chatbot Persona) dynamically syncs to the active profile in the navbar.
 
-SCOPE: Answer ONLY about Wi-Fi security, the WIDS project, the app features, and the team. Be concise and friendly.`;
+SCOPE: Answer ONLY about Wi-Fi security, the WIDS project, the app features, and the team. Acknowledge the specific UI features and states mentioned above if the user asks. Be concise and friendly.`;
 
 // ─── localStorage helpers ──────────────────────────────────────
 const HISTORY_KEY = (profileId) => `wids_chat_history_${profileId}`;
