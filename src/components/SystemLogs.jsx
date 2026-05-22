@@ -1,98 +1,86 @@
-import React from 'react';
-import { Database, Terminal, AlertTriangle, CheckCircle2, Info } from 'lucide-react';
+import React, { useState } from 'react';
+import { Database, Search, ShieldAlert, FileCode2, Sliders } from 'lucide-react';
+import Accordion from './Accordion';
 
 export default function SystemLogs() {
+  const [openSection, setOpenSection] = useState(0);
+  const toggleSection = (idx) => setOpenSection(openSection === idx ? -1 : idx);
+
   return (
-    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink" />
-      <h2 className="text-xl sm:text-3xl font-bold text-cyber-pink mb-6 sm:mb-8 flex items-center gap-2 sm:gap-3">
-        <Database className="w-6 sm:w-10 h-6 sm:h-10" /> Understanding System Logs
-      </h2>
+    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md relative overflow-hidden animate-fade-in-up">
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500" />
       
-      <div className="space-y-8 text-slate-300 leading-relaxed">
-        <p className="text-base sm:text-lg">
-          The console logs in the <strong>Live Simulation</strong> tab are the direct output of our detection engine. Learning to read these logs is the core skill of a WIDS operator. Here is a breakdown of what the system outputs and why.
+      <div className="mb-8">
+        <h2 className="text-xl sm:text-3xl font-bold text-pink-500 mb-2 flex items-center gap-2 sm:gap-3">
+          <Database className="w-6 sm:w-10 h-6 sm:h-10" /> Course 5: System Logs & Forensics
+        </h2>
+        <p className="text-slate-400 text-sm sm:text-base">
+          Learn how to read raw WIDS logs, perform Python-based forensics, and tune the anomaly engine to reduce false positives.
         </p>
+      </div>
 
-        <section className="bg-slate-900/60 rounded-2xl border border-slate-800 overflow-hidden">
-          <div className="bg-slate-800/50 p-4 border-b border-slate-700/50 flex items-center gap-2">
-            <Terminal className="w-5 h-5 text-cyber-cyan" />
-            <h3 className="font-bold text-white">Log Entry Anatomy</h3>
+      <div className="space-y-2">
+        <Accordion title="5.1 Parsing the Raw Log" icon={Search} isOpen={openSection === 0} onClick={() => toggleSection(0)}>
+          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+            <p>
+              When an attack is detected, the Python engine generates a structured forensic log. Understanding this log is critical for threat hunting.
+            </p>
+            <div className="bg-slate-950 border-l-4 border-l-red-500 border-slate-800 rounded-lg p-4 font-mono text-xs overflow-x-auto text-slate-300">
+              [2024-10-27 14:32:01] [CRITICAL] [DEAUTH_FLOOD]<br/>
+              Target: 1C:53:F9:AA:BB:CC (Victim Laptop)<br/>
+              Source: 00:11:22:33:44:55 (Spoofed Router)<br/>
+              RSSI: -45 dBm | Channel: 6 | Count: 152 frames/sec
+            </div>
+            <ul className="list-disc pl-5 space-y-2 mt-4 text-slate-400">
+              <li><strong>RSSI (-45 dBm):</strong> Received Signal Strength Indicator. -45 is a very strong signal. This tells the admin the attacker is physically very close to the sensor.</li>
+              <li><strong>MAC Spoofing:</strong> The Source MAC usually matches the legitimate router. You cannot ban this MAC, or you ban the router itself!</li>
+            </ul>
           </div>
-          <div className="p-4 sm:p-6 font-mono text-sm sm:text-base">
-            <div className="flex flex-wrap gap-2 items-center bg-black/50 p-3 sm:p-4 rounded-lg border border-slate-700 border-l-2 border-l-red-500 overflow-x-auto whitespace-nowrap">
-              <span className="text-slate-500">[14:05:22]</span>
-              <span className="text-emerald-400">AA:BB:CC:DD:EE:FF</span>
-              <span className="text-slate-600">→</span>
-              <span className="text-blue-400">FF:FF:FF:FF:FF:FF</span>
-              <span className="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-600 text-xs sm:text-sm">[Dot11Deauth]</span>
-              <span className="text-slate-300">Reason Code 7</span>
-              <span className="text-slate-500 text-xs sm:text-sm">-45dBm</span>
-            </div>
+        </Accordion>
 
-            <div className="flex flex-wrap gap-2 items-center bg-black/50 p-3 sm:p-4 rounded-lg border border-slate-700 border-l-2 border-l-yellow-500 mt-2 sm:mt-3 overflow-x-auto whitespace-nowrap">
-              <span className="text-slate-500">[14:08:45]</span>
-              <span className="text-emerald-400">CC:CC:CC:CC:CC:CC</span>
-              <span className="text-slate-600">→</span>
-              <span className="text-blue-400">11:22:33:44:55:66</span>
-              <span className="bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-600 text-xs sm:text-sm">[ARP Reply]</span>
-              <span className="text-slate-300">Gateway 192.168.1.1 is at CC...</span>
-              <span className="text-slate-500 text-xs sm:text-sm">-32dBm</span>
-            </div>
-            
-            <div className="mt-6 sm:mt-8 grid gap-3 sm:gap-4 text-sm sm:text-base">
-              <div className="flex items-start gap-4">
-                <strong className="text-slate-500 w-24">Timestamp:</strong>
-                <span className="text-slate-400">When the packet was captured by the ESP32.</span>
-              </div>
-              <div className="flex items-start gap-4">
-                <strong className="text-emerald-400 w-24">Source MAC:</strong>
-                <span className="text-slate-400">The hardware address of the sender (often spoofed by attackers).</span>
-              </div>
-              <div className="flex items-start gap-4">
-                <strong className="text-blue-400 w-24">Dest MAC:</strong>
-                <span className="text-slate-400">The target. FF:FF:FF:FF:FF:FF is a broadcast address (everyone).</span>
-              </div>
-              <div className="flex items-start gap-4">
-                <strong className="text-slate-300 w-24">Subtype:</strong>
-                <span className="text-slate-400">The 802.11 frame type. E.g., Beacon, Probe Req, Dot11Deauth.</span>
-              </div>
-              <div className="flex items-start gap-4">
-                <strong className="text-slate-500 w-24">RSSI:</strong>
-                <span className="text-slate-400">Signal strength. Higher negative numbers (e.g., -30) mean the sender is physically closer to the sensor.</span>
-              </div>
+        <Accordion title="5.2 Forensic Automation in Python" icon={FileCode2} isOpen={openSection === 1} onClick={() => toggleSection(1)}>
+          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+            <p>
+              While the WIDS dashboard provides real-time alerts, we can use Python and pandas for retroactive threat hunting. We can write scripts to aggregate log files and spot long-term attacker patterns.
+            </p>
+            <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs overflow-x-auto text-slate-300 mt-2">
+              <span className="text-cyber-purple">import</span> pandas <span className="text-cyber-purple">as</span> pd<br/><br/>
+              <span className="text-slate-500"># Load historic logs</span><br/>
+              df = pd.read_csv(<span className="text-emerald-400">'wids_logs.csv'</span>)<br/><br/>
+              <span className="text-slate-500"># Find the most targeted devices (top victims)</span><br/>
+              top_targets = df[df[<span className="text-emerald-400">'attack_type'</span>] == <span className="text-emerald-400">'DEAUTH'</span>][<span className="text-emerald-400">'target_mac'</span>].value_counts()<br/>
+              <span className="text-blue-400">print</span>(top_targets.head(<span className="text-blue-400">5</span>))<br/><br/>
+              <span className="text-slate-500"># Calculate average signal strength of attacker</span><br/>
+              avg_rssi = df[df[<span className="text-emerald-400">'attack_type'</span>] == <span className="text-emerald-400">'ROGUE_AP'</span>][<span className="text-emerald-400">'rssi'</span>].mean()<br/>
+              <span className="text-blue-400">print</span>(<span className="text-emerald-400">f"Average Rogue AP RSSI: {avg_rssi} dBm"</span>)
             </div>
           </div>
-        </section>
+        </Accordion>
 
-        <section>
-          <h3 className="text-lg sm:text-xl font-bold text-white mb-4">Event Severity Levels</h3>
-          <div className="grid gap-3 sm:gap-4">
-            <div className="flex gap-3 sm:gap-4 items-start bg-slate-900/40 p-3 sm:p-4 rounded-xl border-l-4 border-slate-500 hover:bg-slate-900/60 transition-all duration-200">
-              <Info className="w-5 sm:w-6 h-5 sm:h-6 text-slate-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-slate-300 block mb-1 text-sm sm:text-base">INFO (Normal Traffic)</strong>
-                <p className="text-xs sm:text-sm text-slate-400">Standard beacons from routers or probe requests from phones. The system ignores these unless they form an anomaly pattern.</p>
+        <Accordion title="5.3 False Positive Tuning" icon={Sliders} isOpen={openSection === 2} onClick={() => toggleSection(2)}>
+          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+            <p>
+              The hardest part of a WIDS is eliminating false positives. If the buzzer rings every time someone turns off their phone's Wi-Fi, the shop owner will just unplug the system.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-4 mt-4">
+              <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-700 border-l-4 border-l-emerald-500">
+                <h4 className="font-bold text-white mb-2">Normal Behavior</h4>
+                <p className="text-sm text-slate-400">
+                  A device sending 1 or 2 Deauth frames when walking out of range or shutting down is completely normal. 
+                </p>
+              </div>
+              <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-700 border-l-4 border-l-red-500">
+                <h4 className="font-bold text-white mb-2">Malicious Behavior</h4>
+                <p className="text-sm text-slate-400">
+                  An attacker running <code>aireplay-ng</code> will pump out dozens or hundreds of frames per second to ensure the victim drops the connection.
+                </p>
               </div>
             </div>
-
-            <div className="flex gap-3 sm:gap-4 items-start bg-red-900/20 p-3 sm:p-4 rounded-xl border-l-4 border-red-500 hover:bg-slate-900/60 transition-all duration-200">
-              <AlertTriangle className="w-5 sm:w-6 h-5 sm:h-6 text-red-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-red-400 block mb-1 text-sm sm:text-base">WARN (Malicious Activity)</strong>
-                <p className="text-xs sm:text-sm text-slate-400">A signature match. For example, detecting a Deauth frame (which should rarely happen in high volumes). This triggers UI alerts and the physical buzzer.</p>
-              </div>
-            </div>
-
-            <div className="flex gap-3 sm:gap-4 items-start bg-emerald-900/20 p-3 sm:p-4 rounded-xl border-l-4 border-emerald-500 hover:bg-slate-900/60 transition-all duration-200">
-              <CheckCircle2 className="w-5 sm:w-6 h-5 sm:h-6 text-emerald-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-emerald-400 block mb-1 text-sm sm:text-base">SECURE (Mitigation Active)</strong>
-                <p className="text-xs sm:text-sm text-slate-400">When mitigation is deployed, the engine creates a dynamic firewall rule. Packets matching the attacker's source MAC are dropped and logged with a strike-through.</p>
-              </div>
-            </div>
+            <p className="mt-4">
+              <strong>The Python Threshold:</strong> The logic tracks a rolling buffer. <code>if frame_count &gt; 15 and time_elapsed &lt; 1.0</code>, then fire the alarm. Tuning these variables for the specific size of the cafe is crucial.
+            </p>
           </div>
-        </section>
+        </Accordion>
       </div>
     </div>
   );

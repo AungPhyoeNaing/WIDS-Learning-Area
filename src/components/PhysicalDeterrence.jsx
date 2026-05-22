@@ -1,50 +1,72 @@
-import React from 'react';
-import { BellRing, Store, Volume2, ShieldAlert } from 'lucide-react';
+import React, { useState } from 'react';
+import { ShieldAlert, BellRing, Lock, FileCode2 } from 'lucide-react';
+import Accordion from './Accordion';
 
 export default function PhysicalDeterrence() {
+  const [openSection, setOpenSection] = useState(0);
+  const toggleSection = (idx) => setOpenSection(openSection === idx ? -1 : idx);
+
   return (
     <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md relative overflow-hidden animate-fade-in-up">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-orange via-red-500 to-cyber-pink" />
-      <h2 className="text-xl sm:text-3xl font-bold text-cyber-orange mb-6 sm:mb-8 flex items-center gap-2 sm:gap-3">
-        <BellRing className="w-6 sm:w-10 h-6 sm:h-10" /> Physical Deterrence
-      </h2>
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-orange-500 to-amber-500" />
       
-      <div className="space-y-8 text-slate-300 leading-relaxed">
-        <p className="text-base sm:text-lg">
-          The most unique aspect of this WIDS project is its <strong>Dual-Mode Alert System</strong>. While enterprise systems rely on silent dashboards and email alerts, our system is designed for shared public spaces (like internet cafes and libraries in Myanmar) where immediate physical intervention is required.
+      <div className="mb-8">
+        <h2 className="text-xl sm:text-3xl font-bold text-red-500 mb-2 flex items-center gap-2 sm:gap-3">
+          <ShieldAlert className="w-6 sm:w-10 h-6 sm:h-10" /> Course 4: Physical Deterrence
+        </h2>
+        <p className="text-slate-400 text-sm sm:text-base">
+          Bridging the gap between digital attacks and physical reality. How the WIDS fights back in the physical world.
         </p>
+      </div>
 
-        <div className="grid md:grid-cols-2 gap-3 sm:gap-6">
-          <div className="bg-slate-900/60 p-4 sm:p-6 rounded-2xl border border-orange-900/50 hover:border-orange-500 transition-colors hover:-translate-y-1 duration-300 shadow-lg">
-            <Volume2 className="w-6 sm:w-8 h-6 sm:h-8 text-orange-400 mb-2 sm:mb-3" />
-            <h3 className="font-bold text-white mb-1 sm:mb-2 text-base sm:text-lg">Hardware Alarm Module</h3>
-            <p className="text-sm text-slate-400">
-              When a severe threat (like an Evil Twin or ARP Spoofing) is confirmed, the host software sends a signal to an external hardware buzzer. This physical alarm immediately alerts the shop owner or administrator, even if they aren't looking at the screen.
+      <div className="space-y-2">
+        <Accordion title="4.1 The Psychology of Local Deterrence" icon={Lock} isOpen={openSection === 0} onClick={() => toggleSection(0)}>
+          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+            <p>
+              In environments like internet cafes, the attacker is often physically present in the same room. A traditional firewall dropping packets does nothing to discourage the attacker from trying new methods.
+            </p>
+            <p>
+              Our WIDS implements <strong>Active Physical Deterrence</strong>. When a high-severity attack (like a Deauth Flood) is detected, the system triggers a loud hardware buzzer and flashing LED lights.
+            </p>
+            <p>
+              This instantly strips the attacker of their anonymity. The psychological pressure of knowing the shop owner has been alerted usually stops script-kiddies immediately, protecting the network proactively.
             </p>
           </div>
+        </Accordion>
 
-          <div className="bg-slate-900/60 p-4 sm:p-6 rounded-2xl border border-red-900/50 hover:border-red-500 transition-colors hover:-translate-y-1 duration-300 shadow-lg">
-            <ShieldAlert className="w-6 sm:w-8 h-6 sm:h-8 text-red-400 mb-2 sm:mb-3" />
-            <h3 className="font-bold text-white mb-1 sm:mb-2 text-base sm:text-lg">Psychological Deterrence</h3>
-            <p className="text-sm text-slate-400">
-              A physical alarm doesn't just alert the owner—it exposes the attacker. In a shared space, a sudden alarm indicates that network monitoring is active. This serves as a powerful psychological deterrent against cyber-criminal activities.
+        <Accordion title="4.2 Python-to-Hardware Control" icon={FileCode2} isOpen={openSection === 1} onClick={() => toggleSection(1)}>
+          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+            <p>
+              To trigger the alarm, our Python backend must send a command back down the serial pipeline to the hardware sensor. We use a simple command syntax, like sending the string <code>"ALARM_ON"</code> over the `pyserial` connection.
+            </p>
+            <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs overflow-x-auto text-slate-300 mt-2">
+              <span className="text-cyber-purple">def</span> <span className="text-blue-400">trigger_physical_alarm</span>(severity_level):<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">if</span> severity_level == <span className="text-emerald-400">'CRITICAL'</span>:<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500"># Send serial command to activate the ESP32 buzzer GPIO</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sensor.write(<span className="text-emerald-400">b"ALARM_ON\n"</span>)<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-400">print</span>(<span className="text-emerald-400">"[!] Critical Attack! Deterrence activated."</span>)<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">elif</span> severity_level == <span className="text-emerald-400">'WARNING'</span>:<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500"># Flash warning LEDs only</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sensor.write(<span className="text-emerald-400">b"LED_WARN\n"</span>)
+            </div>
+            <p className="mt-4">
+              Upon receiving this command, the C++ code running on the ESP32 immediately pulls the designated GPIO pin HIGH, providing 3.3V to the buzzer circuit.
             </p>
           </div>
-        </div>
+        </Accordion>
 
-        <section className="bg-slate-900/80 p-4 sm:p-6 rounded-2xl border border-slate-700 mt-6 sm:mt-8">
-          <h3 className="text-base sm:text-xl font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
-            <Store className="w-5 h-5 text-cyber-cyan" /> The Small Business Context
-          </h3>
-          <p className="text-sm sm:text-base mb-3 sm:mb-4">
-            In Myanmar, many small business owners are unaware of network security complexities or find enterprise solutions too difficult to set up. Our system solves this by:
-          </p>
-          <ul className="list-disc pl-4 sm:pl-5 space-y-1.5 sm:space-y-2 text-sm sm:text-base text-slate-400">
-            <li>Operating <strong>Host-Based</strong> directly on the main admin computer.</li>
-            <li>Requiring <strong>no router access</strong> or advanced networking knowledge.</li>
-            <li>Translating complex packet data into simple, actionable on-screen alerts and physical sounds.</li>
-          </ul>
-        </section>
+        <Accordion title="4.3 Escalation Matrices" icon={BellRing} isOpen={openSection === 2} onClick={() => toggleSection(2)}>
+          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+            <p>
+              Not all alerts require a loud siren. An effective WIDS must escalate gracefully to avoid annoying the cafe owner with false positives.
+            </p>
+            <ul className="list-disc pl-5 space-y-2 mt-2">
+              <li><strong>Low Severity (e.g. Occasional Deauth):</strong> Dashboard UI alert only.</li>
+              <li><strong>Medium Severity (e.g. Port Scan detected):</strong> Dashboard alert + silent Telegram/Discord webhook notification to the admin.</li>
+              <li><strong>Critical Severity (e.g. Rogue AP / Evil Twin / Mass Deauth):</strong> Full physical buzzer activation + flashing LEDs.</li>
+            </ul>
+          </div>
+        </Accordion>
       </div>
     </div>
   );

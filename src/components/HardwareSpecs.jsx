@@ -1,58 +1,72 @@
-import React from 'react';
-import { Cpu, Wifi, Zap, TerminalSquare } from 'lucide-react';
+import React, { useState } from 'react';
+import { Cpu, Wifi, Zap, TerminalSquare, FileCode2 } from 'lucide-react';
+import Accordion from './Accordion';
 
 export default function HardwareSpecs() {
+  const [openSection, setOpenSection] = useState(0);
+  const toggleSection = (idx) => setOpenSection(openSection === idx ? -1 : idx);
+
   return (
-    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md relative overflow-hidden">
+    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md relative overflow-hidden animate-fade-in-up">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink" />
-      <h2 className="text-xl sm:text-3xl font-bold text-cyber-lime mb-6 sm:mb-8 flex items-center gap-2 sm:gap-3">
-        <Cpu className="w-6 sm:w-10 h-6 sm:h-10" /> Hardware: The ESP32 Sensor
-      </h2>
       
-      <div className="space-y-8 text-slate-300 leading-relaxed">
-        <p className="text-base sm:text-lg">
-          At the physical layer of our WIDS lies the <strong>ESP32</strong>. It is not just a microcontroller; it is a highly integrated Wi-Fi and Bluetooth SoC (System on a Chip). For this project, it acts as our dedicated radio frequency packet sniffer.
+      <div className="mb-8">
+        <h2 className="text-xl sm:text-3xl font-bold text-cyber-lime mb-2 flex items-center gap-2 sm:gap-3">
+          <Cpu className="w-6 sm:w-10 h-6 sm:h-10" /> Course 3: Sensor Hardware
+        </h2>
+        <p className="text-slate-400 text-sm sm:text-base">
+          Understanding the ESP32 RF capabilities and how to interface it with our Python backend using PySerial.
         </p>
+      </div>
 
-        <div className="grid md:grid-cols-3 gap-3 sm:gap-6">
-          <div className="bg-slate-900/60 p-3 sm:p-5 rounded-2xl border border-emerald-900/50 hover:border-emerald-500 transition-colors hover:-translate-y-1 transition-all duration-300">
-            <Wifi className="w-6 sm:w-8 h-6 sm:h-8 text-emerald-400 mb-2 sm:mb-3" />
-            <h3 className="font-bold text-white mb-1 sm:mb-2 text-base sm:text-lg">2.4 GHz Band</h3>
-            <p className="text-sm text-slate-400">
-              The ESP32 operates on the 2.4 GHz ISM band, supporting 802.11 b/g/n protocols. It can be tuned to scan specific channels (1 through 11) to intercept management frames.
+      <div className="space-y-2">
+        <Accordion title="3.1 The ESP32 SoC Capabilities" icon={Wifi} isOpen={openSection === 0} onClick={() => toggleSection(0)}>
+          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+            <p>
+              The <strong>ESP32</strong> is a highly integrated Wi-Fi and Bluetooth System on a Chip (SoC). While normally used for IoT projects, we leverage its low-level radio access APIs.
+            </p>
+            <ul className="list-disc pl-5 space-y-2 mt-2">
+              <li><strong>2.4 GHz Band:</strong> Supports 802.11 b/g/n. We program it to aggressively hop channels (1-11) or lock onto a specific channel to sniff management frames.</li>
+              <li><strong>Antenna Specs (dBi):</strong> Standard ESP32 dev boards use a built-in PCB trace antenna (usually ~2 dBi gain). This gives an effective sniffing radius of about 15-20 meters indoors.</li>
+              <li><strong>Offloading:</strong> By using the ESP32 strictly as an RF capture interface, the host computer does not need to drop its own Wi-Fi connection or fight with Windows driver limitations.</li>
+            </ul>
+          </div>
+        </Accordion>
+
+        <Accordion title="3.2 Python Host Integration (PySerial)" icon={FileCode2} isOpen={openSection === 1} onClick={() => toggleSection(1)}>
+          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+            <p>
+              The ESP32 transmits the captured packet metadata as JSON strings over a USB Serial connection at a high baud rate (115200). Our backend uses Python's <code>pyserial</code> library to ingest this data continuously.
+            </p>
+            <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs overflow-x-auto text-slate-300 mt-2">
+              <span className="text-cyber-purple">import</span> serial<br/>
+              <span className="text-cyber-purple">import</span> json<br/>
+              <span className="text-cyber-purple">import</span> time<br/><br/>
+              <span className="text-slate-500"># Open serial connection to the ESP32 sensor</span><br/>
+              sensor = serial.Serial(<span className="text-emerald-400">'COM3'</span>, baudrate=<span className="text-blue-400">115200</span>, timeout=<span className="text-blue-400">1</span>)<br/><br/>
+              <span className="text-cyber-purple">def</span> <span className="text-blue-400">listen_to_sensor</span>():<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">while True</span>:<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">if</span> sensor.in_waiting &gt; <span className="text-blue-400">0</span>:<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_line = sensor.readline().decode(<span className="text-emerald-400">'utf-8'</span>).strip()<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">try</span>:<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;packet = json.loads(raw_line)<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process_wids_packet(packet) <span className="text-slate-500"># Send to anomaly engine</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">except</span> json.JSONDecodeError:<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">pass</span>
+            </div>
+          </div>
+        </Accordion>
+
+        <Accordion title="3.3 Processing the Data Stream" icon={TerminalSquare} isOpen={openSection === 2} onClick={() => toggleSection(2)}>
+          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+            <p>
+              Once the Python backend deserializes the JSON from the ESP32, it receives structured metadata containing the MAC addresses, RSSI (signal strength), and the exact packet subtype.
+            </p>
+            <p>
+              By handling the heavy logic in Python rather than C++ on the ESP32, we can easily integrate advanced tracking algorithms, database storage (like Supabase or SQLite), and real-time dashboard updates via WebSockets.
             </p>
           </div>
-
-          <div className="bg-slate-900/60 p-3 sm:p-5 rounded-2xl border border-blue-900/50 hover:border-blue-500 transition-colors hover:-translate-y-1 transition-all duration-300">
-            <Zap className="w-6 sm:w-8 h-6 sm:h-8 text-blue-400 mb-2 sm:mb-3" />
-            <h3 className="font-bold text-white mb-1 sm:mb-2 text-base sm:text-lg">Low Cost & Low Power</h3>
-            <p className="text-sm text-slate-400">
-              Unlike enterprise routers, the ESP32 costs only a few dollars and consumes very little power. This makes it feasible to deploy multiple sensors across an office to monitor different overlapping channels simultaneously.
-            </p>
-          </div>
-
-          <div className="bg-slate-900/60 p-3 sm:p-5 rounded-2xl border border-purple-900/50 hover:border-purple-500 transition-colors hover:-translate-y-1 transition-all duration-300">
-            <TerminalSquare className="w-6 sm:w-8 h-6 sm:h-8 text-purple-400 mb-2 sm:mb-3" />
-            <h3 className="font-bold text-white mb-1 sm:mb-2 text-base sm:text-lg">Serial Output</h3>
-            <p className="text-sm text-slate-400">
-              The ESP32 does not process the attacks itself. It strips the 802.11 frames down to their raw hex values and streams them over a USB Serial connection to the host Python/Node.js engine for heavy analysis.
-            </p>
-          </div>
-        </div>
-
-        <div className="w-16 h-0.5 bg-gradient-to-r from-cyber-lime to-transparent mx-auto" />
-
-        <section className="bg-slate-900/80 p-4 sm:p-6 rounded-2xl border border-slate-700 mt-6 sm:mt-8">
-          <h3 className="text-base sm:text-xl font-bold text-white mb-3 sm:mb-4">Why not just use the laptop's Wi-Fi card?</h3>
-          <p className="text-sm sm:text-base mb-3 sm:mb-4">
-            You might wonder why we need an external ESP32 when the host computer already has Wi-Fi. 
-          </p>
-          <ul className="list-disc pl-4 sm:pl-5 space-y-1.5 sm:space-y-2 text-sm sm:text-base text-slate-400">
-            <li><strong>Driver Limitations:</strong> Most consumer laptop Wi-Fi drivers, especially on Windows, heavily restrict or completely block Promiscuous Mode/Monitor Mode.</li>
-            <li><strong>Connection Dropping:</strong> If a Wi-Fi card is put into Monitor Mode, it usually cannot connect to the internet at the same time. The host would lose connectivity.</li>
-            <li><strong>Hardware Offloading:</strong> Offloading the sniffing to the ESP32 frees up the host computer's resources and provides a dedicated, predictable data stream.</li>
-          </ul>
-        </section>
+        </Accordion>
       </div>
     </div>
   );
