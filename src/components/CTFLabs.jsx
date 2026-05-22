@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Flag, Terminal, CheckCircle2, XCircle, Radio, WifiOff, ShieldAlert, MonitorPlay, Clock, Hash, Search } from 'lucide-react';
+import { Flag, Terminal, CheckCircle2, XCircle, Radio, WifiOff, ShieldAlert, MonitorPlay, Clock, Hash, Search, Lock, Key } from 'lucide-react';
 
 const STORAGE_KEY = 'wids_ctf_score';
 
@@ -161,6 +161,31 @@ const CHALLENGES = [
       { value: 'deauth2', label: 'Deauthentication Flood (DoS)', hint: 'Correct! A massive burst of Deauth frames from one MAC to all clients is a classic Wi-Fi Denial-of-Service attack. It disrupts all connections in the area.', correct: true },
       { value: 'macspoof', label: 'MAC Spoofing', hint: 'MAC spoofing impersonates a trusted device using QoS Data frames, not Deauth frames.', correct: false }
     ]
+  },
+  {
+    id: 'eviltwin',
+    icon: WifiOff,
+    color: 'emerald',
+    title: 'Rogue AP Detection',
+    subtitle: 'Identify the Evil Twin Access Point mimicking the corporate network.',
+    flag: 'bssid',
+    maxScore: 100,
+    question: (
+      <div className="space-y-4">
+        <p>A WIDS alert fired for a suspected <strong>Evil Twin</strong> attack. The corporate network broadcasts the SSID <code>CORP-WIFI</code>.</p>
+        <div className="bg-[#0D1117] border border-slate-600 rounded font-mono text-xs sm:text-sm leading-relaxed p-2 sm:p-4 shadow-inner overflow-x-auto">
+          <div className="text-slate-400">SSID: CORP-WIFI | BSSID: <span className="text-emerald-400">AA:11:22:33:44:55</span> | Ch: 6 | Crypto: WPA3</div>
+          <div className="text-slate-400">SSID: CORP-WIFI | BSSID: <span className="text-emerald-400">AA:11:22:33:44:56</span> | Ch: 1 | Crypto: WPA3</div>
+          <div className="text-slate-400">SSID: CORP-WIFI | BSSID: <span className="text-red-400">FF:EE:DD:CC:BB:AA</span> | Ch: 11 | Crypto: OPN</div>
+        </div>
+        <p className="font-bold text-white">Why does the WIDS flag the third AP as a Rogue/Evil Twin?</p>
+      </div>
+    ),
+    options: [
+      { value: 'channel', label: 'It is on Channel 11', hint: 'Enterprise networks often use multiple channels simultaneously. That alone is not malicious.', correct: false },
+      { value: 'bssid', label: 'Its encryption dropped to OPN (Open)', hint: 'Correct! An Evil Twin often uses an open network to trick devices into connecting without needing the real password.', correct: true },
+      { value: 'ssid', label: 'The BSSID format is backward', hint: 'BSSIDs are just MAC addresses. The sequence of letters does not make it malicious.', correct: false }
+    ]
   }
 ];
 
@@ -188,21 +213,35 @@ const COLOR_MAP = {
   red: { bar: 'bg-cyber-pink', iconBg: 'bg-cyber-pink/10', iconBorder: 'border-cyber-pink/30', iconText: 'text-cyber-pink', gradient: 'from-cyber-pink to-red-500' }
 };
 
-function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, score, setScore, allCompleted }) {
+function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isLocked, score, setScore, allCompleted }) {
   const [selection, setSelection] = useState(null);
   const [textValue, setTextValue] = useState('');
   const [submitAttempts, setSubmitAttempts] = useState(0);
+  const [hintRevealed, setHintRevealed] = useState(false);
   // Guard: ensure captureFlag only fires once per card, even under rapid clicks
   const flagCaptured = React.useRef(false);
 
   const Icon = challenge.icon;
   const c = COLOR_MAP[challenge.color] || COLOR_MAP.emerald;
 
+  if (isLocked) {
+    return (
+      <div className="glass-card rounded-xl p-6 relative overflow-hidden opacity-50 grayscale transition-all flex items-center justify-center min-h-[120px]">
+        <div className="absolute top-0 left-0 w-1.5 h-full bg-slate-700" />
+        <div className="flex flex-col items-center gap-2 text-slate-500">
+          <Lock className="w-8 h-8 mb-1" />
+          <p className="font-bold text-sm tracking-widest uppercase">Challenge Locked</p>
+          <p className="text-xs">Complete previous flags to decrypt</p>
+        </div>
+      </div>
+    );
+  }
+
   const captureFlag = () => {
     if (flagCaptured.current || isCompleted) return; // prevent double-scoring
     flagCaptured.current = true;
-    const deduction = submitAttempts * 20;
-    const earned = Math.max(20, challenge.maxScore - deduction);
+    const penalty = (submitAttempts * 20) + (hintRevealed ? 10 : 0);
+    const earned = Math.max(10, challenge.maxScore - penalty);
     setScore(prev => prev + earned);
     onComplete(challenge.id);
   };
@@ -256,6 +295,14 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, sco
 
       {challenge.question}
 
+      {!isCompleted && !hintRevealed && (
+        <div className="mt-4">
+          <button onClick={() => setHintRevealed(true)} className="text-xs font-bold text-cyber-orange hover:text-white flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-cyber-orange/10 border border-cyber-orange/20 hover:bg-cyber-orange/20 transition-colors">
+            <Key className="w-3.5 h-3.5" /> Decrypt Hint (-10 pts)
+          </button>
+        </div>
+      )}
+
       {challenge.options && (
         <div className="mt-5 space-y-2">
           {challenge.options.map(opt => {
@@ -282,7 +329,7 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, sco
                 }`}>{isCorrect ? '✓' : isWrong ? '✗' : ''}</span>
                 <div>
                   <span className={isCorrect || (isRevealed && opt.correct) ? 'text-emerald-300' : isWrong ? 'text-red-200' : 'text-slate-200'}>{opt.label}</span>
-                  {isRevealed && <p className={`text-xs sm:text-sm mt-1 sm:mt-2 ${opt.correct ? 'text-emerald-400' : 'text-slate-400'}`}>{opt.hint}</p>}
+                  {(isRevealed || (hintRevealed && opt.correct)) && <p className={`text-xs sm:text-sm mt-1 sm:mt-2 ${opt.correct ? 'text-emerald-400' : 'text-slate-400'}`}>{opt.hint}</p>}
                 </div>
               </button>
             );
@@ -309,15 +356,21 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, sco
               <XCircle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
               <div>
                 <p className="text-sm sm:text-base text-red-200 font-bold">Incorrect flag (-20 pts)</p>
-                <p className="text-xs sm:text-sm text-red-300 mt-1">Hint: Look for the byte highlighted in <span className="text-blue-300">blue</span> in the hex dump above. The Frame Control byte uses hex digits (0-9, A-F).</p>
+                <p className="text-xs sm:text-sm text-red-300 mt-1">Hint: Review the provided documentation or previous successful steps.</p>
               </div>
             </div>
+          )}
+          {hintRevealed && submitAttempts === 0 && (
+             <div className="mt-3 p-3 bg-cyber-orange/10 border border-cyber-orange/30 rounded flex items-start gap-2">
+               <Key className="w-4 h-4 text-cyber-orange mt-0.5 flex-shrink-0" />
+               <p className="text-sm text-cyber-orange">Hint: Review the highlighted text or key values explicitly mentioned in the question prompt.</p>
+             </div>
           )}
           {challenge.answer(textValue) && (
             <div className="mt-3 p-3 bg-emerald-900/30 border border-emerald-500/50 rounded flex items-start gap-2 animate-pulse">
               <CheckCircle2 className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
               <div>
-                <p className="text-sm text-emerald-200"><strong className="text-emerald-400">Flag captured! +{Math.max(20, challenge.maxScore - submitAttempts * 20)}pts</strong> The hex code <code className="bg-slate-800 px-1 rounded text-white">0xC0</code> decodes as: Type=00 (Management), Subtype=1100 (12 = Deauth).</p>
+                <p className="text-sm text-emerald-200"><strong className="text-emerald-400">Flag captured! +{Math.max(10, challenge.maxScore - (submitAttempts * 20) - (hintRevealed ? 10 : 0))}pts</strong></p>
               </div>
             </div>
           )}
@@ -328,9 +381,21 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, sco
 }
 
 function ScoreBoard({ score, totalPossible, elapsed }) {
+  const [animate, setAnimate] = useState(false);
+  const prevScore = React.useRef(score);
+
+  useEffect(() => {
+    if (score > prevScore.current) {
+      setAnimate(true);
+      const timer = setTimeout(() => setAnimate(false), 500);
+      prevScore.current = score;
+      return () => clearTimeout(timer);
+    }
+  }, [score]);
+
   return (
     <div className="flex flex-wrap items-center gap-6 text-sm">
-      <div className="flex items-center gap-2">
+      <div className={`flex items-center gap-2 transition-all duration-300 ${animate ? 'scale-125 text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]' : ''}`}>
         <Flag className="w-4 h-4 text-cyber-lime" />
         <span className="text-slate-400">Score:</span>
         <span className="text-white font-extrabold font-mono text-lg">{score}</span>
@@ -431,17 +496,23 @@ export default function CTFLabs() {
         <ProgressBar completed={completed.length} total={CHALLENGES.length} />
 
         <div className="space-y-6">
-          {CHALLENGES.map((challenge, i) => (
-            <ChallengeCard
-              key={challenge.id}
-              challenge={challenge}
-              challengeIndex={i}
-              onComplete={handleComplete}
-              isCompleted={completed.includes(challenge.id)}
-              score={score}
-              setScore={setScore}
-            />
-          ))}
+          {CHALLENGES.map((challenge, i) => {
+            const isCompleted = completed.includes(challenge.id);
+            const isLocked = i > 0 && !completed.includes(CHALLENGES[i-1].id);
+            
+            return (
+              <ChallengeCard
+                key={challenge.id}
+                challenge={challenge}
+                challengeIndex={i}
+                onComplete={handleComplete}
+                isCompleted={isCompleted}
+                isLocked={isLocked}
+                score={score}
+                setScore={setScore}
+              />
+            );
+          })}
         </div>
 
         {completed.length === CHALLENGES.length && (
