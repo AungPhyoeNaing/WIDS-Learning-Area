@@ -1,8 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from '../lib/supabase';
-import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network, X, Image as ImageIcon, Upload, Eye } from 'lucide-react';
+import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network, X, Image as ImageIcon, Upload, Eye, Cpu, FileCode2, ShieldAlert } from 'lucide-react';
 import { useProfile } from '../contexts/ProfileContext';
+
+const FEED_CATEGORIES = [
+  { id: '📡 RF & Hardware', label: 'RF & Hardware', colorClass: 'text-cyber-lime', borderClass: 'border-cyber-lime/40', glowClass: 'shadow-[0_0_15px_rgba(163,230,53,0.15)]', bgGradient: 'from-cyber-lime/10 to-transparent' },
+  { id: '🔒 Protocol Security', label: 'Protocol Security', colorClass: 'text-cyber-purple', borderClass: 'border-cyber-purple/40', glowClass: 'shadow-[0_0_15px_rgba(168,85,247,0.15)]', bgGradient: 'from-cyber-purple/10 to-transparent' },
+  { id: '💻 Code & Logic', label: 'Code & Logic', colorClass: 'text-cyber-cyan', borderClass: 'border-cyber-cyan/40', glowClass: 'shadow-[0_0_15px_rgba(0,240,255,0.15)]', bgGradient: 'from-cyber-cyan/10 to-transparent' },
+  { id: '⚔️ Attack / Defense', label: 'Attack / Defense', colorClass: 'text-red-500', borderClass: 'border-red-500/40', glowClass: 'shadow-[0_0_15px_rgba(239,68,68,0.15)]', bgGradient: 'from-red-500/10 to-transparent' },
+  { id: '💡 General Insight', label: 'General Insight', colorClass: 'text-amber-500', borderClass: 'border-amber-500/40', glowClass: 'shadow-[0_0_15px_rgba(245,158,11,0.15)]', bgGradient: 'from-amber-500/10 to-transparent' }
+];
+
+const FILTER_CATEGORIES = [
+  { id: 'all', label: 'All Knowledge', colorClass: 'text-white', borderClass: 'border-slate-500' },
+  ...FEED_CATEGORIES
+];
 
 export default function TeamyFeed() {
   const { activeProfile, activeProfileId } = useProfile();
@@ -14,6 +27,8 @@ export default function TeamyFeed() {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [image, setImage] = useState(null);
+  const [postCategory, setPostCategory] = useState('💡 General Insight');
+  const [activeFilter, setActiveFilter] = useState('all');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPost, setSelectedPost] = useState(null);
@@ -22,20 +37,28 @@ export default function TeamyFeed() {
   const [hasMore, setHasMore] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
+  const activeFilterRef = useRef(activeFilter);
+  useEffect(() => { activeFilterRef.current = activeFilter; }, [activeFilter]);
+
   const fetchPosts = useCallback(async () => {
     setIsLoading(true);
-    const { data, error } = await supabase
+    let query = supabase
       .from('posts')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(POSTS_PER_PAGE);
+
+    if (activeFilter !== 'all') {
+      query = query.eq('category', activeFilter);
+    }
     
+    const { data, error } = await query;
     if (!error && data) {
       setPosts(data);
       setHasMore(data.length === POSTS_PER_PAGE);
     }
     setIsLoading(false);
-  }, []);
+  }, [activeFilter]);
 
   const loadMore = async () => {
     if (isFetchingMore || !hasMore || posts.length === 0) return;
@@ -44,16 +67,9 @@ export default function TeamyFeed() {
     // Use the created_at of the last currently loaded post as the cursor
     const lastPostDate = posts[posts.length - 1].created_at;
 
-    const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .lt('created_at', lastPostDate)
-      .order('created_at', { ascending: false })
-      .limit(POSTS_PER_PAGE);
-
+    const { data, error } = await query;
     if (!error && data) {
       setPosts(prev => {
-        // Filter out any duplicates that might have trickled in via realtime
         const newPosts = data.filter(d => !prev.some(p => p.id === d.id));
         return [...prev, ...newPosts];
       });
@@ -68,7 +84,12 @@ export default function TeamyFeed() {
     const channel = supabase
       .channel('public:posts')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, (payload) => {
-        setPosts((currentPosts) => [payload.new, ...currentPosts]);
+        setPosts((currentPosts) => {
+          if (activeFilterRef.current !== 'all' && payload.new.category !== activeFilterRef.current) {
+            return currentPosts;
+          }
+          return [payload.new, ...currentPosts];
+        });
       })
       .subscribe();
 
@@ -114,12 +135,13 @@ export default function TeamyFeed() {
 
     const { error } = await supabase
       .from('posts')
-      .insert([{ title: title.trim(), body: body.trim(), image_url: imageUrl, author: activeProfile.nickname }]);
+      .insert([{ title: title.trim(), body: body.trim(), image_url: imageUrl, author: activeProfile.nickname, category: postCategory }]);
 
     if (!error) {
       setTitle('');
       setBody('');
       setImage(null);
+      setPostCategory('💡 General Insight');
     } else {
       console.error("Error submitting post:", error);
       alert("Failed to submit post.");
@@ -151,6 +173,24 @@ export default function TeamyFeed() {
 
   return (
     <div className="max-w-7xl mx-auto pb-12 relative w-full animate-fade-in-up">
+      
+      {/* Category Filter Bar */}
+      <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-6 p-2 glass-card rounded-2xl border border-slate-800">
+        {FILTER_CATEGORIES.map(cat => (
+          <button
+            key={cat.id}
+            onClick={() => setActiveFilter(cat.id)}
+            className={`whitespace-nowrap px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+              activeFilter === cat.id 
+                ? `bg-slate-800 ${cat.colorClass} ${cat.borderClass} border shadow-lg` 
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/50 border border-transparent'
+            }`}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-auto grid-flow-dense">
 
         <div className="glass-card p-3 sm:p-8 rounded-3xl col-span-1 md:col-span-2 lg:col-span-2 border border-slate-800 shadow-2xl relative overflow-hidden group flex flex-col justify-between">
@@ -166,16 +206,35 @@ export default function TeamyFeed() {
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 gap-4">
-              <div>
-                <label className="block text-xs sm:text-sm font-mono text-slate-400 mb-1.5 ml-1">Highlight Title</label>
-                <input 
-                  type="text" 
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="E.g., Bypassing MAC filtering..."
-                  className="w-full bg-slate-950/50 border border-slate-800 focus:border-cyber-cyan text-white p-3.5 rounded-2xl outline-none transition-all placeholder-slate-700 text-base"
-                  required
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs sm:text-sm font-mono text-slate-400 mb-1.5 ml-1">Highlight Title</label>
+                  <input 
+                    type="text" 
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="E.g., Bypassing MAC filtering..."
+                    className="w-full bg-slate-950/50 border border-slate-800 focus:border-cyber-cyan text-white p-3.5 rounded-2xl outline-none transition-all placeholder-slate-700 text-base"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs sm:text-sm font-mono text-slate-400 mb-1.5 ml-1">Knowledge Category</label>
+                  <div className="relative">
+                    <select
+                      value={postCategory}
+                      onChange={(e) => setPostCategory(e.target.value)}
+                      className="w-full bg-slate-950/50 border border-slate-800 focus:border-cyber-cyan text-white p-3.5 rounded-2xl outline-none transition-all text-base appearance-none cursor-pointer"
+                    >
+                      {FEED_CATEGORIES.map(cat => (
+                        <option key={cat.id} value={cat.id}>{cat.id}</option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div>
                 <label className="block text-xs sm:text-sm font-mono text-slate-400 mb-1.5 ml-1">Main Text Body</label>
@@ -232,36 +291,41 @@ export default function TeamyFeed() {
             No knowledge shared yet. Be the first to add a node to the network!
           </div>
         ) : (
-          posts.map((post, index) => (
-            <div 
-              key={post.id} 
-              onClick={() => { setSelectedPost(post); markAsRead(post.id); }}
-              className={`glass-card p-3 sm:p-8 rounded-3xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl flex flex-col group/card cursor-pointer ${getBentoSpan(index)} animate-slide-up overflow-hidden relative`}
-              style={{ animationDelay: `${index * 50}ms` }}
-            >
-              {post.image_url && <img src={post.image_url} className="w-full h-40 object-cover mb-4 rounded-xl" alt={`Image for: ${post.title}`} />}
-              {!readPosts.includes(post.id) && (
-                <span className="absolute top-3 right-3 text-[9px] font-bold uppercase tracking-wider text-cyber-cyan bg-cyber-cyan/15 px-2 py-0.5 rounded-full border border-cyber-cyan/30 animate-pulse">New</span>
-              )}
-              <div>
-                <h4 className="text-lg sm:text-xl font-bold text-white mb-3 group-hover/card:text-white transition-colors flex items-start gap-2 break-words">
-                  <span className="text-cyber-cyan mt-1 shrink-0">•</span>
-                  <span className="line-clamp-2">{post.title}</span>
-                </h4>
-                <p className="text-slate-400 text-sm sm:text-base leading-relaxed whitespace-pre-wrap line-clamp-4 break-words">{post.body}</p>
-              </div>
-              <div className="mt-6 sm:mt-8 flex items-center justify-between gap-2 text-xs sm:text-sm text-slate-500 font-mono border-t border-slate-800/60 pt-4">
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  {post.author && (
-                    <span className="text-xs font-bold text-cyber-purple">{post.author}</span>
-                  )}
-                  <Clock size={14} className="text-cyber-pink/70 shrink-0" />
-                  <span>{formatDate(post.created_at)}</span>
+          posts.map((post, index) => {
+            const catConfig = FEED_CATEGORIES.find(c => c.id === post.category) || FEED_CATEGORIES[4];
+            return (
+              <div 
+                key={post.id} 
+                onClick={() => { setSelectedPost(post); markAsRead(post.id); }}
+                className={`glass-card p-3 sm:p-8 rounded-3xl transition-all duration-500 hover:-translate-y-1 flex flex-col group/card cursor-pointer ${getBentoSpan(index)} animate-slide-up overflow-hidden relative border ${catConfig.borderClass} hover:${catConfig.glowClass} bg-gradient-to-br ${catConfig.bgGradient}`}
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                {post.image_url && <img src={post.image_url} className="w-full h-40 object-cover mb-4 rounded-xl border border-slate-800/50" alt={`Image for: ${post.title}`} />}
+                {!readPosts.includes(post.id) && (
+                  <span className={`absolute top-3 right-3 text-[9px] font-bold uppercase tracking-wider ${catConfig.colorClass} bg-slate-900/80 px-2 py-0.5 rounded-full border ${catConfig.borderClass} animate-pulse shadow-lg`}>New</span>
+                )}
+                <div className="mb-2">
+                  <span className={`text-[10px] sm:text-xs font-mono uppercase tracking-widest ${catConfig.colorClass} opacity-80`}>{post.category || '💡 General Insight'}</span>
                 </div>
-                <span className="text-cyber-cyan/0 group-hover/card:text-cyber-cyan/100 transition-colors font-sans font-bold whitespace-nowrap">Read full &rarr;</span>
+                <div>
+                  <h4 className="text-lg sm:text-xl font-bold text-white mb-3 group-hover/card:text-white transition-colors flex items-start gap-2 break-words">
+                    <span className="line-clamp-2">{post.title}</span>
+                  </h4>
+                  <p className="text-slate-400 text-sm sm:text-base leading-relaxed whitespace-pre-wrap line-clamp-4 break-words">{post.body}</p>
+                </div>
+                <div className="mt-6 sm:mt-8 flex items-center justify-between gap-2 text-xs sm:text-sm text-slate-500 font-mono border-t border-slate-800/60 pt-4">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    {post.author && (
+                      <span className="text-xs font-bold text-cyber-purple">{post.author}</span>
+                    )}
+                    <Clock size={14} className="text-cyber-pink/70 shrink-0" />
+                    <span>{formatDate(post.created_at)}</span>
+                  </div>
+                  <span className={`${catConfig.colorClass} opacity-0 group-hover/card:opacity-100 transition-opacity font-sans font-bold whitespace-nowrap`}>Read full &rarr;</span>
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
 
       </div>
@@ -303,11 +367,13 @@ export default function TeamyFeed() {
             {/* Modal Header */}
             <div className="flex justify-between items-start p-6 sm:p-8 border-b border-slate-800/60 shrink-0 bg-slate-900/80 backdrop-blur-md z-10">
               <div className="pr-12">
-                <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight flex items-start gap-2 break-words">
-                  <span className="text-cyber-cyan mt-1.5 shrink-0 block w-2 h-2 rounded-full bg-cyber-cyan shadow-[0_0_8px_rgba(0,240,255,0.8)]"></span>
+                <div className="mb-2">
+                  <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-slate-400 border border-slate-700 px-2 py-1 rounded-md bg-slate-950/50">{selectedPost.category || '💡 General Insight'}</span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight break-words mt-1">
                   {selectedPost.title}
                 </h3>
-                <div className="flex items-center gap-2 mt-2 text-xs sm:text-sm text-slate-500 font-mono">
+                <div className="flex items-center gap-2 mt-3 text-xs sm:text-sm text-slate-500 font-mono">
                   <Clock size={12} className="text-cyber-pink/70 shrink-0" />
                   <span>{formatDate(selectedPost.created_at)}</span>
                 </div>
