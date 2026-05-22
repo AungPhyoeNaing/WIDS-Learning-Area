@@ -5,11 +5,11 @@ import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network, X
 import { useProfile } from '../contexts/ProfileContext';
 
 const FEED_CATEGORIES = [
-  { id: '📡 RF & Hardware', label: 'RF & Hardware', colorClass: 'text-cyber-lime', borderClass: 'border-cyber-lime/60', glowClass: 'shadow-[0_0_15px_rgba(163,230,53,0.3)]', bgGradient: 'from-cyber-lime/10 to-transparent' },
-  { id: '🔒 Protocol Security', label: 'Protocol Security', colorClass: 'text-cyber-purple', borderClass: 'border-cyber-purple/60', glowClass: 'shadow-[0_0_15px_rgba(168,85,247,0.3)]', bgGradient: 'from-cyber-purple/10 to-transparent' },
-  { id: '💻 Code & Logic', label: 'Code & Logic', colorClass: 'text-cyber-cyan', borderClass: 'border-cyber-cyan/60', glowClass: 'shadow-[0_0_15px_rgba(0,240,255,0.3)]', bgGradient: 'from-cyber-cyan/10 to-transparent' },
-  { id: '⚔️ Attack / Defense', label: 'Attack / Defense', colorClass: 'text-red-500', borderClass: 'border-red-500/60', glowClass: 'shadow-[0_0_15px_rgba(239,68,68,0.3)]', bgGradient: 'from-red-500/10 to-transparent' },
-  { id: '💡 General Insight', label: 'General Insight', colorClass: 'text-amber-500', borderClass: 'border-amber-500/60', glowClass: 'shadow-[0_0_15px_rgba(245,158,11,0.3)]', bgGradient: 'from-amber-500/10 to-transparent' }
+  { id: '📡 RF & Hardware', label: 'RF & Hardware', colorClass: 'text-cyber-lime', borderClass: '!border-lime-400/60', glowClass: 'shadow-[0_0_15px_rgba(163,230,53,0.3)]', bgGradient: 'from-lime-400/10 to-transparent' },
+  { id: '🔒 Protocol Security', label: 'Protocol Security', colorClass: 'text-cyber-purple', borderClass: '!border-purple-500/60', glowClass: 'shadow-[0_0_15px_rgba(168,85,247,0.3)]', bgGradient: 'from-purple-500/10 to-transparent' },
+  { id: '💻 Code & Logic', label: 'Code & Logic', colorClass: 'text-cyber-cyan', borderClass: '!border-cyan-400/60', glowClass: 'shadow-[0_0_15px_rgba(0,240,255,0.3)]', bgGradient: 'from-cyan-400/10 to-transparent' },
+  { id: '⚔️ Attack / Defense', label: 'Attack / Defense', colorClass: 'text-red-500', borderClass: '!border-red-500/60', glowClass: 'shadow-[0_0_15px_rgba(239,68,68,0.3)]', bgGradient: 'from-red-500/10 to-transparent' },
+  { id: '💡 General Insight', label: 'General Insight', colorClass: 'text-amber-500', borderClass: '!border-amber-500/60', glowClass: 'shadow-[0_0_15px_rgba(245,158,11,0.3)]', bgGradient: 'from-amber-500/10 to-transparent' }
 ];
 
 const FILTER_CATEGORIES = [
@@ -66,6 +66,17 @@ export default function TeamyFeed() {
     
     // Use the created_at of the last currently loaded post as the cursor
     const lastPostDate = posts[posts.length - 1].created_at;
+
+    let query = supabase
+      .from('posts')
+      .select('*')
+      .lt('created_at', lastPostDate)
+      .order('created_at', { ascending: false })
+      .limit(POSTS_PER_PAGE);
+
+    if (activeFilter !== 'all') {
+      query = query.eq('category', activeFilter);
+    }
 
     const { data, error } = await query;
     if (!error && data) {
