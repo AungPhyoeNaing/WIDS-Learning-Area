@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from '../lib/supabase';
 import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network, X, Image as ImageIcon, Upload, Eye, Cpu, FileCode2, ShieldAlert } from 'lucide-react';
-import { useProfile } from '../contexts/ProfileContext';
+import { useProfile, PROFILES } from '../contexts/ProfileContext';
 
 const FEED_CATEGORIES = [
   { id: '📡 RF & Hardware', label: 'RF & Hardware', colorClass: 'text-cyber-lime', borderClass: '!border-lime-400/60', glowClass: 'shadow-[0_0_15px_rgba(163,230,53,0.3)]', bgGradient: 'from-lime-400/10 to-transparent' },
@@ -18,7 +18,7 @@ const FILTER_CATEGORIES = [
 ];
 
 export default function TeamyFeed() {
-  const { activeProfile, activeProfileId } = useProfile();
+  const { activeProfile, activeProfileId, addScore, userScores } = useProfile();
   const [posts, setPosts] = useState([]);
   const [readPosts, setReadPosts] = useState(() => {
     try { return JSON.parse(localStorage.getItem(`wids_read_posts_${activeProfileId}`)) || []; }
@@ -153,6 +153,7 @@ export default function TeamyFeed() {
       setBody('');
       setImage(null);
       setPostCategory('💡 General Insight');
+      if (addScore) addScore('post');
     } else {
       console.error("Error submitting post:", error);
       alert("Failed to submit post.");
@@ -279,18 +280,33 @@ export default function TeamyFeed() {
           </form>
         </div>
 
-        <div className="glass-card p-3 sm:p-8 rounded-3xl col-span-1 md:col-span-2 lg:col-span-1 border border-slate-800 shadow-xl bg-gradient-to-br from-slate-900 to-slate-800/50 flex flex-col justify-center items-center text-center relative overflow-hidden group min-h-[160px]">
-          <div className="absolute -right-8 -bottom-8 opacity-5 group-hover:opacity-10 transition-opacity duration-700 text-cyber-purple">
-            <Network size={160} />
+        <div className="glass-card p-4 sm:p-6 rounded-3xl col-span-1 md:col-span-2 lg:col-span-1 border border-slate-800 shadow-xl bg-gradient-to-br from-slate-900 to-slate-800/50 flex flex-col relative overflow-hidden group min-h-[160px]">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-sm font-bold text-amber-400 uppercase tracking-widest flex items-center gap-2">
+              🏆 Top Researchers
+            </h3>
           </div>
-          <div className="p-3 sm:p-4 rounded-full bg-slate-950/50 border border-slate-800 mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-500 shadow-[0_0_20px_rgba(0,240,255,0.1)]">
-            <Database className="text-cyber-cyan w-6 h-6 sm:w-8 sm:h-8 animate-pulse" />
+          <div className="flex-1 overflow-y-auto space-y-2 custom-scrollbar">
+            {Object.entries(userScores || {})
+              .map(([id, data]) => ({ id, profile: PROFILES.find(p => p.id === id), score: data.totalScore }))
+              .filter(entry => entry.score > 0)
+              .sort((a, b) => b.score - a.score)
+              .slice(0, 5)
+              .map((entry, idx) => (
+                <div key={entry.id} className="flex items-center justify-between p-2 rounded-lg bg-slate-950/40 border border-slate-800/50">
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-bold w-4 text-center ${idx === 0 ? 'text-amber-400' : idx === 1 ? 'text-slate-300' : idx === 2 ? 'text-amber-700' : 'text-slate-600'}`}>
+                      {idx + 1}
+                    </span>
+                    <span className={`text-xs font-bold ${entry.profile?.color || 'text-white'}`}>{entry.profile?.nickname || entry.id}</span>
+                  </div>
+                  <span className="text-xs font-mono text-cyber-lime font-bold">{entry.score} XP</span>
+                </div>
+            ))}
+            {Object.keys(userScores || {}).filter(k => userScores[k].totalScore > 0).length === 0 && (
+              <p className="text-xs text-slate-500 italic text-center mt-4">No scores recorded yet. Earn XP to rank up!</p>
+            )}
           </div>
-          <h3 className="text-4xl sm:text-5xl font-black text-white tracking-tighter mb-2">{posts.length}</h3>
-          <p className="text-xs sm:text-sm text-slate-400 font-mono uppercase tracking-[0.2em] flex items-center justify-center gap-1.5">
-            <Sparkles size={12} className="text-cyber-pink shrink-0" />
-            Knowledge Nodes
-          </p>
         </div>
 
         {isLoading ? (

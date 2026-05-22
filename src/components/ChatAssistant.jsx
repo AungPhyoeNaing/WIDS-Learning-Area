@@ -124,7 +124,7 @@ function CopyButton({ text }) {
 
 // ─── Main component ────────────────────────────────────────────
 export default function ChatAssistant() {
-  const { activeProfile: globalProfile, activeProfileId, setActiveProfile: setGlobalProfile, profiles } = useProfile();
+  const { activeProfile: globalProfile, activeProfileId, setActiveProfile: setGlobalProfile, profiles, addScore } = useProfile();
   const [isOpen, setIsOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [userApiKeys, setUserApiKeys] = useState({});
@@ -214,6 +214,7 @@ export default function ChatAssistant() {
     const newMessages = [...messages, { role: 'user', text: userText }];
     setMessages(newMessages);
     setIsStreaming(true);
+    if (addScore) addScore('chat');
 
     const activeKey = userApiKeys[activeProfileId];
     if (!activeKey) {

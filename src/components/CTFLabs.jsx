@@ -214,7 +214,7 @@ const COLOR_MAP = {
   red: { bar: 'bg-cyber-pink', iconBg: 'bg-cyber-pink/10', iconBorder: 'border-cyber-pink/30', iconText: 'text-cyber-pink', gradient: 'from-cyber-pink to-red-500' }
 };
 
-function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isLocked, score, setScore, allCompleted }) {
+function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isLocked, score, setScore, allCompleted, addScore }) {
   const [selection, setSelection] = useState(null);
   const [textValue, setTextValue] = useState('');
   const [submitAttempts, setSubmitAttempts] = useState(0);
@@ -245,6 +245,7 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
     const earned = Math.max(10, challenge.maxScore - penalty);
     setScore(prev => prev + earned);
     onComplete(challenge.id);
+    if (addScore) addScore('ctf');
   };
 
   if (isCompleted) {
@@ -437,7 +438,7 @@ function CompletionBanner({ score, totalPossible, onReset }) {
 }
 
 export default function CTFLabs() {
-  const { activeProfileId } = useProfile();
+  const { activeProfileId, addScore } = useProfile();
   const [completed, setCompleted] = useState(() => loadScore(activeProfileId).completed);
   const [score, setScore] = useState(() => loadScore(activeProfileId).score);
   const [startTime, setStartTime] = useState(() => loadScore(activeProfileId).startTime);
@@ -513,6 +514,7 @@ export default function CTFLabs() {
                 isLocked={isLocked}
                 score={score}
                 setScore={setScore}
+                addScore={addScore}
               />
             );
           })}

@@ -53,7 +53,7 @@ function ViewWrapper({ children }) {
 }
 
 export default function App() {
-  const { isProfileSelected, activeProfile, clearProfile } = useProfile();
+  const { isProfileSelected, activeProfile, activeProfileId, clearProfile, userScores } = useProfile();
   const [activeView, setActiveView] = useState(() => localStorage.getItem('wids_view') || 'simulation');
   const [isAttackActive, setIsAttackActive] = useState(false);
   const [attackType, setAttackType] = useState(null);
@@ -149,6 +149,12 @@ export default function App() {
 
                 {/* Profile indicator + switch */}
                 <div className="flex items-center gap-2 ml-2 pl-3 border-l border-slate-800">
+                  {/* XP Badge */}
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400" title="Study Score XP">
+                    <span className="text-sm">🏆</span>
+                    <span className="text-xs font-bold font-mono">{userScores[activeProfileId]?.totalScore || 0}</span>
+                  </div>
+
                   <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg ${activeProfile.bg} border ${activeProfile.border}`}>
                     <ProfileIcon className={`w-3.5 h-3.5 ${activeProfile.color}`} />
                     <span className={`text-xs font-bold ${activeProfile.color}`}>{activeProfile.nickname}</span>
@@ -175,13 +181,19 @@ export default function App() {
             <div className="md:hidden border-t border-slate-800/50 bg-slate-950/90 backdrop-blur-xl">
               <div className="px-3 sm:px-4 py-2 sm:py-3 space-y-1">
                 {/* Mobile profile indicator */}
-                <div className={`flex items-center justify-between px-3 sm:px-4 py-3 rounded-lg ${activeProfile.bg} border ${activeProfile.border} mb-2`}>
-                  <div className="flex items-center gap-2">
-                    <ProfileIcon className={`w-4 h-4 ${activeProfile.color}`} />
-                    <span className={`text-sm font-bold ${activeProfile.color}`}>{activeProfile.nickname}</span>
-                    {activeProfile.role === 'supervisor' && <span className="text-[9px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full font-bold">SUP</span>}
+                <div className="flex flex-col gap-2 mb-2">
+                  <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400">
+                    <span className="text-xs font-bold uppercase tracking-wider">Study Score</span>
+                    <span className="text-sm font-bold font-mono flex items-center gap-1.5"><span className="text-base">🏆</span> {userScores[activeProfileId]?.totalScore || 0} XP</span>
                   </div>
-                  <button onClick={clearProfile} className="text-xs text-slate-400 hover:text-cyber-pink font-medium">Switch</button>
+                  <div className={`flex items-center justify-between px-3 sm:px-4 py-3 rounded-lg ${activeProfile.bg} border ${activeProfile.border}`}>
+                    <div className="flex items-center gap-2">
+                      <ProfileIcon className={`w-4 h-4 ${activeProfile.color}`} />
+                      <span className={`text-sm font-bold ${activeProfile.color}`}>{activeProfile.nickname}</span>
+                      {activeProfile.role === 'supervisor' && <span className="text-[9px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full font-bold">SUP</span>}
+                    </div>
+                    <button onClick={clearProfile} className="text-xs text-slate-400 hover:text-cyber-pink font-medium">Switch</button>
+                  </div>
                 </div>
                 {navItems.map((item) => {
                   const Icon = item.icon;
