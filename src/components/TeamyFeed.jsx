@@ -32,6 +32,8 @@ export default function TeamyFeed() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const POSTS_PER_PAGE = 6;
   const [hasMore, setHasMore] = useState(true);
@@ -118,6 +120,16 @@ export default function TeamyFeed() {
     }
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedPost]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -232,19 +244,41 @@ export default function TeamyFeed() {
                 </div>
                 <div>
                   <label className="block text-xs sm:text-sm font-mono text-slate-400 mb-1.5 ml-1">Knowledge Category</label>
-                  <div className="relative">
-                    <select
-                      value={postCategory}
-                      onChange={(e) => setPostCategory(e.target.value)}
-                      className="w-full bg-slate-950/50 border border-slate-800 focus:border-cyber-cyan text-white p-3.5 rounded-2xl outline-none transition-all text-base appearance-none cursor-pointer"
+                  <div className="relative" ref={dropdownRef}>
+                    <div
+                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                      className={`w-full bg-slate-950/50 border ${isDropdownOpen ? 'border-cyber-cyan shadow-[0_0_15px_rgba(0,240,255,0.15)]' : 'border-slate-800 hover:border-slate-700'} text-white p-3.5 rounded-2xl outline-none transition-all text-base cursor-pointer flex justify-between items-center group`}
                     >
-                      {FEED_CATEGORIES.map(cat => (
-                        <option key={cat.id} value={cat.id}>{cat.id}</option>
-                      ))}
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-400">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                      <span className="flex items-center gap-2">
+                        <span className={FEED_CATEGORIES.find(c => c.id === postCategory)?.colorClass}>
+                          {postCategory.split(' ')[0]}
+                        </span>
+                        <span>{FEED_CATEGORIES.find(c => c.id === postCategory)?.label}</span>
+                      </span>
+                      <svg className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                     </div>
+                    
+                    {isDropdownOpen && (
+                      <div className="absolute z-50 w-full mt-2 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden py-2 animate-fade-in-up origin-top">
+                        {FEED_CATEGORIES.map(cat => (
+                          <div
+                            key={cat.id}
+                            onClick={() => {
+                              setPostCategory(cat.id);
+                              setIsDropdownOpen(false);
+                            }}
+                            className={`px-4 py-3 cursor-pointer transition-all flex items-center gap-3 hover:bg-slate-800 group ${postCategory === cat.id ? 'bg-slate-800/80 border-l-2 ' + cat.borderClass.replace('!', '') : 'border-l-2 border-transparent'}`}
+                          >
+                            <span className={`text-xl ${cat.colorClass}`}>
+                               {cat.id.split(' ')[0]} 
+                            </span>
+                            <span className={`text-sm font-bold transition-colors ${postCategory === cat.id ? 'text-white' : 'text-slate-400 group-hover:text-white'}`}>
+                                {cat.label}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
