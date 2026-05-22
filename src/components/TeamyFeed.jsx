@@ -5,11 +5,11 @@ import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network, X
 import { useProfile } from '../contexts/ProfileContext';
 
 const FEED_CATEGORIES = [
-  { id: '📡 RF & Hardware', label: 'RF & Hardware', colorClass: 'text-cyber-lime', borderClass: 'border-cyber-lime/40', glowClass: 'shadow-[0_0_15px_rgba(163,230,53,0.15)]', bgGradient: 'from-cyber-lime/10 to-transparent' },
-  { id: '🔒 Protocol Security', label: 'Protocol Security', colorClass: 'text-cyber-purple', borderClass: 'border-cyber-purple/40', glowClass: 'shadow-[0_0_15px_rgba(168,85,247,0.15)]', bgGradient: 'from-cyber-purple/10 to-transparent' },
-  { id: '💻 Code & Logic', label: 'Code & Logic', colorClass: 'text-cyber-cyan', borderClass: 'border-cyber-cyan/40', glowClass: 'shadow-[0_0_15px_rgba(0,240,255,0.15)]', bgGradient: 'from-cyber-cyan/10 to-transparent' },
-  { id: '⚔️ Attack / Defense', label: 'Attack / Defense', colorClass: 'text-red-500', borderClass: 'border-red-500/40', glowClass: 'shadow-[0_0_15px_rgba(239,68,68,0.15)]', bgGradient: 'from-red-500/10 to-transparent' },
-  { id: '💡 General Insight', label: 'General Insight', colorClass: 'text-amber-500', borderClass: 'border-amber-500/40', glowClass: 'shadow-[0_0_15px_rgba(245,158,11,0.15)]', bgGradient: 'from-amber-500/10 to-transparent' }
+  { id: '📡 RF & Hardware', label: 'RF & Hardware', colorClass: 'text-cyber-lime', borderClass: 'border-cyber-lime/60', glowClass: 'shadow-[0_0_15px_rgba(163,230,53,0.3)]', bgGradient: 'from-cyber-lime/10 to-transparent' },
+  { id: '🔒 Protocol Security', label: 'Protocol Security', colorClass: 'text-cyber-purple', borderClass: 'border-cyber-purple/60', glowClass: 'shadow-[0_0_15px_rgba(168,85,247,0.3)]', bgGradient: 'from-cyber-purple/10 to-transparent' },
+  { id: '💻 Code & Logic', label: 'Code & Logic', colorClass: 'text-cyber-cyan', borderClass: 'border-cyber-cyan/60', glowClass: 'shadow-[0_0_15px_rgba(0,240,255,0.3)]', bgGradient: 'from-cyber-cyan/10 to-transparent' },
+  { id: '⚔️ Attack / Defense', label: 'Attack / Defense', colorClass: 'text-red-500', borderClass: 'border-red-500/60', glowClass: 'shadow-[0_0_15px_rgba(239,68,68,0.3)]', bgGradient: 'from-red-500/10 to-transparent' },
+  { id: '💡 General Insight', label: 'General Insight', colorClass: 'text-amber-500', borderClass: 'border-amber-500/60', glowClass: 'shadow-[0_0_15px_rgba(245,158,11,0.3)]', bgGradient: 'from-amber-500/10 to-transparent' }
 ];
 
 const FILTER_CATEGORIES = [
@@ -164,10 +164,10 @@ export default function TeamyFeed() {
 
   const getBentoSpan = (index) => {
     const pattern = index % 4;
-    if (pattern === 0) return 'col-span-1 md:col-span-2 lg:col-span-2 bg-gradient-to-br from-slate-900 to-slate-800/80 border-cyber-cyan/20 hover:border-cyber-cyan/50';
-    if (pattern === 1) return 'col-span-1 bg-slate-900 border-slate-800/80 hover:border-slate-700';
-    if (pattern === 2) return 'col-span-1 bg-slate-900 border-slate-800/80 hover:border-slate-700';
-    if (pattern === 3) return 'col-span-1 md:col-span-2 lg:col-span-2 bg-gradient-to-br from-slate-800/80 to-slate-900 border-cyber-pink/20 hover:border-cyber-pink/50';
+    if (pattern === 0) return 'col-span-1 md:col-span-2 lg:col-span-2';
+    if (pattern === 1) return 'col-span-1';
+    if (pattern === 2) return 'col-span-1';
+    if (pattern === 3) return 'col-span-1 md:col-span-2 lg:col-span-2';
     return 'col-span-1';
   };
 
@@ -297,7 +297,7 @@ export default function TeamyFeed() {
               <div 
                 key={post.id} 
                 onClick={() => { setSelectedPost(post); markAsRead(post.id); }}
-                className={`glass-card p-3 sm:p-8 rounded-3xl transition-all duration-500 hover:-translate-y-1 flex flex-col group/card cursor-pointer ${getBentoSpan(index)} animate-slide-up overflow-hidden relative border ${catConfig.borderClass} hover:${catConfig.glowClass} bg-gradient-to-br ${catConfig.bgGradient}`}
+                className={`glass-card p-3 sm:p-8 rounded-3xl transition-all duration-500 hover:-translate-y-1 flex flex-col group/card cursor-pointer ${getBentoSpan(index)} animate-slide-up overflow-hidden relative border-2 ${catConfig.borderClass} hover:${catConfig.glowClass} bg-slate-900/90 bg-gradient-to-br ${catConfig.bgGradient}`}
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 {post.image_url && <img src={post.image_url} className="w-full h-40 object-cover mb-4 rounded-xl border border-slate-800/50" alt={`Image for: ${post.title}`} />}
