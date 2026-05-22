@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { supabase } from '../lib/supabase';
-import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network, X, Image as ImageIcon, Upload } from 'lucide-react';
+import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network, X, Image as ImageIcon, Upload, Eye } from 'lucide-react';
+import { useProfile } from '../contexts/ProfileContext';
 
 export default function TeamyFeed() {
+  const { activeProfile, activeProfileId } = useProfile();
   const [posts, setPosts] = useState([]);
+  const [readPosts, setReadPosts] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(`wids_read_posts_${activeProfileId}`)) || []; }
+    catch { return []; }
+  });
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [image, setImage] = useState(null);
@@ -78,7 +84,7 @@ export default function TeamyFeed() {
 
     const { error } = await supabase
       .from('posts')
-      .insert([{ title: title.trim(), body: body.trim(), image_url: imageUrl }]);
+      .insert([{ title: title.trim(), body: body.trim(), image_url: imageUrl, author: activeProfile.nickname }]);
 
     if (!error) {
       setTitle('');
@@ -94,6 +100,14 @@ export default function TeamyFeed() {
   const formatDate = (dateString) => {
     const options = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const markAsRead = (postId) => {
+    if (!readPosts.includes(postId)) {
+      const updated = [...readPosts, postId];
+      setReadPosts(updated);
+      localStorage.setItem(`wids_read_posts_${activeProfileId}`, JSON.stringify(updated));
+    }
   };
 
   const getBentoSpan = (index) => {
@@ -191,11 +205,14 @@ export default function TeamyFeed() {
           posts.map((post, index) => (
             <div 
               key={post.id} 
-              onClick={() => setSelectedPost(post)}
-              className={`glass-card p-3 sm:p-8 rounded-3xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl flex flex-col group/card cursor-pointer ${getBentoSpan(index)} animate-slide-up overflow-hidden`}
+              onClick={() => { setSelectedPost(post); markAsRead(post.id); }}
+              className={`glass-card p-3 sm:p-8 rounded-3xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl flex flex-col group/card cursor-pointer ${getBentoSpan(index)} animate-slide-up overflow-hidden relative`}
               style={{ animationDelay: `${index * 50}ms` }}
             >
               {post.image_url && <img src={post.image_url} className="w-full h-40 object-cover mb-4 rounded-xl" alt={`Image for: ${post.title}`} />}
+              {!readPosts.includes(post.id) && (
+                <span className="absolute top-3 right-3 text-[9px] font-bold uppercase tracking-wider text-cyber-cyan bg-cyber-cyan/15 px-2 py-0.5 rounded-full border border-cyber-cyan/30 animate-pulse">New</span>
+              )}
               <div>
                 <h4 className="text-lg sm:text-xl font-bold text-white mb-3 group-hover/card:text-white transition-colors flex items-start gap-2 break-words">
                   <span className="text-cyber-cyan mt-1 shrink-0">•</span>
@@ -205,6 +222,9 @@ export default function TeamyFeed() {
               </div>
               <div className="mt-6 sm:mt-8 flex items-center justify-between gap-2 text-xs sm:text-sm text-slate-500 font-mono border-t border-slate-800/60 pt-4">
                 <div className="flex items-center gap-1.5 sm:gap-2">
+                  {post.author && (
+                    <span className="text-xs font-bold text-cyber-purple">{post.author}</span>
+                  )}
                   <Clock size={14} className="text-cyber-pink/70 shrink-0" />
                   <span>{formatDate(post.created_at)}</span>
                 </div>

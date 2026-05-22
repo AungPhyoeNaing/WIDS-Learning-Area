@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ShieldCheck, Activity, BookOpen, Flag, Github, Menu, X, Sparkles, MessageSquare } from 'lucide-react';
+import { ShieldCheck, Activity, BookOpen, Flag, Github, Menu, X, Sparkles, MessageSquare, UserCircle, LogOut } from 'lucide-react';
 import SimulationDashboard from './components/SimulationDashboard';
 import CTFLabs from './components/CTFLabs';
 import LearningHub from './components/LearningHub';
 import KnowledgeOfTheDay from './components/KnowledgeOfTheDay';
 import ChatAssistant from './components/ChatAssistant';
 import TeamyFeed from './components/TeamyFeed';
+import ProfileSelector from './components/ProfileSelector';
+import { useProfile } from './contexts/ProfileContext';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -51,10 +53,18 @@ function ViewWrapper({ children }) {
 }
 
 export default function App() {
+  const { isProfileSelected, activeProfile, clearProfile } = useProfile();
   const [activeView, setActiveView] = useState(() => localStorage.getItem('wids_view') || 'simulation');
   const [isAttackActive, setIsAttackActive] = useState(false);
   const [attackType, setAttackType] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // ── Gate: show profile selector if no identity selected ──
+  if (!isProfileSelected) {
+    return <ProfileSelector />;
+  }
+
+  const ProfileIcon = activeProfile.icon;
 
   useEffect(() => {
     localStorage.setItem('wids_view', activeView);
@@ -136,9 +146,17 @@ export default function App() {
                     );
                   })}
                 </div>
-                <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub repository" className="text-slate-500 hover:text-cyber-cyan transition-colors ml-2">
-                  <Github className="w-5 h-5" />
-                </a>
+
+                {/* Profile indicator + switch */}
+                <div className="flex items-center gap-2 ml-2 pl-3 border-l border-slate-800">
+                  <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg ${activeProfile.bg} border ${activeProfile.border}`}>
+                    <ProfileIcon className={`w-3.5 h-3.5 ${activeProfile.color}`} />
+                    <span className={`text-xs font-bold ${activeProfile.color}`}>{activeProfile.nickname}</span>
+                  </div>
+                  <button onClick={clearProfile} title="Switch Profile" className="p-1.5 rounded-lg text-slate-500 hover:text-cyber-pink hover:bg-slate-800/50 transition-colors">
+                    <LogOut className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
 
               {/* Mobile hamburger */}
@@ -156,6 +174,15 @@ export default function App() {
           {mobileMenuOpen && (
             <div className="md:hidden border-t border-slate-800/50 bg-slate-950/90 backdrop-blur-xl">
               <div className="px-3 sm:px-4 py-2 sm:py-3 space-y-1">
+                {/* Mobile profile indicator */}
+                <div className={`flex items-center justify-between px-3 sm:px-4 py-3 rounded-lg ${activeProfile.bg} border ${activeProfile.border} mb-2`}>
+                  <div className="flex items-center gap-2">
+                    <ProfileIcon className={`w-4 h-4 ${activeProfile.color}`} />
+                    <span className={`text-sm font-bold ${activeProfile.color}`}>{activeProfile.nickname}</span>
+                    {activeProfile.role === 'supervisor' && <span className="text-[9px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full font-bold">SUP</span>}
+                  </div>
+                  <button onClick={clearProfile} className="text-xs text-slate-400 hover:text-cyber-pink font-medium">Switch</button>
+                </div>
                 {navItems.map((item) => {
                   const Icon = item.icon;
                   return (

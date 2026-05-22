@@ -3,15 +3,7 @@ import { Send, X, Loader2, Settings, UserCircle, Shield, Target, BookOpen, Cpu, 
 import { supabase } from '../lib/supabase';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-
-// ─── Profiles ──────────────────────────────────────────────────
-const PROFILES = [
-  { id: 'apn',      name: 'APN',      icon: Shield,   color: 'text-blue-400' },
-  { id: 'jia',      name: 'Jia',      icon: Target,   color: 'text-pink-400' },
-  { id: 'ayechan',  name: 'AyeChan',  icon: BookOpen, color: 'text-yellow-400' },
-  { id: 'hlyan',    name: 'Hlyan',    icon: Cpu,      color: 'text-green-400' },
-  { id: 'tiki',     name: 'Tiki',     icon: Zap,      color: 'text-purple-400' },
-];
+import { useProfile } from '../contexts/ProfileContext';
 
 // ─── Quick-prompt chips (customized per persona) ───────────────
 const QUICK_PROMPTS = {
@@ -45,6 +37,12 @@ const QUICK_PROMPTS = {
     { label: '😎 What is WIDS?', text: 'Explain WIDS in the most chill, easy way possible.' },
     { label: '🏆 Score max points', text: 'How do I get the maximum score in CTF labs?' },
   ],
+  eiei: [
+    { label: '📋 Project overview', text: 'Give me an overview of the WIDS project progress and what has been built.' },
+    { label: '👥 Team roles', text: 'Summarize each team member\'s role and contribution to the WIDS project.' },
+    { label: '🎯 Learning outcomes', text: 'What are the key learning outcomes from this WIDS project?' },
+    { label: '🔒 Security concepts', text: 'Explain the core cybersecurity concepts demonstrated in this simulator.' },
+  ],
 };
 
 // ─── System instruction ────────────────────────────────────────
@@ -56,6 +54,7 @@ CURRENT USER: {activeProfileName}. Adapt your tone to them:
 - AyeChan: Friendly, creative (✨, 🌈).
 - Hlyan: Sharp, analytical (⚡, 🛠️).
 - Tiki: Chill, fun-loving (🌊, 😎).
+- T-chel EiEi: Professional, warm, supervisor tone (📋, ⭐).
 
 PROJECT TEAM: APN (Leader/Backend), Jia (UI), AyeChan (Backend), Hlyan (Hardware), Tiki (Design/Testing).
 PROJECT WIDS: Host-based WiFi Intrusion Detection System using ESP32 to detect attacks (Deauth, Rogue AP, MAC Spoof, ARP Spoof) with physical buzzer alerts.
@@ -98,6 +97,7 @@ function clearHistory(profileId) {
 function buildGreeting(profileId, profileName) {
   if (profileId === 'apn') return `Welcome back, Sir. 🚀 All systems are online. How can I assist you with the WIDS project today? 💻`;
   if (profileId === 'jia') return `Hi Jia! 💖 I'm so happy to see you. How can I help you today? 🌸`;
+  if (profileId === 'eiei') return `Welcome, Teacher Ei Ei! ⭐ The WIDS Simulator is ready for your review. How can I assist you? 📋`;
   return `Hey **${profileName}**! 👋 I'm APN's AI Assistant. How can I help you today?`;
 }
 
@@ -123,11 +123,9 @@ function CopyButton({ text }) {
 
 // ─── Main component ────────────────────────────────────────────
 export default function ChatAssistant() {
+  const { activeProfile: globalProfile, activeProfileId, setActiveProfile: setGlobalProfile, profiles } = useProfile();
   const [isOpen, setIsOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [activeProfileId, setActiveProfileId] = useState(
-    () => localStorage.getItem('wids_active_profile') || 'apn'
-  );
   const [userApiKeys, setUserApiKeys] = useState({});
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -138,7 +136,7 @@ export default function ChatAssistant() {
   const textareaRef = useRef(null);
   const abortRef = useRef(null); // AbortController for cancelling streams
 
-  const currentProfile = PROFILES.find(p => p.id === activeProfileId);
+  const currentProfile = globalProfile;
   const prompts = QUICK_PROMPTS[activeProfileId] || QUICK_PROMPTS.apn;
 
   // ── Initialize messages from history or greeting ─────────────
@@ -427,12 +425,11 @@ export default function ChatAssistant() {
                   <UserCircle size={18} className="text-cyber-cyan" /> Switch Profile
                 </h4>
                 <div className="grid grid-cols-1 gap-2">
-                  {PROFILES.map(p => (
+                  {profiles.map(p => (
                     <button
                       key={p.id}
                       onClick={() => {
-                        setActiveProfileId(p.id);
-                        localStorage.setItem('wids_active_profile', p.id);
+                        setGlobalProfile(p.id);
                         setShowSettings(false);
                       }}
                       className={`flex items-center justify-between p-3 sm:p-4 rounded-xl text-sm sm:text-base transition-all ${
@@ -442,7 +439,7 @@ export default function ChatAssistant() {
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <p.icon size={16} className={p.color} />
+                        {React.createElement(p.icon, { size: 16, className: p.color })}
                         <span className="text-white font-medium">{p.name}</span>
                       </div>
                       {activeProfileId === p.id && (

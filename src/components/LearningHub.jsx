@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useProfile } from '../contexts/ProfileContext';
 import { BookOpen, Layers, Cpu, Database } from 'lucide-react';
 import ProjectArchitecture from './ProjectArchitecture';
 import HardwareSpecs from './HardwareSpecs';
@@ -8,7 +9,12 @@ import PhysicalDeterrence from './PhysicalDeterrence';
 import { BellRing, Network } from 'lucide-react';
 
 export default function LearningHub() {
+  const { activeProfileId } = useProfile();
   const [activeTab, setActiveTab] = useState('architecture');
+  const [readSections, setReadSections] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(`wids_read_sections_${activeProfileId}`)) || []; }
+    catch { return []; }
+  });
 
   const tabs = [
     { id: 'architecture', label: 'Architecture', icon: Layers, color: 'cyber-cyan' },
@@ -28,7 +34,14 @@ export default function LearningHub() {
           return (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => {
+                setActiveTab(tab.id);
+                if (!readSections.includes(tab.id)) {
+                  const updated = [...readSections, tab.id];
+                  setReadSections(updated);
+                  localStorage.setItem(`wids_read_sections_${activeProfileId}`, JSON.stringify(updated));
+                }
+              }}
               className={`flex-none sm:flex-1 relative flex items-center justify-center gap-2 px-4 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-bold transition-all duration-300 snap-start ${
                 isActive
                   ? 'bg-slate-800 text-white shadow-lg border border-slate-700/80'
@@ -39,6 +52,9 @@ export default function LearningHub() {
                 isActive ? `text-${tab.color}` : ''
               }`} />
               <span className="whitespace-nowrap">{tab.label}</span>
+              {!readSections.includes(tab.id) && (
+                <span className="w-1.5 h-1.5 rounded-full bg-cyber-pink animate-pulse flex-shrink-0" />
+              )}
               {isActive && (
                 <span className={`absolute -bottom-px left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-${tab.color}`} />
               )}

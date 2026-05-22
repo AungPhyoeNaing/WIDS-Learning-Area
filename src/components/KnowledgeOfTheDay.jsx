@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Sparkles, Loader2, RefreshCw, AlertCircle, BookOpen, ChevronDown, Tag } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import ReactMarkdown from 'react-markdown';
+import { useProfile } from '../contexts/ProfileContext';
 import remarkGfm from 'remark-gfm';
 
 const SYSTEM_PROMPT = `You are a WIDS and Cybersecurity educator. Generate a SINGLE, UNIQUE, CONCISE fact about Wi-Fi security, hardware, or security programming. 
@@ -42,6 +43,7 @@ const CATEGORY_COLORS = {
 const CACHE_KEY = 'wids_daily_insight_cache';
 
 export default function KnowledgeOfTheDay() {
+  const { activeProfileId } = useProfile();
   const [factData, setFactData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -54,7 +56,7 @@ export default function KnowledgeOfTheDay() {
   const lastFactRef = useRef(null);
 
   const getApiKey = async () => {
-    const profileId = localStorage.getItem('wids_active_profile') || 'apn';
+    const profileId = activeProfileId;
     try {
       const { data, error } = await supabase.from('profiles').select('api_key').eq('id', profileId).single();
       if (error || !data) return null;

@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Flag, Terminal, CheckCircle2, XCircle, Radio, WifiOff, ShieldAlert, MonitorPlay, Clock, Hash, Search, Lock, Key } from 'lucide-react';
+import { useProfile } from '../contexts/ProfileContext';
 
-const STORAGE_KEY = 'wids_ctf_score';
+const STORAGE_KEY = (profileId) => `wids_ctf_score_${profileId}`;
 
-function loadScore() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { completed: [], score: 0, startTime: null }; }
+function loadScore(profileId) {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY(profileId))) || { completed: [], score: 0, startTime: null }; }
   catch { return { completed: [], score: 0, startTime: null }; }
 }
 
-function saveScore(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+function saveScore(profileId, data) {
+  localStorage.setItem(STORAGE_KEY(profileId), JSON.stringify(data));
 }
 
 const CHALLENGES = [
@@ -436,14 +437,15 @@ function CompletionBanner({ score, totalPossible, onReset }) {
 }
 
 export default function CTFLabs() {
-  const [completed, setCompleted] = useState(() => loadScore().completed);
-  const [score, setScore] = useState(() => loadScore().score);
-  const [startTime, setStartTime] = useState(() => loadScore().startTime);
+  const { activeProfileId } = useProfile();
+  const [completed, setCompleted] = useState(() => loadScore(activeProfileId).completed);
+  const [score, setScore] = useState(() => loadScore(activeProfileId).score);
+  const [startTime, setStartTime] = useState(() => loadScore(activeProfileId).startTime);
   const [elapsed, setElapsed] = useState(0);
 
   // Persist score/completion state
   useEffect(() => {
-    saveScore({ completed, score, startTime });
+    saveScore(activeProfileId, { completed, score, startTime });
   }, [completed, score, startTime]);
 
   // Elapsed timer
@@ -471,6 +473,7 @@ export default function CTFLabs() {
     setScore(0);
     setStartTime(null);
     setElapsed(0);
+    localStorage.removeItem(STORAGE_KEY(activeProfileId));
   };
 
   const totalPossible = CHALLENGES.length * 100;
