@@ -16,7 +16,7 @@ const QUICK_PROMPTS = {
   jia: [
     { label: '🌸 How do I start?', text: 'Can you gently walk me through how to use the simulator step by step?' },
     { label: '💖 What is a Deauth?', text: 'Can you explain what a deauthentication attack is in simple terms?' },
-    { label: '🌷 TeamyFeed Badges', text: 'How do the new glowing "New" badges work in TeamyFeed?' },
+    { label: '🌷 Know-It-ALL Badges', text: 'How do the new glowing "New" badges work in Know-It-ALL?' },
     { label: '🥰 What is the project?', text: 'Can you explain what the WIDS project is about in a friendly way?' },
   ],
   ayechan: [
@@ -64,7 +64,7 @@ APP VIEWS & CURRENT STATE:
 2. CTF Labs: 6 Gamified cybersecurity challenges (including Rogue AP Detection). Features progressive unlocking, a "Decrypt Hint" system (-10pts), and persistent per-profile score tracking.
 3. Learning Hub: "Full Course" knowledge library with 5 modules (Architecture, Protocol Security, Sensor Hardware with PySerial, Physical Deterrence with escalation matrices, and System Logs with Python pandas forensics). Uses an interactive Accordion UI with Mark-As-Read tracking.
 4. Daily Insight: AI-generated Wi-Fi security facts.
-5. TeamyFeed: A social knowledge feed where team members post insights. Features author attribution and an intelligent "Mark as Read" system with glowing unread badges.
+5. Know-It-ALL: A social knowledge feed where team members post insights. Features author attribution and an intelligent "Mark as Read" system with glowing unread badges.
 6. Global Identity System: Users lock in their identity on the "Who Are You?" welcome screen. The entire app (Scores, Read Receipts, and Chatbot Persona) dynamically syncs to the active profile in the navbar.
 
 SCOPE: Answer ONLY about Wi-Fi security, the WIDS project, the app features, and the team. Acknowledge the specific UI features and states mentioned above if the user asks. Be concise and friendly.`;

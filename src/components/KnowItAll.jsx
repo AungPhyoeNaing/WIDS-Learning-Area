@@ -17,7 +17,7 @@ const FILTER_CATEGORIES = [
   ...FEED_CATEGORIES
 ];
 
-export default function TeamyFeed() {
+export default function KnowItAll() {
   const { activeProfile, activeProfileId, addScore, userScores } = useProfile();
   const [posts, setPosts] = useState([]);
   const [readPosts, setReadPosts] = useState(() => {

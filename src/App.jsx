@@ -5,7 +5,7 @@ import CTFLabs from './components/CTFLabs';
 import LearningHub from './components/LearningHub';
 import KnowledgeOfTheDay from './components/KnowledgeOfTheDay';
 import ChatAssistant from './components/ChatAssistant';
-import TeamyFeed from './components/TeamyFeed';
+import KnowItAll from './components/KnowItAll';
 import ProfileSelector from './components/ProfileSelector';
 import { useProfile } from './contexts/ProfileContext';
 
@@ -75,18 +75,18 @@ export default function App() {
       if (e.key === '2') { setActiveView('ctf'); setMobileMenuOpen(false); }
       if (e.key === '3') { setActiveView('learning'); setMobileMenuOpen(false); }
       if (e.key === '4') { setActiveView('knowledge'); setMobileMenuOpen(false); }
-      if (e.key === '5') { setActiveView('teamyfeed'); setMobileMenuOpen(false); }
+      if (e.key === '5') { setActiveView('knowitall'); setMobileMenuOpen(false); }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, []);
 
   const navItems = [
-    { id: 'simulation', label: 'Live Simulation', icon: Activity, shortcut: '1' },
+    { id: 'simulation', label: 'Simulate', icon: Activity, shortcut: '1' },
     { id: 'ctf', label: 'CTF Labs', icon: Flag, shortcut: '2' },
-    { id: 'learning', label: 'Learning Hub', icon: BookOpen, shortcut: '3' },
-    { id: 'knowledge', label: 'Daily Insight', icon: Sparkles, shortcut: '4' },
-    { id: 'teamyfeed', label: 'Teamyfeed', icon: MessageSquare, shortcut: '5' },
+    { id: 'learning', label: 'Learn', icon: BookOpen, shortcut: '3' },
+    { id: 'knowledge', label: 'AI Tips', icon: Sparkles, shortcut: '4' },
+    { id: 'knowitall', label: 'Know-It-ALL', icon: MessageSquare, shortcut: '5' },
   ];
 
   const navigate = (id) => {
@@ -123,7 +123,7 @@ export default function App() {
               </div>
 
               {/* Desktop nav */}
-              <div className="hidden md:flex items-center gap-4 overflow-x-auto">
+              <div className="hidden md:flex items-center gap-2 lg:gap-4">
                 <div className="flex items-baseline space-x-1">
                   {navItems.map((item) => {
                     const Icon = item.icon;
@@ -139,9 +139,6 @@ export default function App() {
                       >
                         <Icon className="mr-1 lg:mr-2 h-4 w-4" />
                         {item.label}
-                        <span className={`ml-2 text-[10px] font-mono px-1.5 py-0.5 rounded border hidden lg:inline ${
-                          activeView === item.id ? 'border-cyber-cyan/40 text-cyber-cyan/70' : 'border-slate-700 text-slate-600'
-                        }`}>{item.shortcut}</span>
                       </button>
                     );
                   })}
@@ -209,7 +206,6 @@ export default function App() {
                     >
                       <Icon className="mr-2.5 sm:mr-3 h-4 sm:h-5 w-4 sm:w-5" />
                       {item.label}
-                      <span className="ml-auto text-xs text-slate-500 font-mono">[{item.shortcut}]</span>
                     </button>
                   );
                 })}
@@ -241,9 +237,9 @@ export default function App() {
                   Daily Insight
                 </span>
               )}
-              {activeView === 'teamyfeed' && (
+              {activeView === 'knowitall' && (
                 <span className="bg-gradient-to-r from-blue-400 to-cyber-cyan bg-clip-text text-transparent">
-                  Teamyfeed Knowledge Share
+                  Know-It-ALL Knowledge Share
                 </span>
               )}
             </h1>
@@ -252,7 +248,7 @@ export default function App() {
               {activeView === 'ctf' && 'Test your understanding of Wi-Fi protocol vulnerabilities through hands-on gamified tasks.'}
               {activeView === 'learning' && 'A deep dive into the project architecture, hardware specs, and system diagnostics.'}
               {activeView === 'knowledge' && 'A daily dose of WIDS wisdom — random educational facts powered by Groq AI.'}
-              {activeView === 'teamyfeed' && 'Post your latest findings, research notes, and cybersecurity highlights for the team.'}
+              {activeView === 'knowitall' && 'Post your latest findings, research notes, and cybersecurity highlights for the team.'}
             </p>
           </div>
 
@@ -270,7 +266,7 @@ export default function App() {
               {activeView === 'ctf' && <ErrorBoundary><CTFLabs /></ErrorBoundary>}
               {activeView === 'learning' && <ErrorBoundary><LearningHub /></ErrorBoundary>}
               {activeView === 'knowledge' && <ErrorBoundary><KnowledgeOfTheDay /></ErrorBoundary>}
-              {activeView === 'teamyfeed' && <ErrorBoundary><TeamyFeed /></ErrorBoundary>}
+              {activeView === 'knowitall' && <ErrorBoundary><KnowItAll /></ErrorBoundary>}
             </ViewWrapper>
           </div>
         </main>
