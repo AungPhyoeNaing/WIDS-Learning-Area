@@ -115,9 +115,9 @@ function CopyButton({ text }) {
     <button
       onClick={handle}
       title="Copy message"
-      className="opacity-0 group-hover/bubble:opacity-100 transition-opacity absolute top-2 right-2 p-1 rounded-md bg-slate-700/80 hover:bg-slate-600 text-slate-400 hover:text-white"
+      className="opacity-0 group-hover/bubble:opacity-100 transition-opacity absolute top-2 right-2 p-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-750"
     >
-      {copied ? <Check size={12} className="text-cyber-lime" /> : <Copy size={12} />}
+      {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
     </button>
   );
 }
@@ -355,12 +355,12 @@ export default function ChatAssistant() {
           <button
             onClick={() => setIsOpen(true)}
             aria-label="Open AI assistant"
-            className="group relative bg-gradient-to-r from-cyber-cyan via-blue-500 to-cyber-purple p-1 rounded-full sm:p-1.5 shadow-[0_0_20px_rgba(0,240,255,0.4)] hover:shadow-[0_0_30px_rgba(0,240,255,0.6)] hover:scale-105 transition-all duration-300 btn-press flex items-center justify-center"
+            className="group relative bg-blue-600 hover:bg-blue-700 p-1 rounded-full sm:p-1.5 shadow-md hover:scale-105 transition-all duration-200 flex items-center justify-center"
           >
             <img
               src="/apn_chat_bot.png"
               alt="AI Assistant"
-              className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-full border-2 border-white/20 group-hover:rotate-12 transition-transform duration-300 drop-shadow-lg bg-slate-900"
+              className="w-12 h-12 sm:w-14 sm:h-14 object-cover rounded-full border border-slate-800 group-hover:rotate-12 transition-transform duration-300 drop-shadow-sm bg-slate-900"
             />
           </button>
         </div>
@@ -368,23 +368,23 @@ export default function ChatAssistant() {
 
       {/* Chat panel */}
       {isOpen && (
-        <div className="fixed inset-x-0 bottom-0 sm:bottom-24 sm:right-6 sm:left-auto w-full sm:w-96 h-[95vh] sm:h-[36rem] glass-card rounded-t-[2rem] sm:rounded-2xl shadow-2xl z-[100] flex flex-col overflow-hidden animate-slide-up sm:animate-bounce-in border-t sm:border border-white/10">
+        <div className="fixed inset-x-0 bottom-0 sm:bottom-24 sm:right-6 sm:left-auto w-full sm:w-96 h-[95vh] sm:h-[36rem] bg-slate-900 rounded-t-2xl sm:rounded-xl shadow-xl z-[100] flex flex-col overflow-hidden animate-slide-up border border-slate-850">
 
           {/* ── Header ── */}
-          <div className="bg-slate-900/90 backdrop-blur-md p-4 sm:p-5 flex justify-between items-center border-b border-slate-700/50 shrink-0">
+          <div className="bg-slate-900 p-4 flex justify-between items-center border-b border-slate-800 shrink-0">
             <div className="flex items-center gap-3">
-              <div className={`p-2 rounded-xl bg-slate-800 shadow-inner ${currentProfile?.color}`}>
-                {currentProfile && <currentProfile.icon size={18} />}
+              <div className={`p-2 rounded-lg bg-slate-800 ${currentProfile?.color}`}>
+                {currentProfile && <currentProfile.icon size={16} />}
               </div>
               <div className="flex flex-col">
-                <h3 className="font-bold text-white text-base sm:text-lg leading-none">WIDS AI Tutor</h3>
+                <h3 className="font-semibold text-slate-100 text-sm sm:text-base leading-none">WIDS AI Tutor</h3>
                 <div className="flex items-center gap-1.5 mt-1">
-                  <span className="text-xs text-slate-500 uppercase tracking-tighter">Active:</span>
-                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${currentProfile?.color.replace('text-', 'border-').replace('400', '500/30')} bg-slate-800/80 ${currentProfile?.color}`}>
+                  <span className="text-[10px] text-slate-500 uppercase tracking-tighter">Active:</span>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${currentProfile?.color.replace('text-', 'border-').replace('400', '500/20')} bg-slate-950 ${currentProfile?.color}`}>
                     {currentProfile?.name}
                   </span>
                   {/* Online indicator */}
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 </div>
               </div>
             </div>
@@ -395,36 +395,36 @@ export default function ChatAssistant() {
                 <button
                   onClick={handleClear}
                   title="Clear conversation"
-                  className="text-slate-500 hover:text-cyber-pink p-2 hover:bg-slate-800 rounded-full transition-colors"
+                  className="text-slate-500 hover:text-red-400 p-2 hover:bg-slate-800 rounded-lg transition-colors"
                 >
-                  <Trash2 size={16} />
+                  <Trash2 size={15} />
                 </button>
               )}
               {/* Settings */}
               <button
                 onClick={() => setShowSettings(!showSettings)}
                 title="Settings"
-                className="text-slate-400 hover:text-white p-2 hover:bg-slate-800 rounded-full transition-colors"
+                className="text-slate-400 hover:text-slate-200 p-2 hover:bg-slate-800 rounded-lg transition-colors"
               >
-                <Settings size={18} />
+                <Settings size={16} />
               </button>
               {/* Close */}
               <button
                 onClick={() => setIsOpen(false)}
                 title="Close"
-                className="text-slate-400 hover:text-white p-2 hover:bg-slate-800 rounded-full transition-colors"
+                className="text-slate-400 hover:text-slate-200 p-2 hover:bg-slate-800 rounded-lg transition-colors"
               >
-                <X size={18} />
+                <X size={16} />
               </button>
             </div>
           </div>
 
           {/* ── Settings panel ── */}
           {showSettings ? (
-            <div className="flex-1 p-5 overflow-y-auto space-y-6 bg-slate-950/40">
+            <div className="flex-1 p-5 overflow-y-auto space-y-6 bg-slate-950/20">
               <div>
-                <h4 className="text-white font-bold mb-3 flex items-center gap-2 text-base uppercase tracking-wider">
-                  <UserCircle size={18} className="text-cyber-cyan" /> Switch Profile
+                <h4 className="text-slate-200 font-semibold mb-3 flex items-center gap-2 text-sm uppercase tracking-wider">
+                  <UserCircle size={16} className="text-blue-500" /> Switch Profile
                 </h4>
                 <div className="grid grid-cols-1 gap-2">
                   {profiles.map(p => (
@@ -434,44 +434,44 @@ export default function ChatAssistant() {
                         setGlobalProfile(p.id);
                         setShowSettings(false);
                       }}
-                      className={`flex items-center justify-between p-3 sm:p-4 rounded-xl text-sm sm:text-base transition-all ${
+                      className={`flex items-center justify-between p-3 rounded-lg text-sm transition-all ${
                         activeProfileId === p.id
-                          ? 'bg-slate-800 border border-cyber-cyan/40 shadow-lg'
-                          : 'bg-slate-900/40 border border-transparent hover:border-slate-700'
+                          ? 'bg-slate-800 border border-blue-500/20 shadow-sm'
+                          : 'bg-slate-900/40 border border-transparent hover:border-slate-800'
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        {React.createElement(p.icon, { size: 16, className: p.color })}
-                        <span className="text-white font-medium">{p.name}</span>
+                        {React.createElement(p.icon, { size: 14, className: p.color })}
+                        <span className="text-slate-200 font-medium">{p.name}</span>
                       </div>
                       {activeProfileId === p.id && (
-                        <div className="w-2 h-2 rounded-full bg-cyber-cyan shadow-[0_0_8px_rgba(0,240,255,0.8)]" />
+                        <div className="w-2 h-2 rounded-full bg-blue-500" />
                       )}
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-slate-800">
-                <h4 className="text-white font-bold mb-3 flex items-center gap-2 text-base uppercase tracking-wider">
-                  <Shield size={18} className="text-cyber-purple" /> API Configuration
+              <div className="pt-6 border-t border-slate-850">
+                <h4 className="text-slate-200 font-semibold mb-3 flex items-center gap-2 text-sm uppercase tracking-wider">
+                  <Shield size={16} className="text-blue-500" /> API Configuration
                 </h4>
-                <label className="text-sm text-slate-400 mb-2 block">
+                <label className="text-xs text-slate-400 mb-2 block">
                   Personal Groq Key for {currentProfile?.name}:
                 </label>
                 <input
                   type="password"
                   value={userApiKeys[activeProfileId] || ''}
                   onChange={(e) => updateApiKeyInSupabase(activeProfileId, e.target.value)}
-                  className="w-full bg-slate-900/60 border border-slate-800 focus:border-cyber-purple text-white p-3 sm:p-4 rounded-xl text-base outline-none transition-all"
+                  className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   placeholder="gsk_..."
                 />
-                <p className="mt-2 text-xs text-slate-500 italic">Keys are synced to your WIDS profile.</p>
+                <p className="mt-2 text-[10px] text-slate-500 italic">Keys are synced to your WIDS profile.</p>
               </div>
 
               <button
                 onClick={() => setShowSettings(false)}
-                className="w-full p-3.5 bg-gradient-to-r from-cyber-purple/20 to-blue-900/20 text-white border border-cyber-purple/40 rounded-xl font-bold text-sm btn-press mt-4"
+                className="w-full px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors focus:ring-2 focus:ring-blue-500/50 mt-4"
               >
                 Save &amp; Continue
               </button>
@@ -485,14 +485,14 @@ export default function ChatAssistant() {
                 {/* Greeting + quick prompts */}
                 {messages.slice(0, 1).map((m, i) => (
                   <div key={i} className="flex justify-start">
-                    <div className="p-4 sm:p-5 rounded-3xl text-sm sm:text-base max-w-[90%] sm:max-w-[85%] shadow-lg leading-relaxed bg-slate-800/80 text-slate-200 border border-slate-700/50">
+                    <div className="p-3.5 rounded-xl text-sm max-w-[90%] sm:max-w-[85%] shadow-sm leading-relaxed bg-slate-800 text-slate-200 border border-slate-750">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}
                         components={{
                           p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
                           code: ({node, inline, ...props}) =>
                             inline
-                              ? <code className="bg-black/40 px-1.5 rounded text-cyber-cyan" {...props} />
-                              : <code className="block bg-black/40 p-3 rounded-xl text-xs sm:text-sm overflow-x-auto my-2 border border-slate-700" {...props} />,
+                              ? <code className="bg-slate-950 px-1.5 rounded text-blue-400" {...props} />
+                              : <code className="block bg-slate-950 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-800" {...props} />,
                         }}
                       >{m.text}</ReactMarkdown>
                     </div>
@@ -501,16 +501,16 @@ export default function ChatAssistant() {
 
                 {/* Quick prompt chips — only on empty state */}
                 {showQuickPrompts && (
-                  <div className="space-y-2">
-                    <p className="text-[11px] sm:text-xs text-slate-600 uppercase tracking-widest font-mono pl-1">Quick prompts</p>
+                  <div className="space-y-1.5">
+                    <p className="text-[10px] text-slate-600 uppercase tracking-widest font-mono pl-1">Quick prompts</p>
                     {prompts.map((p, i) => (
                       <button
                         key={i}
                         onClick={() => sendMessage(p.text)}
-                        className="w-full text-left flex items-center gap-2 px-4 py-3 sm:py-3.5 rounded-xl bg-slate-900/60 border border-slate-700/60 hover:border-cyber-cyan/40 hover:bg-slate-800/60 text-slate-300 hover:text-white text-sm sm:text-base transition-all group/chip"
+                        className="w-full text-left flex items-center gap-2 px-3 py-2.5 rounded-lg bg-slate-900/60 border border-slate-850 hover:border-blue-500/20 hover:bg-slate-800/40 text-slate-300 hover:text-white text-sm transition-all group/chip"
                       >
-                        <span className="flex-1">{p.label}</span>
-                        <ChevronRight size={14} className="text-slate-600 group-hover/chip:text-cyber-cyan transition-colors shrink-0" />
+                        <span className="flex-1 text-xs sm:text-sm">{p.label}</span>
+                        <ChevronRight size={12} className="text-slate-600 group-hover/chip:text-blue-400 transition-colors shrink-0" />
                       </button>
                     ))}
                   </div>
@@ -522,38 +522,38 @@ export default function ChatAssistant() {
                     {m.isError ? (
                       /* ── Error card with retry ── */
                       <div className="max-w-[90%] sm:max-w-[85%] space-y-2">
-                        <div className="p-3 sm:p-4 rounded-xl bg-red-950/60 border border-red-500/40 text-red-300 text-sm flex items-start gap-2">
-                          <span className="text-red-400 shrink-0 mt-0.5">⚠️</span>
+                        <div className="p-3 rounded-lg bg-red-950/60 border border-red-500/25 text-red-300 text-xs flex items-start gap-2">
+                          <span className="text-red-400 shrink-0">⚠️</span>
                           <span>{m.text}</span>
                         </div>
                         <button
                           onClick={handleRetry}
                           disabled={isStreaming}
-                          className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-cyber-cyan transition-colors disabled:opacity-40 pl-1"
+                          className="flex items-center gap-1 text-xs text-slate-500 hover:text-blue-400 transition-colors disabled:opacity-40 pl-1"
                         >
-                          <RotateCcw size={14} /> Retry last message
+                          <RotateCcw size={12} /> Retry last message
                         </button>
                       </div>
                     ) : (
                       /* ── Normal message bubble ── */
-                      <div className={`relative group/bubble p-4 sm:p-5 rounded-3xl text-sm sm:text-base max-w-[90%] sm:max-w-[85%] shadow-lg leading-relaxed ${
+                      <div className={`relative group/bubble p-3.5 rounded-xl text-sm max-w-[90%] sm:max-w-[85%] shadow-sm leading-relaxed ${
                         m.role === 'user'
-                          ? 'bg-gradient-to-br from-cyber-cyan/30 to-blue-600/20 text-white border border-cyber-cyan/20'
-                          : 'bg-slate-800/80 text-slate-200 border border-slate-700/50'
+                          ? 'bg-blue-600/10 text-slate-100 border border-blue-500/20'
+                          : 'bg-slate-800 text-slate-200 border border-slate-750'
                       }`}>
                         <ReactMarkdown remarkPlugins={[remarkGfm]}
                           components={{
                             p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
                             code: ({node, inline, ...props}) =>
                               inline
-                                ? <code className="bg-black/40 px-1.5 rounded text-cyber-cyan" {...props} />
-                                : <code className="block bg-black/40 p-3 rounded-xl text-xs sm:text-sm overflow-x-auto my-2 border border-slate-700" {...props} />,
+                                ? <code className="bg-slate-950 px-1.5 rounded text-blue-400" {...props} />
+                                : <code className="block bg-slate-950 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-850" {...props} />,
                           }}
                         >{m.text || ' '}</ReactMarkdown>
 
                         {/* Streaming cursor */}
                         {m.isStreaming && (
-                          <span className="inline-block w-0.5 h-4 bg-cyber-cyan animate-pulse ml-0.5 align-middle" />
+                          <span className="inline-block w-0.5 h-4 bg-blue-500 animate-pulse ml-0.5 align-middle" />
                         )}
 
                         {/* Copy button — AI messages only */}
@@ -568,13 +568,13 @@ export default function ChatAssistant() {
                 {/* Thinking indicator (before streaming bubble appears) */}
                 {isStreaming && messages[messages.length - 1]?.role === 'user' && (
                   <div className="flex justify-start">
-                    <div className="flex items-center gap-2 px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-2xl">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-slate-900/60 border border-slate-850 rounded-lg">
                       <span className="flex gap-1">
                         {[0, 1, 2].map(d => (
-                          <span key={d} className="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-bounce" style={{ animationDelay: `${d * 150}ms` }} />
+                          <span key={d} className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: `${d * 150}ms` }} />
                         ))}
                       </span>
-                      <span className="text-[11px] text-slate-500 font-mono">Thinking...</span>
+                      <span className="text-[10px] text-slate-600 font-mono">Thinking...</span>
                     </div>
                   </div>
                 )}
@@ -583,7 +583,7 @@ export default function ChatAssistant() {
               </div>
 
               {/* ── Input bar ── */}
-              <div className="p-3 sm:p-5 bg-slate-900/95 backdrop-blur-md border-t border-slate-700/50 flex items-end gap-2 sm:gap-3 shrink-0">
+              <div className="p-3 bg-slate-900 border-t border-slate-800 flex items-end gap-2 shrink-0">
                 <div className="flex-1 min-w-0">
                   <textarea
                     ref={textareaRef}
@@ -591,19 +591,19 @@ export default function ChatAssistant() {
                     value={input}
                     onChange={e => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Ask about WIDS… (Shift+Enter for new line)"
-                    className="w-full bg-slate-800/80 text-white py-3 sm:py-4 px-4 sm:px-5 rounded-2xl focus:outline-none border border-slate-700 focus:border-cyber-cyan/50 transition-colors placeholder:text-slate-600 resize-none overflow-hidden leading-relaxed text-base"
+                    placeholder="Ask about WIDS…"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none overflow-hidden leading-relaxed text-sm"
                   />
                 </div>
                 <button
                   onClick={handleSend}
                   disabled={!input.trim() || isStreaming}
                   aria-label="Send message"
-                  className="flex-none w-12 sm:w-14 h-12 sm:h-14 bg-cyber-cyan/10 hover:bg-cyber-cyan/20 text-cyber-cyan rounded-2xl border border-cyber-cyan/30 hover:border-cyber-cyan transition-all disabled:opacity-30 btn-press flex items-center justify-center shadow-lg mb-0.5"
+                  className="flex-none w-10 h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-colors focus:ring-2 focus:ring-blue-500/50 disabled:opacity-30 flex items-center justify-center mb-0.5 shadow-sm"
                 >
                   {isStreaming
-                    ? <Loader2 size={20} className="animate-spin" />
-                    : <Send size={20} />
+                    ? <Loader2 size={16} className="animate-spin" />
+                    : <Send size={16} />
                   }
                 </button>
               </div>

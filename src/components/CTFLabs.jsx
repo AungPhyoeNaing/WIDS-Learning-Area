@@ -192,26 +192,26 @@ const CHALLENGES = [
 
 function ProgressBar({ completed, total }) {
   return (
-    <div className="flex items-center gap-2 sm:gap-3 mb-6">
-      <span className="text-sm sm:text-base font-bold text-slate-400 flex-shrink-0">
-        <span className="text-cyber-cyan">{completed}</span>/{total} Flags
+    <div className="flex items-center gap-3 mb-6">
+      <span className="text-sm font-medium text-slate-400 flex-shrink-0">
+        <span className="text-blue-500 font-bold">{completed}</span>/{total} Flags
       </span>
-      <div className="flex-1 h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
-        <div className="h-full bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink rounded-full transition-all duration-700 animate-gradient" style={{ width: `${(completed / total) * 100}%` }} />
+      <div className="flex-1 h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-850">
+        <div className="h-full bg-blue-600 rounded-full transition-all duration-500" style={{ width: `${(completed / total) * 100}%` }} />
       </div>
       {completed === total && (
-        <span className="text-cyber-lime font-bold text-sm animate-bounce flex-shrink-0">All flags captured! 🎉</span>
+        <span className="text-emerald-400 font-semibold text-xs flex-shrink-0">All flags captured! 🎉</span>
       )}
     </div>
   );
 }
 
 const COLOR_MAP = {
-  emerald: { bar: 'bg-cyber-cyan', iconBg: 'bg-cyber-cyan/10', iconBorder: 'border-cyber-cyan/30', iconText: 'text-cyber-cyan', gradient: 'from-cyber-cyan to-emerald-400' },
-  blue: { bar: 'bg-blue-500', iconBg: 'bg-blue-500/10', iconBorder: 'border-blue-500/30', iconText: 'text-blue-400', gradient: 'from-blue-500 to-cyber-cyan' },
-  purple: { bar: 'bg-cyber-purple', iconBg: 'bg-cyber-purple/10', iconBorder: 'border-cyber-purple/30', iconText: 'text-cyber-purple', gradient: 'from-cyber-purple to-cyber-pink' },
-  orange: { bar: 'bg-cyber-orange', iconBg: 'bg-cyber-orange/10', iconBorder: 'border-cyber-orange/30', iconText: 'text-cyber-orange', gradient: 'from-cyber-orange to-cyber-pink' },
-  red: { bar: 'bg-cyber-pink', iconBg: 'bg-cyber-pink/10', iconBorder: 'border-cyber-pink/30', iconText: 'text-cyber-pink', gradient: 'from-cyber-pink to-red-500' }
+  emerald: { bar: 'bg-emerald-500', iconBg: 'bg-emerald-500/10', iconBorder: 'border-emerald-500/20', iconText: 'text-emerald-405', gradient: 'from-emerald-500 to-emerald-600' },
+  blue: { bar: 'bg-blue-500', iconBg: 'bg-blue-500/10', iconBorder: 'border-blue-500/20', iconText: 'text-blue-400', gradient: 'from-blue-500 to-blue-600' },
+  purple: { bar: 'bg-indigo-500', iconBg: 'bg-indigo-500/10', iconBorder: 'border-indigo-500/20', iconText: 'text-indigo-400', gradient: 'from-indigo-500 to-indigo-600' },
+  orange: { bar: 'bg-amber-500', iconBg: 'bg-amber-500/10', iconBorder: 'border-amber-500/20', iconText: 'text-amber-500', gradient: 'from-amber-500 to-amber-600' },
+  red: { bar: 'bg-red-500', iconBg: 'bg-red-500/10', iconBorder: 'border-red-500/20', iconText: 'text-red-400', gradient: 'from-red-500 to-red-600' }
 };
 
 function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isLocked, score, setScore, allCompleted, addScore }) {
@@ -227,7 +227,7 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
 
   if (isLocked) {
     return (
-      <div className="glass-card rounded-xl p-6 relative overflow-hidden opacity-50 grayscale transition-all flex items-center justify-center min-h-[120px]">
+      <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm relative overflow-hidden opacity-50 grayscale transition-all flex items-center justify-center min-h-[120px]">
         <div className="absolute top-0 left-0 w-1.5 h-full bg-slate-700" />
         <div className="flex flex-col items-center gap-2 text-slate-500">
           <Lock className="w-8 h-8 mb-1" />
@@ -250,15 +250,15 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
 
   if (isCompleted) {
     return (
-      <div className="border border-emerald-500/50 rounded-xl p-4 sm:p-6 bg-emerald-900/10 relative overflow-hidden opacity-80 card-pop">
-        <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-emerald-400 to-cyber-lime" />
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="p-2 rounded-full bg-emerald-900/50 border border-emerald-500/50 flex-shrink-0"><CheckCircle2 className="w-5 sm:w-6 h-5 sm:h-6 text-emerald-400" /></div>
+      <div className="border border-emerald-500/30 rounded-xl p-4 sm:p-5 bg-emerald-950/10 relative overflow-hidden opacity-90 transition-all duration-200">
+        <div className="absolute top-0 left-0 w-1.5 h-full bg-emerald-500" />
+        <div className="flex items-center gap-3">
+          <div className="p-1.5 rounded-full bg-emerald-950 border border-emerald-500/30 flex-shrink-0"><CheckCircle2 className="w-5 h-5 text-emerald-400" /></div>
           <div className="min-w-0">
-            <h3 className="text-base sm:text-lg font-bold text-emerald-400 flex flex-wrap items-center gap-2">
-              {challenge.title} <span className="text-[10px] sm:text-xs bg-emerald-900/50 px-2 py-0.5 rounded border border-emerald-500/30 whitespace-nowrap">Flag captured 🚩</span>
+            <h3 className="text-sm sm:text-base font-semibold text-emerald-400 flex flex-wrap items-center gap-2">
+              {challenge.title} <span className="text-[10px] bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/20 whitespace-nowrap">Flag captured 🚩</span>
             </h3>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">Completed — view the next challenge below.</p>
+            <p className="text-xs text-slate-500 mt-0.5">Completed — view the next challenge below.</p>
           </div>
         </div>
       </div>
@@ -281,13 +281,13 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
   };
 
   return (
-      <div className="glass-card rounded-xl p-4 sm:p-6 relative overflow-hidden card-pop">
+      <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm relative overflow-hidden card-pop">
         <div className={`absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b ${c.gradient}`} />
         <div className="flex items-start gap-3 mb-4">
           <div className={`p-2 rounded-lg ${c.iconBg} border ${c.iconBorder} flex-shrink-0`}><Icon className={`w-4 sm:w-5 h-4 sm:h-5 ${c.iconText}`} /></div>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-base sm:text-lg font-bold text-white">Challenge {challengeIndex + 1}: {challenge.title}</h3>
+              <h3 className="text-lg font-medium text-slate-200 mb-2">Challenge {challengeIndex + 1}: {challenge.title}</h3>
               <span className="text-[10px] font-mono bg-slate-800 text-slate-500 border border-slate-700 px-1.5 py-0.5 rounded uppercase tracking-wider">Flag: {challenge.flag}</span>
               {challenge.maxScore && <span className="text-[10px] text-cyber-lime font-mono">+{challenge.maxScore}pts</span>}
             </div>
@@ -299,7 +299,7 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
 
       {!isCompleted && !hintRevealed && (
         <div className="mt-4">
-          <button onClick={() => setHintRevealed(true)} className="text-xs font-bold text-cyber-orange hover:text-white flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-cyber-orange/10 border border-cyber-orange/20 hover:bg-cyber-orange/20 transition-colors">
+          <button onClick={() => setHintRevealed(true)} className="text-xs font-semibold text-amber-400 hover:text-white flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-800 border border-slate-700 hover:bg-slate-750 transition-colors">
             <Key className="w-3.5 h-3.5" /> Decrypt Hint (-10 pts)
           </button>
         </div>
@@ -347,32 +347,32 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
               value={textValue} onChange={(e) => setTextValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleTextSubmit()}
               aria-label="Enter hex flag answer"
-              className="bg-slate-900 border-2 border-slate-600 rounded px-4 py-3 sm:py-2.5 text-white font-mono text-center uppercase focus:outline-none focus:border-blue-500 w-full sm:w-32"
+              className="px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 w-full sm:w-32 text-sm font-mono text-center uppercase"
             />
-            <button onClick={handleTextSubmit} aria-label="Submit answer" className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 sm:py-2.5 rounded font-bold text-sm transition-colors shadow-lg">
+            <button onClick={handleTextSubmit} aria-label="Submit answer" className="w-full sm:w-auto px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors focus:ring-2 focus:ring-blue-500/50">
               Submit Flag
             </button>
           </div>
           {submitAttempts > 0 && !challenge.answer(textValue) && (
-            <div className="mt-3 p-3 bg-red-900/30 border border-red-500/50 rounded flex items-start gap-2">
+            <div className="mt-3 p-3 bg-red-950 border border-red-500/20 rounded flex items-start gap-2">
               <XCircle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
               <div>
-                <p className="text-sm sm:text-base text-red-200 font-bold">Incorrect flag (-20 pts)</p>
-                <p className="text-xs sm:text-sm text-red-300 mt-1">Hint: Review the provided documentation or previous successful steps.</p>
+                <p className="text-sm text-red-200 font-semibold">Incorrect flag (-20 pts)</p>
+                <p className="text-xs text-red-300 mt-0.5">Hint: Review the provided documentation or previous successful steps.</p>
               </div>
             </div>
           )}
           {hintRevealed && submitAttempts === 0 && (
-             <div className="mt-3 p-3 bg-cyber-orange/10 border border-cyber-orange/30 rounded flex items-start gap-2">
-               <Key className="w-4 h-4 text-cyber-orange mt-0.5 flex-shrink-0" />
-               <p className="text-sm text-cyber-orange">Hint: Review the highlighted text or key values explicitly mentioned in the question prompt.</p>
+             <div className="mt-3 p-3 bg-slate-950 border border-slate-800 rounded flex items-start gap-2">
+               <Key className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+               <p className="text-xs sm:text-sm text-slate-400">Hint: Review the highlighted text or key values explicitly mentioned in the question prompt.</p>
              </div>
           )}
           {challenge.answer(textValue) && (
-            <div className="mt-3 p-3 bg-emerald-900/30 border border-emerald-500/50 rounded flex items-start gap-2 animate-pulse">
+            <div className="mt-3 p-3 bg-emerald-950/40 border border-emerald-500/20 rounded flex items-start gap-2">
               <CheckCircle2 className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
               <div>
-                <p className="text-sm text-emerald-200"><strong className="text-emerald-400">Flag captured! +{Math.max(10, challenge.maxScore - (submitAttempts * 20) - (hintRevealed ? 10 : 0))}pts</strong></p>
+                <p className="text-xs sm:text-sm text-emerald-300"><strong className="text-emerald-400 font-semibold">Flag captured! +{Math.max(10, challenge.maxScore - (submitAttempts * 20) - (hintRevealed ? 10 : 0))}pts</strong></p>
               </div>
             </div>
           )}
@@ -383,29 +383,17 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
 }
 
 function ScoreBoard({ score, totalPossible, elapsed }) {
-  const [animate, setAnimate] = useState(false);
-  const prevScore = React.useRef(score);
-
-  useEffect(() => {
-    if (score > prevScore.current) {
-      setAnimate(true);
-      const timer = setTimeout(() => setAnimate(false), 500);
-      prevScore.current = score;
-      return () => clearTimeout(timer);
-    }
-  }, [score]);
-
   return (
     <div className="flex flex-wrap items-center gap-6 text-sm">
-      <div className={`flex items-center gap-2 transition-all duration-300 ${animate ? 'scale-125 text-emerald-400 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]' : ''}`}>
-        <Flag className="w-4 h-4 text-cyber-lime" />
+      <div className="flex items-center gap-2">
+        <Flag className="w-4 h-4 text-emerald-400" />
         <span className="text-slate-400">Score:</span>
-        <span className="text-white font-extrabold font-mono text-lg">{score}</span>
+        <span className="text-white font-semibold font-mono text-base">{score}</span>
         <span className="text-slate-600">/ {totalPossible}</span>
       </div>
       {elapsed > 0 && (
         <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-cyber-purple" />
+          <Clock className="w-4 h-4 text-indigo-400" />
           <span className="text-slate-400">Time:</span>
           <span className="text-white font-mono">{Math.floor(elapsed / 60)}m {elapsed % 60}s</span>
         </div>
@@ -417,20 +405,20 @@ function ScoreBoard({ score, totalPossible, elapsed }) {
 function CompletionBanner({ score, totalPossible, onReset }) {
   const pct = Math.round((score / totalPossible) * 100);
   const grade = pct >= 90 ? 'S' : pct >= 75 ? 'A' : pct >= 50 ? 'B' : 'C';
-  const gradeColor = grade === 'S' ? 'text-cyber-lime' : grade === 'A' ? 'text-cyber-cyan' : grade === 'B' ? 'text-cyber-purple' : 'text-cyber-orange';
+  const gradeColor = grade === 'S' ? 'text-emerald-400' : grade === 'A' ? 'text-blue-400' : grade === 'B' ? 'text-indigo-400' : 'text-amber-500';
   return (
-    <div className="mt-6 sm:mt-8 p-4 sm:p-8 bg-gradient-to-r from-cyber-cyan/10 via-cyber-purple/10 to-cyber-pink/10 border border-cyber-cyan/30 rounded-xl text-center animate-bounce-in">
-      <Flag className="w-10 sm:w-12 h-10 sm:h-12 text-cyber-lime mx-auto mb-3 animate-bounce" />
-      <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-1">Operation Complete 🎉</h3>
-      <div className="inline-block glass-card border border-slate-700 rounded-xl p-4 my-4 text-center">
-        <p className={`text-5xl font-extrabold ${gradeColor} mb-1`}>{grade}</p>
-        <p className="text-lg text-white font-bold">{score} / {totalPossible}</p>
-        <p className="text-xs text-slate-500">{pct}% accuracy</p>
+    <div className="mt-6 sm:mt-8 p-6 sm:p-8 bg-slate-950 border border-slate-850 rounded-xl text-center">
+      <Flag className="w-10 h-10 text-emerald-400 mx-auto mb-3" />
+      <h3 className="text-lg font-medium text-slate-200 mb-2">Operation Complete 🎉</h3>
+      <div className="inline-block bg-slate-900 border border-slate-800 rounded-lg p-4 my-3 text-center min-w-[140px]">
+        <p className={`text-4xl font-bold ${gradeColor} mb-1`}>{grade}</p>
+        <p className="text-base text-slate-200 font-semibold">{score} / {totalPossible}</p>
+        <p className="text-[10px] text-slate-500">{pct}% accuracy</p>
       </div>
-      <p className="text-slate-400 text-sm max-w-lg mx-auto mb-4">
+      <p className="text-slate-400 text-sm max-w-lg mx-auto mb-4 leading-relaxed">
         You've completed all {CHALLENGES.length} challenges. Return to the <strong>Live Simulation</strong> to apply your skills in real-time, or reset your progress to try again.
       </p>
-      <button onClick={onReset} className="glass-card hover:bg-slate-700/50 text-white px-6 py-2 rounded-lg font-bold text-sm transition-all btn-press">
+      <button onClick={onReset} className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition-colors">
         Reset Progress
       </button>
     </div>
@@ -481,22 +469,20 @@ export default function CTFLabs() {
 
   return (
     <div className="space-y-6 animate-fade-in-up">
-      <div className="glass-card p-3 sm:p-6 md:p-8 rounded-2xl sm:rounded-[2rem] shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-lime via-emerald-400 to-cyber-cyan" />
+      <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-sm relative overflow-hidden">
         <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="p-2 rounded-lg bg-cyber-lime/10 border border-cyber-lime/30"><Flag className="w-5 sm:w-6 h-5 sm:h-6 text-cyber-lime" /></div>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20"><Flag className="w-5 h-5 text-emerald-400" /></div>
             <div>
-              <h2 className="text-xl sm:text-2xl font-extrabold text-white">Capture The Flag Challenges</h2>
-              <p className="text-slate-400 text-sm">Test your Wi-Fi security knowledge. Each challenge awards up to 100pts — wrong answers cost 20pts.</p>
+              <h2 className="text-xl font-semibold tracking-tight text-slate-200 mb-4">Capture The Flag Challenges</h2>
+              <p className="text-slate-400 text-sm mt-0.5">Test your Wi-Fi security knowledge. Each challenge awards up to 100pts — wrong answers cost 20pts.</p>
             </div>
           </div>
           <ScoreBoard score={score} totalPossible={totalPossible} elapsed={elapsed} />
         </div>
       </div>
 
-      <div className="glass-card p-6 rounded-xl shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink" />
+      <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-sm relative overflow-hidden">
         <ProgressBar completed={completed.length} total={CHALLENGES.length} />
 
         <div className="space-y-6">

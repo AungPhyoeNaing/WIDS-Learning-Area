@@ -7,7 +7,7 @@ import { useSimulation } from '../hooks/useSimulation';
 function SignalMeter({ rssi }) {
   const bars = 5;
   const filled = Math.max(1, Math.min(bars, Math.ceil((rssi + 80) / 10)));
-  const colors = ['bg-cyber-pink', 'bg-cyber-orange', 'bg-cyber-lime', 'bg-cyber-cyan', 'bg-emerald-400'];
+  const colors = ['bg-rose-500/70', 'bg-orange-500/70', 'bg-amber-500/70', 'bg-blue-500/70', 'bg-emerald-500/70'];
   return (
     <div className="flex items-center gap-1.5" aria-label={`Signal strength: ${rssi} dBm`}>
       {Array.from({ length: bars }, (_, i) => (
@@ -35,13 +35,13 @@ function RssiHistory({ packets, maxPoints = 20 }) {
       <svg width={w} height={h} className="overflow-visible">
         <defs>
           <linearGradient id="rssiGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#a855f7" />
-            <stop offset="100%" stopColor="#00f0ff" />
+            <stop offset="0%" stopColor="#3b82f6" />
+            <stop offset="100%" stopColor="#60a5fa" />
           </linearGradient>
         </defs>
-        <polyline fill="none" stroke="url(#rssiGrad)" strokeWidth="1.5" points={points} className="drop-shadow-[0_0_2px_rgba(0,240,255,0.3)]" />
+        <polyline fill="none" stroke="url(#rssiGrad)" strokeWidth="1.5" points={points} />
         {values.length > 0 && (
-          <circle cx={w} cy={h - ((values[values.length - 1] - min) / range) * h} r="2" fill="#00f0ff" />
+          <circle cx={w} cy={h - ((values[values.length - 1] - min) / range) * h} r="2" fill="#3b82f6" />
         )}
       </svg>
       <span className="text-[9px] text-slate-600 font-mono">RSSI</span>
@@ -56,10 +56,10 @@ function ChannelSpectrum({ sensorChannel, targetChannel, isAttackActive, sensorO
   return (
     <div className="mt-3 sm:mt-4">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-[8px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider">2.4 GHz Spectrum</span>
+        <span className="text-[8px] sm:text-[10px] text-slate-500 font-semibold uppercase tracking-wider">2.4 GHz Spectrum</span>
         <div className="flex items-center gap-2 sm:gap-3 text-[8px] sm:text-[9px] font-mono">
-          {sensorOn && <span className="text-cyber-cyan">Sensor: CH {sensorChannel}</span>}
-          {isAttackActive && <span className="text-cyber-pink">Attack: CH {targetChannel}</span>}
+          {sensorOn && <span className="text-blue-400">Sensor: CH {sensorChannel}</span>}
+          {isAttackActive && <span className="text-rose-400">Attack: CH {targetChannel}</span>}
         </div>
       </div>
       <div className="flex gap-px sm:gap-0.5 rounded-lg overflow-hidden h-6 sm:h-8">
@@ -71,19 +71,19 @@ function ChannelSpectrum({ sensorChannel, targetChannel, isAttackActive, sensorO
           const hasInterference = isTarget && wrongCh;
           return (
             <div key={ch} className="flex-1 relative group">
-              <div className={`h-full w-full rounded-sm transition-all duration-300 flex items-center justify-center text-[7px] sm:text-[9px] font-bold font-mono ${
-                isBlocked ? 'bg-emerald-900/60 text-emerald-400 border border-emerald-500' :
-                isActive ? 'bg-cyber-pink/20 text-cyber-pink border border-cyber-pink shadow-[0_0_8px_rgba(255,45,149,0.5)] animate-pulse-fast' :
-                isSensor ? 'bg-cyber-cyan/20 text-cyber-cyan border border-cyber-cyan shadow-[0_0_8px_rgba(0,240,255,0.4)]' :
-                hasInterference ? 'bg-yellow-900/60 text-yellow-400 border border-yellow-500 animate-wiggle' :
-                isTarget ? 'bg-slate-700 text-slate-300 border border-slate-500' :
-                'bg-slate-800 text-slate-600 border border-slate-700/50'
+              <div className={`h-full w-full rounded-sm transition-all duration-300 flex items-center justify-center text-[7px] sm:text-[9px] font-semibold font-mono ${
+                isBlocked ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-500/30' :
+                isActive ? 'bg-rose-950/40 text-rose-400 border border-rose-500/30 animate-pulse' :
+                isSensor ? 'bg-blue-950/40 text-blue-400 border border-blue-500/30' :
+                hasInterference ? 'bg-amber-950/40 text-amber-400 border border-amber-500/30' :
+                isTarget ? 'bg-slate-800 text-slate-300 border border-slate-700' :
+                'bg-slate-900/50 text-slate-600 border border-slate-800/40'
               }`}>
                 {ch}
               </div>
               {isTarget && (
                 <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
-                  isBlocked ? 'bg-emerald-400' : isActive ? 'bg-cyber-pink animate-pulse' : 'bg-slate-400'
+                  isBlocked ? 'bg-emerald-400' : isActive ? 'bg-rose-400 animate-pulse' : 'bg-slate-500'
                 }`} />
               )}
             </div>
@@ -112,17 +112,17 @@ function PacketDistribution({ packets }) {
   return (
     <div className="mt-4">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Traffic Distribution</span>
+        <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Traffic Distribution</span>
         <div className="flex items-center gap-3 text-[9px]">
           {normal > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-blue-500" /> {normal}</span>}
-          {attack > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-red-500" /> {attack}</span>}
+          {attack > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-rose-500" /> {attack}</span>}
           {blocked > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-emerald-500" /> {blocked}</span>}
         </div>
       </div>
-      <div className="h-3 bg-slate-900 rounded-full overflow-hidden flex">
-        {nPct > 0 && <div className="h-full bg-blue-500/60 transition-all duration-500" style={{ width: `${nPct}%` }} />}
-        {attack > 0 && <div className="h-full bg-red-500/60 transition-all duration-500" style={{ width: `${aPct}%` }} />}
-        {bPct > 0 && <div className="h-full bg-emerald-500/60 transition-all duration-500" style={{ width: `${bPct}%` }} />}
+      <div className="h-3 bg-slate-950 rounded-full overflow-hidden flex">
+        {nPct > 0 && <div className="h-full bg-blue-600/60 transition-all duration-500" style={{ width: `${nPct}%` }} />}
+        {attack > 0 && <div className="h-full bg-rose-600/60 transition-all duration-500" style={{ width: `${aPct}%` }} />}
+        {bPct > 0 && <div className="h-full bg-emerald-600/60 transition-all duration-500" style={{ width: `${bPct}%` }} />}
       </div>
     </div>
   );
@@ -130,8 +130,7 @@ function PacketDistribution({ packets }) {
 
 // ─── Network Topology Diagram ──────────────────────────────────
 function NetworkTopology({ isAttackActive, attackType, isMitigated, sensorOn }) {
-  const arrowColor = isMitigated ? '#10b981' : (isAttackActive ? '#ff2d95' : '#64748b');
-  const arrowAnimate = isAttackActive && !isMitigated ? 'animate-pulse' : '';
+  const arrowColor = isMitigated ? '#10b981' : (isAttackActive ? '#f43f5e' : '#475569');
   const attackLabel = 
     attackType === 'DEAUTH' ? 'Deauth flood' : 
     attackType === 'ROGUE_AP' ? 'Fake Beacon' : 
@@ -141,22 +140,22 @@ function NetworkTopology({ isAttackActive, attackType, isMitigated, sensorOn }) 
     <div className="flex flex-col md:flex-row items-center justify-center gap-3 sm:gap-6 py-2">
       {/* Attacker */}
       <div className="flex flex-col items-center gap-1">
-        <div className={`w-12 sm:w-14 h-12 sm:h-14 rounded-xl flex items-center justify-center border-2 transition-all ${
-          isAttackActive && !isMitigated ? 'bg-cyber-pink/20 border-cyber-pink shadow-[0_0_15px_rgba(255,45,149,0.3)]' : 'bg-slate-900 border-slate-700'
+        <div className={`w-12 sm:w-14 h-12 sm:h-14 rounded-xl flex items-center justify-center border transition-all ${
+          isAttackActive && !isMitigated ? 'bg-rose-950/20 border-rose-500/40' : 'bg-slate-900 border-slate-800'
         }`}>
-          <WifiOff className={`w-6 h-6 ${isAttackActive && !isMitigated ? 'text-cyber-pink' : 'text-slate-500'}`} />
+          <WifiOff className={`w-6 h-6 ${isAttackActive && !isMitigated ? 'text-rose-400' : 'text-slate-500'}`} />
         </div>
-        <span className="text-[10px] font-bold text-slate-400">Attacker</span>
-        {isAttackActive && !isMitigated && <span className="text-[8px] text-cyber-pink font-mono">{attackLabel}</span>}
+        <span className="text-[10px] font-semibold text-slate-400">Attacker</span>
+        {isAttackActive && !isMitigated && <span className="text-[8px] text-rose-400 font-mono">{attackLabel}</span>}
         {isMitigated && <span className="text-[8px] text-emerald-400 font-mono">Blocked</span>}
       </div>
 
       {/* Arrow */}
       <div className="flex flex-col items-center relative">
-        <div className={`w-10 sm:w-16 h-0.5 ${isMitigated ? 'bg-emerald-500' : isAttackActive ? 'bg-cyber-pink' : 'bg-slate-700'}`} />
-        <div className={`absolute -right-1.5 top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-l-4 border-transparent border-l-current ${isMitigated ? 'text-emerald-500' : isAttackActive ? 'text-cyber-pink' : 'text-slate-700'}`} />
+        <div className={`w-10 sm:w-16 h-0.5 ${isMitigated ? 'bg-emerald-500' : isAttackActive ? 'bg-rose-500' : 'bg-slate-800'}`} />
+        <div className={`absolute -right-1.5 top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-l-4 border-transparent border-l-current ${isMitigated ? 'text-emerald-500' : isAttackActive ? 'text-rose-500' : 'text-slate-800'}`} />
         {isAttackActive && !isMitigated && (
-          <span className="absolute -top-5 text-[7px] sm:text-[8px] text-cyber-pink font-mono whitespace-nowrap animate-pulse">→ malicious frames</span>
+          <span className="absolute -top-5 text-[7px] sm:text-[8px] text-rose-400 font-mono whitespace-nowrap animate-pulse">→ malicious frames</span>
         )}
         {isMitigated && (
           <div className="absolute -top-6 left-1/2 -translate-x-1/2">
@@ -167,13 +166,13 @@ function NetworkTopology({ isAttackActive, attackType, isMitigated, sensorOn }) 
 
       {/* Victim */}
       <div className="flex flex-col items-center gap-1.5">
-        <div className={`w-12 sm:w-16 h-12 sm:h-16 rounded-xl flex items-center justify-center border-2 ${
-          isAttackActive && !isMitigated ? 'bg-yellow-900/30 border-yellow-600' : 'bg-slate-900 border-slate-700'
+        <div className={`w-12 sm:w-16 h-12 sm:h-16 rounded-xl flex items-center justify-center border ${
+          isAttackActive && !isMitigated ? 'bg-amber-950/30 border-amber-500/30' : 'bg-slate-900 border-slate-800'
         }`}>
-          <Activity className={`w-5 sm:w-6 h-5 sm:h-6 ${isAttackActive && !isMitigated ? 'text-yellow-400' : 'text-slate-500'}`} />
+          <Activity className={`w-5 sm:w-6 h-5 sm:h-6 ${isAttackActive && !isMitigated ? 'text-amber-400' : 'text-slate-500'}`} />
         </div>
-        <span className="text-xs sm:text-sm font-bold text-slate-400">Victim</span>
-        {isAttackActive && !isMitigated && <span className="text-[10px] sm:text-xs text-yellow-400 font-mono">Disconnecting</span>}
+        <span className="text-xs sm:text-sm font-semibold text-slate-400">Victim</span>
+        {isAttackActive && !isMitigated && <span className="text-[10px] sm:text-xs text-amber-400 font-mono">Disconnecting</span>}
       </div>
     </div>
   );
@@ -188,21 +187,25 @@ function StatsBar({ packets, totalCaptured, isAttackActive, attackType, sensorOn
   const detected = isAttackActive && sensorOn && sensorChannel === targetChannel;
   return (
     <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
-      <div className="glass-card p-3 sm:p-4 rounded-xl text-center card-pop">
-        <p className="text-xl sm:text-2xl font-extrabold text-white font-mono">{totalCaptured}</p><p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">Total seen</p>
+      <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm text-center card-pop">
+        <p className="text-xl sm:text-2xl font-extrabold text-white font-mono">{totalCaptured}</p>
+        <p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">Total seen</p>
       </div>
-      <div className="glass-card p-3 sm:p-4 rounded-xl text-center card-pop">
-        <p className="text-xl sm:text-2xl font-extrabold text-slate-300 font-mono">{total}</p><p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">In buffer</p>
+      <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm text-center card-pop">
+        <p className="text-xl sm:text-2xl font-extrabold text-slate-300 font-mono">{total}</p>
+        <p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">In buffer</p>
       </div>
-      <div className="glass-card p-3 sm:p-4 rounded-xl text-center card-pop">
-        <p className={`text-xl sm:text-2xl font-extrabold font-mono ${normalPkts > 0 ? 'text-blue-400' : 'text-slate-600'}`}>{normalPkts}</p><p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">Normal</p>
+      <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm text-center card-pop">
+        <p className={`text-xl sm:text-2xl font-extrabold font-mono ${normalPkts > 0 ? 'text-blue-400' : 'text-slate-600'}`}>{normalPkts}</p>
+        <p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">Normal</p>
       </div>
-      <div className="glass-card p-3 sm:p-4 rounded-xl text-center card-pop">
-        <p className={`text-xl sm:text-2xl font-extrabold font-mono ${attackPkts > 0 ? 'text-cyber-pink' : 'text-slate-600'}`}>{attackPkts}</p>
+      <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm text-center card-pop">
+        <p className={`text-xl sm:text-2xl font-extrabold font-mono ${attackPkts > 0 ? 'text-rose-400' : 'text-slate-600'}`}>{attackPkts}</p>
         <p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">{isMitigated ? 'Malicious' : (detected ? 'Attacks' : 'Anomalies')}</p>
       </div>
-      <div className="glass-card p-3 sm:p-4 rounded-xl text-center card-pop">
-        <p className={`text-xl sm:text-2xl font-extrabold font-mono ${blockedPkts > 0 ? 'text-cyber-lime' : 'text-slate-600'}`}>{blockedPkts}</p><p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">Blocked</p>
+      <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm text-center card-pop">
+        <p className={`text-xl sm:text-2xl font-extrabold font-mono ${blockedPkts > 0 ? 'text-emerald-400' : 'text-slate-600'}`}>{blockedPkts}</p>
+        <p className="text-[10px] sm:text-xs text-slate-500 uppercase tracking-wider mt-1">Blocked</p>
       </div>
     </div>
   );
@@ -213,17 +216,17 @@ function DetectionBadge({ isAttackActive, attackType, sensorOn, sensorChannel, t
   const canSee = isAttackActive && sensorOn && sensorChannel === targetChannel;
   if (!canSee && !isAttackActive) return null;
   if (!sensorOn) return (
-    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-600 text-xs text-slate-400">
+    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-xs text-slate-400">
       <div className="w-2 h-2 rounded-full bg-slate-600" /> Sensor offline
     </div>
   );
   if (isAttackActive && sensorOn && sensorChannel !== targetChannel) return (
-    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-yellow-900/30 border border-yellow-500/30 text-xs text-yellow-400">
-      <div className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse" /> Wrong channel — tune to Ch {targetChannel}
+    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-950/30 border border-amber-500/20 text-xs text-amber-400">
+      <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" /> Wrong channel — tune to Ch {targetChannel}
     </div>
   );
   if (isMitigated) return (
-    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-900/30 border border-emerald-500/30 text-xs text-emerald-400">
+    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-950/30 border border-emerald-500/20 text-xs text-emerald-400">
       <ShieldCheck className="w-3 h-3" /> Mitigated — {
         attackType === 'DEAUTH' ? 'Deauth' : 
         attackType === 'ROGUE_AP' ? 'Rogue AP' : 
@@ -233,8 +236,8 @@ function DetectionBadge({ isAttackActive, attackType, sensorOn, sensorChannel, t
     </div>
   );
   if (canSee) return (
-    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyber-pink/10 border border-cyber-pink/30 text-xs text-cyber-pink animate-pulse-fast">
-      <div className="w-2 h-2 rounded-full bg-cyber-pink" />
+    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-950/30 border border-rose-500/20 text-xs text-rose-400 animate-pulse">
+      <div className="w-2 h-2 rounded-full bg-rose-500" />
       {
         attackType === 'DEAUTH' ? 'Deauth flood detected' : 
         attackType === 'ROGUE_AP' ? 'Rogue AP detected' : 
@@ -249,13 +252,13 @@ function DetectionBadge({ isAttackActive, attackType, sensorOn, sensorChannel, t
 // ─── Packet Detail Modal ───────────────────────────────────────
 function PacketDetail({ pkt, onClose }) {
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
-      <div className="glass-card rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden animate-bounce-in" onClick={e => e.stopPropagation()}>
-        <div className="flex items-center justify-between p-4 border-b border-slate-700/50">
-          <h3 className="font-bold text-white flex items-center gap-2"><Terminal className="w-4 h-4 text-cyber-cyan" /> Packet Details</h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={onClose}>
+      <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm w-full max-w-lg mx-4 overflow-hidden animate-bounce-in" onClick={e => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-4 border-b border-slate-800">
+          <h3 className="font-semibold text-slate-100 flex items-center gap-2"><Terminal className="w-4 h-4 text-blue-400" /> Packet Details</h3>
           <button onClick={onClose} aria-label="Close packet details"><X className="w-4 h-4 text-slate-400 hover:text-white transition-colors" /></button>
         </div>
-        <div className="p-4 font-mono text-sm space-y-3">
+        <div className="p-4 font-mono text-xs sm:text-sm space-y-3">
           {[
             ['Timestamp', pkt.timestamp],
             ['Source MAC', pkt.source],
@@ -267,12 +270,12 @@ function PacketDetail({ pkt, onClose }) {
           ].map(([label, value]) => (
             <div key={label} className="flex items-start gap-3">
               <span className="text-slate-500 w-32 flex-shrink-0 text-xs uppercase tracking-wider">{label}</span>
-              <span className={`${label === 'Frame Subtype' && pkt.isAttack ? 'text-cyber-pink font-bold' : label === 'Status' && pkt.isBlocked ? 'text-cyber-lime font-bold' : 'text-white'}`}>{value}</span>
+              <span className={`${label === 'Frame Subtype' && pkt.isAttack ? 'text-rose-400 font-semibold' : label === 'Status' && pkt.isBlocked ? 'text-emerald-400 font-semibold' : 'text-slate-200'}`}>{value}</span>
             </div>
           ))}
-          <div className="border-t border-slate-700/50 pt-3 mt-3">
+          <div className="border-t border-slate-800 pt-3 mt-3">
             <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Raw format</p>
-            <div className="bg-black/50 rounded-lg p-2 text-xs text-slate-400 leading-relaxed">
+            <div className="bg-slate-950 rounded-lg p-2 text-xs text-slate-400 leading-relaxed border border-slate-900">
               [{pkt.timestamp}] {pkt.source} → {pkt.dest} [{pkt.subtype}] {pkt.info}
             </div>
           </div>
@@ -325,38 +328,41 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
     <div className="space-y-6 animate-fade-in-up">
 
       {/* ─── 1. Hardware Control Panel ─── */}
-      <div className="glass-card p-2 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl card-pop relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-blue-500 to-cyber-purple" />
-        <h2 className="text-base sm:text-xl font-extrabold text-cyber-cyan mb-3 sm:mb-4 flex items-center">
-          <Settings className="w-4 sm:w-5 h-4 sm:h-5 mr-1.5 sm:mr-2 text-cyber-cyan" /> 1. Configure Hardware
+      <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm card-pop relative overflow-hidden">
+        <h2 className="text-xl font-semibold tracking-tight text-slate-200 mb-4 flex items-center">
+          <Settings className="w-4 sm:w-5 h-4 sm:h-5 mr-2 text-blue-500" /> 1. Configure Hardware
         </h2>
         <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
-          <div className="flex-1 sm:bg-slate-900/50 p-1 sm:p-4 rounded-xl sm:border border-slate-700/50">
+          <div className="flex-1 sm:bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
             <div className="flex items-center gap-3 sm:gap-4 mb-4">
               <button
                 onClick={() => setSensorOn(!sensorOn)}
                 aria-label={sensorOn ? 'Power off ESP32 sensor' : 'Power on ESP32 sensor'}
                 className={`w-14 sm:w-16 h-14 sm:h-16 rounded-full flex items-center justify-center border-4 transition-all duration-300 flex-shrink-0 btn-press ${
-                  sensorOn ? 'bg-cyber-cyan/20 border-cyber-cyan shadow-[0_0_25px_rgba(0,240,255,0.5)] animate-glow' : 'bg-slate-900 border-slate-600 hover:border-slate-500'
+                  sensorOn ? 'bg-blue-950/40 border-blue-500 text-blue-400 shadow-sm' : 'bg-slate-900 border-slate-700 hover:border-slate-600'
                 }`}
               >
-                <Power className={`w-6 sm:w-8 h-6 sm:h-8 ${sensorOn ? 'text-cyber-cyan' : 'text-slate-500'}`} />
+                <Power className={`w-6 sm:w-8 h-6 sm:h-8 ${sensorOn ? 'text-blue-400' : 'text-slate-500'}`} />
               </button>
               <div>
-                <h3 className="text-white font-extrabold text-sm sm:text-lg">ESP32 Power</h3>
-                <p className="text-[10px] sm:text-xs text-slate-400 font-mono mt-0.5 sm:mt-1">Status: {sensorOn ? <span className="text-cyber-cyan">ONLINE</span> : <span className="text-slate-500">OFFLINE</span>}</p>
+                <h3 className="text-lg font-medium text-slate-200 mb-2">ESP32 Power</h3>
+                <p className="text-[10px] sm:text-xs text-slate-400 font-mono mt-0.5 sm:mt-1">
+                  Status: {sensorOn ? <span className="text-blue-400">ONLINE</span> : <span className="text-slate-500">OFFLINE</span>}
+                </p>
               </div>
             </div>
-            <div className="bg-blue-900/20 border-l-2 border-blue-500 p-3 text-xs text-blue-200 rounded-r">
-              <strong className="flex items-center text-blue-400 mb-1"><Lightbulb className="w-3 h-3 mr-1" /> Knowledge: Promiscuous Mode</strong>
+            <div className="bg-blue-950/30 border-l-2 border-blue-500/50 p-3 text-xs text-slate-300 rounded-r">
+              <strong className="flex items-center text-blue-400 mb-1">
+                <Lightbulb className="w-3 h-3 mr-1" /> Knowledge: Promiscuous Mode
+              </strong>
               Normally, Wi-Fi chips ignore traffic not meant for them. Powering this sensor activates <strong>"Promiscuous Mode"</strong>, forcing it to eavesdrop on <em>every</em> invisible frame flying through the air.
             </div>
           </div>
 
-          <div className="flex-1 sm:bg-slate-900/50 p-1 sm:p-4 rounded-xl sm:border border-slate-700/50">
+          <div className="flex-1 sm:bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
             <div className="flex items-center justify-between mb-4">
-              <label className="text-sm font-bold text-slate-300 flex items-center">
-                <Sliders className="w-4 h-4 mr-2 text-cyber-purple" /> Radio Frequency Tuning
+              <label className="text-sm font-semibold text-slate-300 flex items-center">
+                <Sliders className="w-4 h-4 mr-2 text-blue-500" /> Radio Frequency Tuning
               </label>
               {sensorOn && (
                 <div className="flex items-center gap-2 sm:gap-3">
@@ -366,15 +372,19 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
               )}
             </div>
             <div className="flex gap-4 items-center mb-4">
-              <input type="range" min="1" max="11" value={sensorChannel} onChange={(e) => setSensorChannel(Number(e.target.value))} disabled={!sensorOn} aria-label="Sensor channel selector" className="flex-1 accent-cyber-cyan disabled:opacity-50" />
-              <span className="bg-cyber-cyan/10 text-cyber-cyan font-mono px-3 py-2 rounded-lg border border-cyber-cyan/30 text-sm font-bold min-w-[80px] text-center">CH {sensorChannel}</span>
+              <input type="range" min="1" max="11" value={sensorChannel} onChange={(e) => setSensorChannel(Number(e.target.value))} disabled={!sensorOn} aria-label="Sensor channel selector" className="flex-1 accent-blue-500 disabled:opacity-50" />
+              <span className="bg-blue-950/30 text-blue-400 font-mono px-3 py-2 rounded-lg border border-blue-500/20 text-sm font-semibold min-w-[80px] text-center">
+                CH {sensorChannel}
+              </span>
             </div>
 
             {/* Channel Spectrum Visualizer */}
             <ChannelSpectrum sensorChannel={sensorChannel} targetChannel={targetChannel} isAttackActive={isAttackActive} sensorOn={sensorOn} isMitigated={isMitigated} />
 
-            <div className="bg-blue-900/20 border-l-2 border-blue-500 p-3 text-xs text-blue-200 rounded-r mt-4">
-               <strong className="flex items-center text-blue-400 mb-1"><Lightbulb className="w-3 h-3 mr-1" /> Knowledge: Wi-Fi Channels</strong>
+            <div className="bg-blue-950/30 border-l-2 border-blue-500/50 p-3 text-xs text-slate-300 rounded-r mt-4">
+               <strong className="flex items-center text-blue-400 mb-1">
+                 <Lightbulb className="w-3 h-3 mr-1" /> Knowledge: Wi-Fi Channels
+               </strong>
                Wi-Fi transmits over radio frequencies divided into "Channels" (1 through 11 in the 2.4GHz band). If the attacker is striking Channel 6, but your sensor is tuned to Channel 1, you won't detect the attack! <strong>Hint: Tune to Channel 6.</strong>
             </div>
           </div>
@@ -382,28 +392,31 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
       </div>
 
       {/* ─── 2. Attack Control Panel ─── */}
-      <div className="glass-card p-2 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-pink via-red-500 to-cyber-orange" />
+      <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm relative overflow-hidden">
         {isMitigated && (
-           <div className="absolute inset-0 bg-emerald-900/90 z-20 flex flex-col items-center justify-center backdrop-blur-md border-2 border-emerald-500 rounded-2xl p-4 sm:p-6 text-center animate-bounce-in">
-              <ShieldCheck className="w-16 sm:w-20 h-16 sm:h-20 text-emerald-400 mb-4 animate-bounce" />
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">Threat Neutralized! 🎉</h2>
-              <div className="bg-black/30 p-4 rounded-lg text-emerald-200 mb-6 max-w-md">
-                <strong className="flex items-center justify-center text-emerald-400 mb-2"><Lightbulb className="w-4 h-4 mr-2" /> Knowledge: Active Mitigation</strong>
+           <div className="absolute inset-0 bg-slate-950/95 z-20 flex flex-col items-center justify-center border-2 border-slate-800 rounded-2xl p-4 sm:p-6 text-center animate-bounce-in">
+              <ShieldCheck className="w-16 sm:w-20 h-16 sm:h-20 text-emerald-400 mb-4" />
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-2">Threat Neutralized</h2>
+              <div className="bg-slate-900/80 border border-slate-800 p-4 rounded-lg text-slate-300 mb-6 max-w-md text-xs sm:text-sm">
+                <strong className="flex items-center justify-center text-emerald-400 mb-2">
+                  <Lightbulb className="w-4 h-4 mr-2" /> Active Mitigation Active
+                </strong>
                 Your WIDS has transformed from a passive listener into an active firewall. It generated a rule targeting the attacker's MAC address and is now dropping their malicious frames before they can harm the network.
               </div>
-              <button onClick={() => triggerAttack(attackType)} aria-label="Reset simulation" className="bg-gradient-to-r from-emerald-600 to-cyber-cyan hover:opacity-90 text-white px-8 py-3 rounded-lg font-bold shadow-xl transition-all btn-press hover:scale-105">Reset Simulation</button>
+              <button onClick={() => triggerAttack(attackType)} aria-label="Reset simulation" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors focus:ring-2 focus:ring-blue-500/50 btn-press">
+                Reset Simulation
+              </button>
            </div>
         )}
 
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 border-b border-slate-700/50 pb-3 sm:pb-4">
-          <h2 className="text-lg sm:text-xl font-extrabold text-cyber-pink flex items-center">
-            <MonitorPlay className="mr-2 h-5 w-5 flex-shrink-0" /> <span>2. Threat Generator</span>
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 border-b border-slate-800 pb-4">
+          <h2 className="text-xl font-semibold tracking-tight text-slate-200 flex items-center">
+            <MonitorPlay className="mr-2 h-5 w-5 flex-shrink-0 text-blue-500" /> <span>2. Threat Generator</span>
           </h2>
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <DetectionBadge isAttackActive={isAttackActive} attackType={attackType} sensorOn={sensorOn} sensorChannel={sensorChannel} targetChannel={targetChannel} isMitigated={isMitigated} />
             {isAttackActive && sensorOn && sensorChannel === targetChannel && !isMitigated && (
-              <button onClick={handleMitigate} aria-label="Deploy active mitigation against attacker" className="bg-gradient-to-r from-emerald-600 to-cyber-lime hover:opacity-90 text-white px-3 sm:px-5 py-2 rounded-lg text-xs sm:text-sm font-bold flex items-center animate-pulse-fast shadow-[0_0_20px_rgba(16,185,129,0.6)] btn-press">
+              <button onClick={handleMitigate} aria-label="Deploy active mitigation against attacker" className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-colors focus:ring-2 focus:ring-emerald-500/50 flex items-center shadow-sm btn-press">
                 <ShieldCheck className="w-4 sm:w-5 h-4 sm:h-5 mr-1 sm:mr-2" /> <span className="hidden sm:inline">Deploy Mitigation</span><span className="sm:hidden">Mitigate</span>
               </button>
             )}
@@ -412,9 +425,9 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
 
         {/* Attack Intensity */}
         <div className="flex items-center gap-2 sm:gap-3 mb-4 text-sm flex-wrap">
-          <span className="text-xs sm:text-sm text-slate-500 font-bold uppercase tracking-wider">Intensity:</span>
+          <span className="text-xs sm:text-sm text-slate-500 font-semibold uppercase tracking-wider">Intensity:</span>
           {['low', 'medium', 'high'].map(level => (
-            <button key={level} onClick={() => setIntensity(level)} className={`px-3 py-2 rounded-lg text-xs sm:text-sm font-bold border transition-all btn-press ${intensity === level ? 'bg-gradient-to-r from-cyber-purple/30 to-cyber-pink/30 border-cyber-purple text-white shadow-[0_0_10px_rgba(168,85,247,0.2)]' : 'bg-slate-900 border-slate-700 text-slate-400 hover:bg-slate-800'}`}>
+            <button key={level} onClick={() => setIntensity(level)} className={`px-3 py-2 rounded-lg text-xs sm:text-sm font-medium border transition-all btn-press ${intensity === level ? 'bg-blue-600/15 border-blue-500/30 text-blue-400 shadow-sm' : 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800'}`}>
               {level === 'low' ? '🐌 Low' : level === 'medium' ? '⚡ Medium' : '🔥 High'}
             </button>
           ))}
@@ -423,12 +436,12 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
 
         {/* Network Topology Visual */}
         {(sensorOn || isAttackActive) && (
-          <div className="mb-5 bg-slate-900/50 border border-slate-700/50 rounded-xl p-4">
+          <div className="mb-5 bg-slate-950/40 border border-slate-800/80 rounded-xl p-4">
             <div className="flex items-center gap-2 mb-3">
               <Radio className="w-3.5 h-3.5 text-slate-500" />
-              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Network Topology</span>
+              <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Network Topology</span>
               {!sensorOn && <span className="text-[9px] text-slate-600">(sensor offline)</span>}
-              {sensorOn && !isAttackActive && <span className="text-[9px] text-emerald-600">monitoring...</span>}
+              {sensorOn && !isAttackActive && <span className="text-[9px] text-emerald-600 animate-pulse">monitoring...</span>}
             </div>
             <NetworkTopology isAttackActive={isAttackActive} attackType={attackType} isMitigated={isMitigated} sensorOn={sensorOn} />
           </div>
@@ -436,23 +449,23 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { type: 'DEAUTH', icon: WifiOff, label: 'Kick User', desc: 'Deauthentication: Forges a fake "disconnect" command to force a target offline.', emoji: '💥', gradient: 'from-cyber-pink/20 to-red-900/20', border: 'border-cyber-pink', activeText: 'text-cyber-pink', activeBg: 'bg-cyber-pink/20' },
-            { type: 'ROGUE_AP', icon: ShieldAlert, label: 'Fake Network', desc: 'Rogue AP / Evil Twin: Broadcasts a fake Wi-Fi name (SSID) to trick victims.', emoji: '🎭', gradient: 'from-cyber-purple/20 to-purple-900/20', border: 'border-cyber-purple', activeText: 'text-cyber-purple', activeBg: 'bg-cyber-purple/20' },
-            { type: 'MAC_SPOOF', icon: Activity, label: 'Identity Theft', desc: 'MAC Spoofing: Copies a trusted MAC address to bypass security filters.', emoji: '👤', gradient: 'from-cyber-orange/20 to-orange-900/20', border: 'border-cyber-orange', activeText: 'text-cyber-orange', activeBg: 'bg-cyber-orange/20' },
-            { type: 'ARP_SPOOF', icon: AlertTriangle, label: 'Man-in-the-Middle', desc: 'ARP Spoofing: Links the attacker\'s MAC to the gateway\'s IP to intercept traffic.', emoji: '🕷️', gradient: 'from-cyber-cyan/20 to-blue-900/20', border: 'border-cyber-cyan', activeText: 'text-cyber-cyan', activeBg: 'bg-cyber-cyan/20' },
+            { type: 'DEAUTH', icon: WifiOff, label: 'Kick User', desc: 'Deauthentication: Forges a fake "disconnect" command to force a target offline.', emoji: '💥', border: 'border-rose-500/30', activeText: 'text-rose-400', activeBg: 'bg-rose-950/20' },
+            { type: 'ROGUE_AP', icon: ShieldAlert, label: 'Fake Network', desc: 'Rogue AP / Evil Twin: Broadcasts a fake Wi-Fi name (SSID) to trick victims.', emoji: '🎭', border: 'border-amber-500/30', activeText: 'text-amber-400', activeBg: 'bg-amber-950/20' },
+            { type: 'MAC_SPOOF', icon: Activity, label: 'Identity Theft', desc: 'MAC Spoofing: Copies a trusted MAC address to bypass security filters.', emoji: '👤', border: 'border-blue-500/30', activeText: 'text-blue-400', activeBg: 'bg-blue-950/20' },
+            { type: 'ARP_SPOOF', icon: AlertTriangle, label: 'Man-in-the-Middle', desc: 'ARP Spoofing: Links the attacker\'s MAC to the gateway\'s IP to intercept traffic.', emoji: '🕷️', border: 'border-emerald-500/30', activeText: 'text-emerald-400', activeBg: 'bg-emerald-950/20' },
           ].map(btn => {
             const Icon = btn.icon;
             const isActive = isAttackActive && attackType === btn.type;
             return (
               <button key={btn.type} onClick={() => triggerAttack(btn.type)} aria-label={`Trigger ${btn.label} attack`}
-                className={`p-4 rounded-xl text-left transition-all duration-300 flex flex-col justify-start h-full btn-press ${isActive ? `${btn.activeBg} ${btn.border} border-2 shadow-[0_0_20px_rgba(255,45,149,0.3)]` : 'bg-slate-900/50 border-2 border-slate-700/50 hover:border-slate-500 hover:-translate-y-0.5 hover:shadow-lg'}`}
+                className={`p-4 rounded-xl text-left transition-all duration-300 flex flex-col justify-start h-full btn-press ${isActive ? `${btn.activeBg} ${btn.border} border-2 shadow-sm` : 'bg-slate-900/50 border border-slate-800 hover:border-slate-700 hover:-translate-y-0.5'}`}
               >
-                <div className="font-bold mb-2 flex items-center text-white text-sm sm:text-base">
+                <div className="font-semibold mb-2 flex items-center text-slate-100 text-sm sm:text-base">
                   <span className="text-base sm:text-lg mr-1.5 sm:mr-2">{btn.emoji}</span>
-                  <Icon className={`mr-1.5 sm:mr-2 h-4 sm:h-5 w-4 sm:w-5 ${isActive ? btn.activeText : 'text-slate-400'}`} /> {btn.label}
+                  <Icon className={`mr-1.5 sm:mr-2 h-4 sm:h-5 w-4 sm:w-5 ${isActive ? btn.activeText : 'text-slate-500'}`} /> {btn.label}
                   {isActive && <span className={`ml-2 w-2 h-2 rounded-full ${isActive ? btn.activeText.replace('text-', 'bg-') : ''} animate-pulse`} />}
                 </div>
-                <div className="text-xs text-slate-400 border-t border-slate-700/50 pt-2">{btn.desc}</div>
+                <div className="text-xs text-slate-400 border-t border-slate-800/80 pt-2 mt-auto">{btn.desc}</div>
               </button>
             );
           })}
@@ -461,10 +474,9 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
 
       {/* ─── Stats Bar ─── */}
       {(sensorOn || isAttackActive) && (
-        <div className="glass-card p-2 sm:p-4 rounded-xl sm:rounded-2xl shadow-xl card-pop relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-cyber-purple to-emerald-500" />
+        <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm card-pop relative overflow-hidden">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Live Packet Statistics</h3>
+            <h3 className="text-lg font-medium text-slate-200 mb-2">Live Packet Statistics</h3>
             {packets.length > 0 && <span className="text-[10px] text-slate-600 font-mono">Click a packet for details</span>}
           </div>
           <StatsBar packets={packets} totalCaptured={totalCaptured} isAttackActive={isAttackActive} attackType={attackType} sensorOn={sensorOn} sensorChannel={sensorChannel} targetChannel={targetChannel} isMitigated={isMitigated} />
@@ -473,63 +485,65 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
       )}
 
       {/* ─── 3. Live Terminal Log ─── */}
-      <div className="bg-[#0D1117] rounded-2xl border border-slate-600/50 font-mono text-sm overflow-hidden flex flex-col shadow-2xl">
-        <div className="bg-slate-800/80 text-slate-300 border-b border-slate-600/50 p-2 sm:p-3">
+      <div className="bg-slate-950 rounded-2xl border border-slate-800 font-mono text-sm overflow-hidden flex flex-col shadow-sm">
+        <div className="bg-slate-900 text-slate-300 border-b border-slate-800 p-2 sm:p-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="font-bold flex items-center text-sm sm:text-base">
-              <Terminal className="w-5 h-5 mr-2 text-cyber-cyan flex-shrink-0" /> <span className="hidden sm:inline">3. Live Sensor Output Console</span><span className="sm:hidden">Console</span>
+            <span className="text-xl font-semibold tracking-tight text-slate-200 flex items-center">
+              <Terminal className="w-5 h-5 mr-2 text-blue-500 flex-shrink-0" /> <span className="hidden sm:inline">3. Live Sensor Output Console</span><span className="sm:hidden">Console</span>
             </span>
             <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
               {packets.length > 0 && (
                 <>
-                  <button onClick={exportLogs} aria-label="Copy session logs to clipboard" className="bg-slate-900 hover:bg-slate-700 text-slate-400 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] font-bold border border-slate-700 flex items-center gap-1 transition-colors btn-press">
+                  <button onClick={exportLogs} aria-label="Copy session logs to clipboard" className="bg-slate-950 hover:bg-slate-800 text-slate-400 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] font-bold border border-slate-800 flex items-center gap-1 transition-colors btn-press">
                     <Download className="w-3 h-3" /> <span className="hidden sm:inline">Copy</span>
                   </button>
-                  <button onClick={clearConsole} aria-label="Clear console and stop attack" className="bg-slate-900 hover:bg-red-900/50 text-slate-400 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] font-bold border border-slate-700 flex items-center gap-1 transition-colors btn-press">
+                  <button onClick={clearConsole} aria-label="Clear console and stop attack" className="bg-slate-950 hover:bg-rose-950/50 text-slate-400 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] font-bold border border-slate-800 flex items-center gap-1 transition-colors btn-press">
                     <Trash2 className="w-3 h-3" /> <span className="hidden sm:inline">Clear</span>
                   </button>
                 </>
               )}
               <div className="relative">
-                <Search className="w-4 h-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-600" />
-                <input type="text" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter..." aria-label="Filter console packets" className="bg-slate-900 border border-slate-600 rounded-lg text-sm sm:text-sm text-slate-300 pl-8 pr-3 py-1.5 w-24 sm:w-32 focus:outline-none focus:border-cyber-cyan placeholder-slate-600 transition-colors" />
+                <Search className="w-4 h-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-650" />
+                <input type="text" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter..." aria-label="Filter console packets" className="bg-slate-950 border border-slate-850 rounded-lg text-xs text-slate-300 pl-8 pr-3 py-1.5 w-24 sm:w-32 focus:outline-none focus:border-blue-500 placeholder-slate-600 transition-colors" />
               </div>
-              <span className="bg-slate-900 px-2 py-1 rounded-lg text-xs text-emerald-400 border border-emerald-900 hidden sm:inline">Src</span>
-              <span className="bg-slate-900 px-2 py-1 rounded-lg text-xs text-blue-400 border border-blue-900 hidden sm:inline">Dst</span>
-              <span className="bg-slate-900 px-2 py-1 rounded-lg text-xs text-slate-400 border border-slate-700">Ch:{sensorChannel}</span>
+              <span className="bg-slate-950 px-2 py-1 rounded-lg text-[10px] sm:text-xs text-blue-400 border border-blue-950/55 hidden sm:inline">Src</span>
+              <span className="bg-slate-950 px-2 py-1 rounded-lg text-[10px] sm:text-xs text-indigo-400 border border-indigo-950/55 hidden sm:inline">Dst</span>
+              <span className="bg-slate-950 px-2 py-1 rounded-lg text-[10px] sm:text-xs text-slate-400 border border-slate-800">Ch:{sensorChannel}</span>
             </div>
           </div>
         </div>
 
         {isAttackActive && sensorOn && sensorChannel !== targetChannel && (
-           <div className="bg-yellow-900/80 text-yellow-400 p-2 text-center text-xs sm:text-sm font-bold border-b border-yellow-500/50 animate-pulse-fast flex items-center justify-center gap-2">
+           <div className="bg-amber-950/80 text-amber-400 p-2 text-center text-xs sm:text-sm font-semibold border-b border-amber-500/20 animate-pulse flex items-center justify-center gap-2">
              <AlertTriangle className="w-4 h-4 flex-shrink-0" /> <span>SIGNAL: Traffic spike on Ch {targetChannel}! Tune to CH {targetChannel}!</span>
            </div>
         )}
 
-        <div ref={consoleRef} className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1 max-h-48">
+        <div ref={consoleRef} className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-1 max-h-48 min-h-[12rem]">
           {!sensorOn ? (
-             <div className="text-red-900 font-bold flex flex-col items-center justify-center h-48">
-               <span className="text-lg">[SENSOR OFFLINE]</span>
-               <span className="text-sm font-normal mt-2 text-slate-500 text-center max-w-md">Power on the ESP32 in Step 1 to activate Promiscuous Mode.</span>
+             <div className="text-rose-500 font-semibold flex flex-col items-center justify-center h-48">
+               <span className="text-base">[SENSOR OFFLINE]</span>
+               <span className="text-xs font-normal mt-2 text-slate-550 text-center max-w-sm">
+                 Power on the ESP32 in Step 1 to activate Promiscuous Mode.
+               </span>
              </div>
           ) : filteredPackets.length === 0 ? (
-            <div className="text-slate-500 italic flex items-center justify-center h-48">
-              {filter ? <span>No packets match "<span className="text-slate-400">{filter}</span>"</span> : <span className="animate-pulse text-lg">Scanning radio waves on Channel {sensorChannel}...</span>}
+            <div className="text-slate-550 italic flex items-center justify-center h-48">
+              {filter ? <span>No packets match "<span className="text-slate-400">{filter}</span>"</span> : <span className="animate-pulse text-sm">Scanning radio waves on Channel {sensorChannel}...</span>}
             </div>
           ) : (
             filteredPackets.map((pkt) => (
               <button key={pkt.id} onClick={() => setDetailPkt(pkt)}
-                className={`w-full text-left text-slate-300 border-b border-slate-800/50 py-2 sm:py-2.5 hover:bg-slate-800/30 transition-colors cursor-pointer rounded px-2 text-sm sm:text-base ${pkt.isBlocked ? 'opacity-50' : ''}`}
+                className={`w-full text-left text-slate-300 border-b border-slate-900 py-1.5 sm:py-2 hover:bg-slate-900/50 transition-colors cursor-pointer rounded px-2 text-xs sm:text-sm ${pkt.isBlocked ? 'opacity-50' : ''}`}
               >
                 <span className="text-slate-500 mr-2">[{pkt.timestamp}]</span>
-                <span className="text-emerald-400 font-bold break-all">{pkt.source}</span>
-                <span className="text-slate-600 mx-1.5 sm:mx-2">→</span>
-                <span className="text-blue-400 font-bold break-all">{pkt.dest}</span>
-                <span className={`mx-2 sm:mx-3 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold uppercase ${pkt.isBlocked ? 'bg-emerald-900/60 text-emerald-400 border border-emerald-500' : pkt.isAttack ? 'bg-cyber-pink/20 text-cyber-pink border border-cyber-pink animate-pulse-fast' : 'bg-slate-800 text-slate-400 border border-slate-600'}`}>
+                <span className="text-blue-400 font-medium break-all">{pkt.source}</span>
+                <span className="text-slate-650 mx-1.5 sm:mx-2">→</span>
+                <span className="text-indigo-400 font-medium break-all">{pkt.dest}</span>
+                <span className={`mx-2 sm:mx-3 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase ${pkt.isBlocked ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-500/30' : pkt.isAttack ? 'bg-rose-950/40 text-rose-400 border border-rose-500/30 animate-pulse' : 'bg-slate-900 text-slate-400 border border-slate-850'}`}>
                   [{pkt.subtype}]
                 </span>
-                <span className={`${pkt.isBlocked ? 'text-emerald-500 line-through' : 'text-slate-300'} break-all`}>{pkt.info}</span>
+                <span className={`${pkt.isBlocked ? 'text-emerald-550 line-through' : 'text-slate-300'} break-all`}>{pkt.info}</span>
                 <span className="text-xs text-slate-600 ml-2">{pkt.rssi}dBm</span>
               </button>
             ))

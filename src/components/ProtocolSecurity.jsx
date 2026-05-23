@@ -7,14 +7,12 @@ export default function ProtocolSecurity() {
   const toggleSection = (idx) => setOpenSection(openSection === idx ? -1 : idx);
 
   return (
-    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md relative overflow-hidden animate-fade-in-up">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-cyber-purple to-blue-500" />
-      
-      <div className="mb-8">
-        <h2 className="text-xl sm:text-3xl font-bold text-purple-400 mb-2 flex items-center gap-2 sm:gap-3">
-          <Network className="w-6 sm:w-10 h-6 sm:h-10" /> Course 2: Protocol Security
+    <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-sm animate-fade-in-up">
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold text-slate-100 mb-2 flex items-center gap-2">
+          <Network className="w-5 h-5 text-blue-500" /> Course 2: Protocol Security
         </h2>
-        <p className="text-slate-400 text-sm sm:text-base">
+        <p className="text-slate-400 text-sm">
           A deep dive into the 802.11 MAC layer, frame structures, and how vulnerabilities in legacy protocols enable wireless attacks.
         </p>
       </div>
@@ -26,14 +24,14 @@ export default function ProtocolSecurity() {
               Wi-Fi packets (frames) are structurally different from standard Ethernet packets. A typical 802.11 Management Frame header consists of 24 bytes before the actual payload begins.
             </p>
             <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs overflow-x-auto text-slate-400">
-              <span className="text-cyber-cyan">Frame Control (2B)</span> | 
-              <span className="text-cyber-purple"> Duration (2B)</span> | 
+              <span className="text-blue-400">Frame Control (2B)</span> | 
+              <span className="text-indigo-400"> Duration (2B)</span> | 
               <span className="text-emerald-400"> Addr1: Dest (6B)</span> | 
-              <span className="text-blue-400"> Addr2: Source (6B)</span> | 
-              <span className="text-pink-400"> Addr3: BSSID (6B)</span> | 
-              <span className="text-yellow-400"> Seq Ctrl (2B)</span>
+              <span className="text-slate-300"> Addr2: Source (6B)</span> | 
+              <span className="text-slate-300"> Addr3: BSSID (6B)</span> | 
+              <span className="text-amber-500"> Seq Ctrl (2B)</span>
             </div>
-            <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 font-mono text-xs text-cyber-cyan mt-2">
+            <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs text-slate-400 mt-2">
               # Example Hex of a Deauth Frame Header<br/>
               C0 00 3A 01 FF FF FF FF FF FF 11 22 33 44 55 66 11 22 33 44 55 66 00 00
             </div>

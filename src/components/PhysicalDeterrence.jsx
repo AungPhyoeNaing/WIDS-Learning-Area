@@ -7,14 +7,12 @@ export default function PhysicalDeterrence() {
   const toggleSection = (idx) => setOpenSection(openSection === idx ? -1 : idx);
 
   return (
-    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md relative overflow-hidden animate-fade-in-up">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-orange-500 to-amber-500" />
-      
-      <div className="mb-8">
-        <h2 className="text-xl sm:text-3xl font-bold text-red-500 mb-2 flex items-center gap-2 sm:gap-3">
-          <ShieldAlert className="w-6 sm:w-10 h-6 sm:h-10" /> Course 4: Physical Deterrence
+    <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-sm animate-fade-in-up">
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold text-slate-100 mb-2 flex items-center gap-2">
+          <ShieldAlert className="w-5 h-5 text-red-500" /> Course 4: Physical Deterrence
         </h2>
-        <p className="text-slate-400 text-sm sm:text-base">
+        <p className="text-slate-400 text-sm">
           Bridging the gap between digital attacks and physical reality. How the WIDS fights back in the physical world.
         </p>
       </div>
@@ -40,12 +38,12 @@ export default function PhysicalDeterrence() {
               To trigger the alarm, our Python backend must send a command back down the serial pipeline to the hardware sensor. We use a simple command syntax, like sending the string <code>"ALARM_ON"</code> over the `pyserial` connection.
             </p>
             <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs overflow-x-auto text-slate-300 mt-2">
-              <span className="text-cyber-purple">def</span> <span className="text-blue-400">trigger_physical_alarm</span>(severity_level):<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">if</span> severity_level == <span className="text-emerald-400">'CRITICAL'</span>:<br/>
+              <span className="text-indigo-400">def</span> <span className="text-blue-400">trigger_physical_alarm</span>(severity_level):<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-indigo-400">if</span> severity_level == <span className="text-emerald-400">'CRITICAL'</span>:<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500"># Send serial command to activate the ESP32 buzzer GPIO</span><br/>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sensor.write(<span className="text-emerald-400">b"ALARM_ON\n"</span>)<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-400">print</span>(<span className="text-emerald-400">"[!] Critical Attack! Deterrence activated."</span>)<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">elif</span> severity_level == <span className="text-emerald-400">'WARNING'</span>:<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-indigo-400">elif</span> severity_level == <span className="text-emerald-400">'WARNING'</span>:<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500"># Flash warning LEDs only</span><br/>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sensor.write(<span className="text-emerald-400">b"LED_WARN\n"</span>)
             </div>

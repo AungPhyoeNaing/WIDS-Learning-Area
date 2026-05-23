@@ -28,44 +28,35 @@
 
 @layer utilities {
   .cyber-grid-bg {
-    background-image:
-      linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-      radial-gradient(ellipse at 20% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, rgba(0, 240, 255, 0.06) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 80%, rgba(255, 45, 149, 0.05) 0%, transparent 50%);
-    background-size: 30px 30px, 30px 30px, 100% 100%, 100% 100%, 100% 100%;
+    background-color: #020617; /* bg-slate-950 */
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(30, 41, 59, 0.2) 0, transparent 50%),
+      radial-gradient(at 50% 0%, rgba(15, 23, 42, 0.3) 0, transparent 50%);
   }
 
   .glass-card {
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid #1e293b; /* border-slate-800 */
+    border-radius: 0.75rem; /* rounded-xl */
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   }
 
   .glass-card-hover:hover {
-    border-color: rgba(0, 240, 255, 0.3);
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.1), inset 0 0 20px rgba(0, 240, 255, 0.02);
+    border-color: #334155; /* border-slate-700 */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   }
 
-  .text-glow-cyan {
-    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
-  }
-
-  .text-glow-pink {
-    text-shadow: 0 0 10px rgba(255, 45, 149, 0.5);
-  }
-
-  .text-glow-purple {
-    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+  .text-glow-cyan, .text-glow-pink, .text-glow-purple {
+    text-shadow: none !important;
   }
 
   .btn-press:active {
-    transform: scale(0.95);
+    transform: scale(0.98);
   }
 
   .card-pop {
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .card-pop:hover {
     transform: translateY(-2px);
@@ -75,7 +66,7 @@
 @layer base {
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 240, 255, 0.3) rgba(15, 23, 42, 0.5);
+    scrollbar-color: rgba(71, 85, 105, 0.3) rgba(15, 23, 42, 0.5);
   }
 
   *::-webkit-scrollbar {
@@ -89,12 +80,12 @@
   }
 
   *::-webkit-scrollbar-thumb {
-    background: rgba(0, 240, 255, 0.3);
+    background: rgba(71, 85, 105, 0.3);
     border-radius: 3px;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 240, 255, 0.5);
+    background: rgba(71, 85, 105, 0.5);
   }
 }
 
@@ -106,67 +97,50 @@
 
 .animate-gradient {
   background-size: 200% 200%;
-  animation: gradient-shift 4s ease infinite;
+  animation: gradient-shift 6s ease infinite;
 }
 
 /* ─── Focus ring utility ─── */
 .focus-ring:focus-visible {
-  outline: 2px solid rgba(0, 240, 255, 0.6);
+  outline: 2px solid #2563eb; /* blue-600 */
   outline-offset: 2px;
   border-radius: 8px;
 }
 
-/* ─── Noise texture overlay for premium feel ─── */
+/* ─── Noise texture overlay ─── */
 .noise-bg::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  opacity: 0.015;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
+  display: none;
 }
 
 /* ─── Animated gradient border ─── */
-@keyframes border-glow {
-  0%, 100% { border-color: rgba(0, 240, 255, 0.3); }
-  50% { border-color: rgba(168, 85, 247, 0.4); }
-}
 .animate-border-glow {
-  animation: border-glow 4s ease-in-out infinite;
+  border-color: #1e293b !important;
 }
 
 /* ─── Smooth page transitions ─── */
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .animate-fade-in-up {
-  animation: fade-in-up 0.5s ease-out both;
+  animation: fade-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ─── Selection color ─── */
 ::selection {
-  background: rgba(0, 240, 255, 0.25);
+  background: rgba(37, 99, 235, 0.25);
   color: #fff;
 }
 
 /* ─── Better focus styles for all interactive elements ─── */
 button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
-  outline: 2px solid rgba(0, 240, 255, 0.5);
+  outline: 2px solid rgba(37, 99, 235, 0.5);
   outline-offset: 2px;
 }
 
-/* ─── SVG drop-shadow glow animation for vector paths ─── */
-@keyframes svg-glow {
-  0% {
-    filter: drop-shadow(0 0 2px rgba(0, 240, 255, 0.35));
-  }
-  100% {
-    filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.8)) drop-shadow(0 0 15px rgba(0, 240, 255, 0.45));
-  }
-}
+/* ─── SVG drop-shadow glow animation ─── */
 .animate-svg-glow {
-  animation: svg-glow 2s ease-in-out infinite alternate;
+  filter: none !important;
+  animation: none !important;
 }
 

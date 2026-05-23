@@ -31,13 +31,13 @@ const STATIC_FACTS = [
 ];
 
 const CATEGORY_COLORS = {
-  ATTACK: "bg-red-500/20 text-red-400 border-red-500/30",
-  HARDWARE: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  PROTOCOL: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  DEFENSE: "bg-cyber-lime/20 text-cyber-lime border-cyber-lime/30",
-  CONCEPT: "bg-cyber-purple/20 text-cyber-purple border-cyber-purple/30",
-  CODING: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  DEFAULT: "bg-slate-800 text-slate-300 border-slate-600"
+  ATTACK: "bg-red-500/10 text-red-400 border-red-500/20",
+  HARDWARE: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  PROTOCOL: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+  DEFENSE: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  CONCEPT: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
+  CODING: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  DEFAULT: "bg-slate-800 text-slate-300 border-slate-700"
 };
 
 const CACHE_KEY = 'wids_daily_insight_cache';
@@ -230,85 +230,80 @@ export default function KnowledgeOfTheDay() {
   const badgeColor = factData && CATEGORY_COLORS[factData.category] ? CATEGORY_COLORS[factData.category] : CATEGORY_COLORS.DEFAULT;
 
   return (
-    <div className="glass-card px-3 py-6 sm:p-8 md:p-12 rounded-3xl sm:rounded-[2.5rem] shadow-2xl text-center border border-slate-800/80 bg-slate-950/60 backdrop-blur-xl transition-all duration-500 max-w-5xl mx-auto relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-cyber-purple/10 rounded-full blur-[120px] pointer-events-none opacity-50"></div>
-
-      <div className="flex items-center justify-center gap-3 sm:gap-5 mb-6 sm:mb-10 relative z-10">
-        <div className="p-2 sm:p-4 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-cyber-purple/20 to-cyber-pink/20 border border-cyber-purple/30 shadow-[0_0_30px_rgba(180,0,255,0.15)]">
-          <Sparkles className="w-6 sm:w-10 h-6 sm:h-10 text-cyber-purple animate-pulse" />
+    <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm max-w-5xl mx-auto transition-all duration-300">
+      <div className="flex items-center justify-center gap-3 mb-6">
+        <div className="p-2.5 rounded-lg bg-blue-600/10 border border-blue-500/20">
+          <Sparkles className="w-5 h-5 text-blue-500" />
         </div>
         <div className="text-left">
-          <h2 className="text-lg sm:text-2xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight mb-0.5 sm:mb-1">Daily Insight</h2>
-          <p className="text-[9px] sm:text-xs text-cyber-pink font-bold tracking-widest uppercase flex items-center gap-2">
-            <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-cyber-pink animate-pulse"></span> Wireless Security Intel
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-slate-100">Daily Insight</h2>
+          <p className="text-[10px] text-slate-500 tracking-wider uppercase flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Wireless Security Intel
           </p>
         </div>
       </div>
 
-      <div className="relative min-h-[200px] w-full flex flex-col items-center justify-center bg-slate-900/40 rounded-2xl sm:rounded-3xl border border-slate-700/50 p-4 sm:p-8 md:p-12 transition-all duration-500 shadow-inner z-10">
+      <div className="relative min-h-[160px] w-full flex flex-col items-center justify-center bg-slate-950/40 rounded-xl border border-slate-850 p-6 transition-all duration-500 shadow-inner">
         {loading ? (
-          <div className="flex flex-col items-center gap-4 text-cyber-cyan animate-pulse">
-            <Loader2 className="w-8 h-8 animate-spin" />
-            <span className="text-xs font-mono tracking-widest uppercase">Decypting Intel...</span>
+          <div className="flex flex-col items-center gap-3 text-blue-500 animate-pulse">
+            <Loader2 className="w-6 h-6 animate-spin" />
+            <span className="text-xs font-mono tracking-wider uppercase">Decrypting Intel...</span>
           </div>
         ) : error ? (
-          <div className="flex flex-col items-center gap-4 text-red-400 animate-in fade-in duration-500">
-            <div className="p-4 bg-red-500/10 rounded-full border border-red-500/20">
-              <AlertCircle className="w-8 h-8" />
+          <div className="flex flex-col items-center gap-4 text-red-400">
+            <div className="p-3 bg-red-500/10 rounded-full border border-red-500/20">
+              <AlertCircle className="w-6 h-6" />
             </div>
             <p className="text-sm font-medium">{error}</p>
           </div>
         ) : factData ? (
           <div key={animateKey} className="animate-in slide-in-from-bottom-8 duration-700 flex flex-col items-center w-full">
-            <span className={`mb-6 px-4 py-1.5 rounded-full text-[10px] font-bold tracking-widest uppercase border flex items-center gap-1.5 shadow-sm ${badgeColor}`}>
-              <Tag className="w-3.5 h-3.5" /> {factData.category || "CONCEPT"}
+            <span className={`mb-4 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border flex items-center gap-1.5 ${badgeColor}`}>
+              <Tag className="w-3 h-3" /> {factData.category || "CONCEPT"}
             </span>
             
-            <div className="relative w-full max-w-3xl mx-auto mb-6 sm:mb-8">
-              <span className="absolute -top-4 sm:-top-6 -left-2 sm:-left-4 md:-left-8 text-4xl sm:text-6xl text-slate-700/30 font-serif leading-none select-none">"</span>
-              <p className="text-slate-100 text-base sm:text-xl md:text-2xl leading-relaxed font-light italic tracking-wide text-center">
-                {factData.fact}
+            <div className="relative w-full max-w-3xl mx-auto mb-2">
+              <p className="text-slate-200 text-base sm:text-lg leading-relaxed italic text-center">
+                "{factData.fact}"
               </p>
-              <span className="absolute -bottom-8 sm:-bottom-10 -right-2 sm:-right-4 md:-right-8 text-4xl sm:text-6xl text-slate-700/30 font-serif leading-none select-none">"</span>
             </div>
           </div>
         ) : null}
       </div>
 
       {factData && (
-        <div className="w-full flex flex-col items-center z-10 relative">
+        <div className="w-full flex flex-col items-center">
           {/* Deep Dive Section */}
           {!deepDive && !deepDiveLoading && !deepDiveError && (
             <button 
               onClick={handleDeepDive}
-              className="mt-6 sm:mt-8 text-sm sm:text-base font-bold text-cyber-cyan hover:text-white flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-cyber-cyan/10 to-blue-500/10 hover:from-cyber-cyan/20 hover:to-blue-500/20 border border-cyber-cyan/30 transition-all shadow-[0_0_15px_rgba(0,240,255,0.1)] hover:shadow-[0_0_25px_rgba(0,240,255,0.25)] hover:-translate-y-0.5 active:translate-y-0"
+              className="mt-6 text-sm font-medium text-slate-300 hover:text-slate-100 flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-all"
             >
-              Deep Dive <ChevronDown className="w-4 sm:w-5 h-4 sm:h-5" />
+              Deep Dive <ChevronDown className="w-4 h-4" />
             </button>
           )}
 
           {deepDiveLoading && (
-            <div className="flex items-center gap-3 text-slate-400 text-xs font-mono mt-6 sm:mt-8 bg-slate-900/50 px-4 py-2 rounded-full border border-slate-700">
-              <Loader2 className="w-4 h-4 animate-spin text-cyber-purple" /> Accessing deeper archives...
+            <div className="flex items-center gap-3 text-slate-500 text-xs font-mono mt-6 bg-slate-950 px-4 py-2 rounded-lg border border-slate-800">
+              <Loader2 className="w-4 h-4 animate-spin text-blue-500" /> Accessing deeper archives...
             </div>
           )}
 
           {deepDiveError && (
-            <div className="text-xs text-red-400 mt-6 sm:mt-8 flex items-center gap-2 bg-red-900/20 px-4 py-2 rounded-lg border border-red-500/30">
+            <div className="text-xs text-red-400 mt-6 flex items-center gap-2 bg-red-950/20 px-4 py-2 rounded-lg border border-red-500/20">
               <AlertCircle className="w-4 h-4" /> {deepDiveError}
             </div>
           )}
 
           {deepDive && (
-            <div className="mt-6 sm:mt-8 w-full max-w-4xl mx-auto p-5 sm:p-10 bg-slate-950/90 border border-slate-700/80 rounded-2xl sm:rounded-3xl text-left shadow-2xl backdrop-blur-md relative overflow-hidden animate-in slide-in-from-top-6 duration-700">
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-cyber-purple via-cyber-cyan to-blue-500"></div>
+            <div className="mt-6 w-full max-w-4xl mx-auto p-6 sm:p-8 bg-slate-950 border border-slate-850 rounded-xl text-left relative overflow-hidden animate-in slide-in-from-top-6 duration-700">
+              <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
               
-              <h4 className="text-cyber-cyan font-bold text-base sm:text-lg mb-4 sm:mb-6 flex items-center gap-3 uppercase tracking-widest pb-4 border-b border-slate-800/60">
-                <BookOpen className="w-5 sm:w-6 h-5 sm:h-6 text-cyber-purple" /> Technical Breakdown
+              <h4 className="text-slate-200 font-semibold text-sm sm:text-base mb-4 flex items-center gap-2 uppercase tracking-widest pb-3 border-b border-slate-850">
+                <BookOpen className="w-4 h-4 text-blue-500" /> Technical Breakdown
               </h4>
               
-              <div className="prose prose-sm sm:prose-base prose-invert prose-slate max-w-none prose-p:leading-relaxed prose-p:text-slate-300 prose-strong:text-white prose-strong:font-bold prose-ul:text-slate-300 prose-li:marker:text-cyber-cyan text-sm sm:text-base">
+              <div className="prose prose-sm prose-invert max-w-none text-slate-300">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {deepDive}
                 </ReactMarkdown>
@@ -321,14 +316,13 @@ export default function KnowledgeOfTheDay() {
       <button
         onClick={() => fetchFact(true)}
         disabled={loading}
-        className="mt-6 sm:mt-10 group relative inline-flex items-center gap-2 sm:gap-3 overflow-hidden rounded-full bg-gradient-to-r from-cyber-purple to-cyber-pink px-6 sm:px-10 py-3 sm:py-4 font-bold text-white text-sm sm:text-base transition-all hover:scale-105 active:scale-95 disabled:opacity-50 shadow-[0_10px_20px_rgba(180,0,255,0.2)] hover:shadow-[0_15px_30px_rgba(180,0,255,0.4)] z-10"
+        className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors disabled:opacity-50"
       >
-        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-        <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-700'}`} />
+        <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-700'}`} />
         {loading ? 'Analyzing...' : 'Generate New Insight'}
       </button>
 
-      <div className="mt-12 pt-6 border-t border-slate-800/50 text-xs text-slate-600 font-mono flex items-center justify-center gap-2 relative z-10">
+      <div className="mt-8 pt-4 border-t border-slate-850 text-[10px] text-slate-600 font-mono flex items-center justify-center gap-2">
         <BookOpen className="w-3.5 h-3.5" />
         SECURE-INFOSYS AI AGENT • PROBABILISTIC KNOWLEDGE BASE
       </div>

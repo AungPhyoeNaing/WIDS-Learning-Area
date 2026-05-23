@@ -17,17 +17,16 @@ export default function LearningHub() {
   });
 
   const tabs = [
-    { id: 'architecture', label: 'Architecture', icon: Layers, color: 'cyber-cyan' },
-    { id: 'protocol', label: 'Protocol Security', icon: Network, color: 'purple-500' },
-    { id: 'hardware', label: 'Hardware', icon: Cpu, color: 'cyber-lime' },
-    { id: 'deterrence', label: 'Physical Deterrence', icon: BellRing, color: 'cyber-orange' },
-    { id: 'logs', label: 'System Logs', icon: Database, color: 'cyber-pink' },
+    { id: 'architecture', label: 'Architecture', icon: Layers },
+    { id: 'protocol', label: 'Protocol Security', icon: Network },
+    { id: 'hardware', label: 'Hardware', icon: Cpu },
+    { id: 'deterrence', label: 'Physical Deterrence', icon: BellRing },
+    { id: 'logs', label: 'System Logs', icon: Database },
   ];
 
   return (
     <div className="space-y-6">
-      <div className="glass-card p-2 sm:p-2.5 rounded-2xl flex overflow-x-auto snap-x scroll-p-2 items-center gap-2 border border-slate-800 bg-slate-900/50 relative hide-scrollbar">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyber-purple/30 to-transparent pointer-events-none" />
+      <div className="bg-slate-900 border border-slate-800 p-1.5 rounded-xl flex overflow-x-auto snap-x scroll-p-2 items-center gap-1.5 relative hide-scrollbar">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -42,21 +41,16 @@ export default function LearningHub() {
                   localStorage.setItem(`wids_read_sections_${activeProfileId}`, JSON.stringify(updated));
                 }
               }}
-              className={`flex-none sm:flex-1 relative flex items-center justify-center gap-2 px-4 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-bold transition-all duration-300 snap-start ${
+              className={`flex-none sm:flex-1 relative flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 snap-start border ${
                 isActive
-                  ? 'bg-slate-800 text-white shadow-lg border border-slate-700/80'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/30'
+                  ? 'bg-blue-600/10 text-blue-400 border-blue-500/20'
+                  : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/30'
               }`}
             >
-              <Icon className={`w-4 h-4 transition-colors ${
-                isActive ? `text-${tab.color}` : ''
-              }`} />
+              <Icon className={`w-4 h-4 transition-colors ${isActive ? 'text-blue-400' : ''}`} />
               <span className="whitespace-nowrap">{tab.label}</span>
               {!readSections.includes(tab.id) && (
-                <span className="w-1.5 h-1.5 rounded-full bg-cyber-pink animate-pulse flex-shrink-0" />
-              )}
-              {isActive && (
-                <span className={`absolute -bottom-px left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-${tab.color}`} />
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 flex-shrink-0" />
               )}
             </button>
           );

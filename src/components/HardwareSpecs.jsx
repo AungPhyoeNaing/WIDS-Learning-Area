@@ -7,14 +7,12 @@ export default function HardwareSpecs() {
   const toggleSection = (idx) => setOpenSection(openSection === idx ? -1 : idx);
 
   return (
-    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md relative overflow-hidden animate-fade-in-up">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink" />
-      
-      <div className="mb-8">
-        <h2 className="text-xl sm:text-3xl font-bold text-cyber-lime mb-2 flex items-center gap-2 sm:gap-3">
-          <Cpu className="w-6 sm:w-10 h-6 sm:h-10" /> Course 3: Sensor Hardware
+    <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-sm animate-fade-in-up">
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold text-slate-100 mb-2 flex items-center gap-2">
+          <Cpu className="w-5 h-5 text-blue-500" /> Course 3: Sensor Hardware
         </h2>
-        <p className="text-slate-400 text-sm sm:text-base">
+        <p className="text-slate-400 text-sm">
           Understanding the ESP32 RF capabilities and how to interface it with our Python backend using PySerial.
         </p>
       </div>
@@ -39,20 +37,20 @@ export default function HardwareSpecs() {
               The ESP32 transmits the captured packet metadata as JSON strings over a USB Serial connection at a high baud rate (115200). Our backend uses Python's <code>pyserial</code> library to ingest this data continuously.
             </p>
             <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs overflow-x-auto text-slate-300 mt-2">
-              <span className="text-cyber-purple">import</span> serial<br/>
-              <span className="text-cyber-purple">import</span> json<br/>
-              <span className="text-cyber-purple">import</span> time<br/><br/>
+              <span className="text-indigo-400">import</span> serial<br/>
+              <span className="text-indigo-400">import</span> json<br/>
+              <span className="text-indigo-400">import</span> time<br/><br/>
               <span className="text-slate-500"># Open serial connection to the ESP32 sensor</span><br/>
               sensor = serial.Serial(<span className="text-emerald-400">'COM3'</span>, baudrate=<span className="text-blue-400">115200</span>, timeout=<span className="text-blue-400">1</span>)<br/><br/>
-              <span className="text-cyber-purple">def</span> <span className="text-blue-400">listen_to_sensor</span>():<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">while True</span>:<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">if</span> sensor.in_waiting &gt; <span className="text-blue-400">0</span>:<br/>
+              <span className="text-indigo-400">def</span> <span className="text-blue-400">listen_to_sensor</span>():<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-indigo-400">while True</span>:<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-indigo-400">if</span> sensor.in_waiting &gt; <span className="text-blue-400">0</span>:<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_line = sensor.readline().decode(<span className="text-emerald-400">'utf-8'</span>).strip()<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">try</span>:<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-indigo-400">try</span>:<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;packet = json.loads(raw_line)<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process_wids_packet(packet) <span className="text-slate-500"># Send to anomaly engine</span><br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">except</span> json.JSONDecodeError:<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyber-purple">pass</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-indigo-400">except</span> json.JSONDecodeError:<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-indigo-400">pass</span>
             </div>
           </div>
         </Accordion>

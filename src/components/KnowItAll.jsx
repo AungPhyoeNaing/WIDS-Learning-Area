@@ -5,15 +5,15 @@ import { MessageSquarePlus, Clock, Send, Loader2, Sparkles, Database, Network, X
 import { useProfile, PROFILES } from '../contexts/ProfileContext';
 
 const FEED_CATEGORIES = [
-  { id: '📡 RF & Hardware', label: 'RF & Hardware', colorClass: 'text-cyber-lime', borderClass: '!border-lime-400/60', glowClass: 'shadow-[0_0_15px_rgba(163,230,53,0.3)]', bgGradient: 'from-lime-400/10 to-transparent' },
-  { id: '🔒 Protocol Security', label: 'Protocol Security', colorClass: 'text-cyber-purple', borderClass: '!border-purple-500/60', glowClass: 'shadow-[0_0_15px_rgba(168,85,247,0.3)]', bgGradient: 'from-purple-500/10 to-transparent' },
-  { id: '💻 Code & Logic', label: 'Code & Logic', colorClass: 'text-cyber-cyan', borderClass: '!border-cyan-400/60', glowClass: 'shadow-[0_0_15px_rgba(0,240,255,0.3)]', bgGradient: 'from-cyan-400/10 to-transparent' },
-  { id: '⚔️ Attack / Defense', label: 'Attack / Defense', colorClass: 'text-red-500', borderClass: '!border-red-500/60', glowClass: 'shadow-[0_0_15px_rgba(239,68,68,0.3)]', bgGradient: 'from-red-500/10 to-transparent' },
-  { id: '💡 General Insight', label: 'General Insight', colorClass: 'text-amber-500', borderClass: '!border-amber-500/60', glowClass: 'shadow-[0_0_15px_rgba(245,158,11,0.3)]', bgGradient: 'from-amber-500/10 to-transparent' }
+  { id: '📡 RF & Hardware', label: 'RF & Hardware', colorClass: 'text-emerald-400', borderClass: 'border-slate-800' },
+  { id: '🔒 Protocol Security', label: 'Protocol Security', colorClass: 'text-indigo-400', borderClass: 'border-slate-800' },
+  { id: '💻 Code & Logic', label: 'Code & Logic', colorClass: 'text-blue-400', borderClass: 'border-slate-800' },
+  { id: '⚔️ Attack / Defense', label: 'Attack / Defense', colorClass: 'text-red-400', borderClass: 'border-slate-800' },
+  { id: '💡 General Insight', label: 'General Insight', colorClass: 'text-amber-500', borderClass: 'border-slate-800' }
 ];
 
 const FILTER_CATEGORIES = [
-  { id: 'all', label: 'All Knowledge', colorClass: 'text-white', borderClass: 'border-slate-500' },
+  { id: 'all', label: 'All Knowledge', colorClass: 'text-slate-100', borderClass: 'border-slate-800' },
   ...FEED_CATEGORIES
 ];
 
@@ -199,15 +199,15 @@ export default function KnowItAll() {
     <div className="max-w-7xl mx-auto pb-12 relative w-full animate-fade-in-up">
       
       {/* Category Filter Bar */}
-      <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-6 p-2 glass-card rounded-2xl border border-slate-800">
+      <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-6 p-1.5 bg-slate-900 rounded-xl border border-slate-800">
         {FILTER_CATEGORIES.map(cat => (
           <button
             key={cat.id}
             onClick={() => setActiveFilter(cat.id)}
-            className={`whitespace-nowrap px-4 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+            className={`whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-2 ${
               activeFilter === cat.id 
-                ? `bg-slate-800 ${cat.colorClass} ${cat.borderClass} border shadow-lg` 
-                : 'text-slate-400 hover:text-white hover:bg-slate-800/50 border border-transparent'
+                ? `bg-slate-800 text-slate-100 border border-slate-700` 
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/40 border border-transparent'
             }`}
           >
             {cat.label}
@@ -217,12 +217,10 @@ export default function KnowItAll() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-auto grid-flow-dense">
 
-        <div className="glass-card p-3 sm:p-8 rounded-3xl col-span-1 md:col-span-2 lg:col-span-2 border border-slate-800 shadow-2xl relative overflow-hidden group flex flex-col justify-between">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink opacity-70 group-hover:opacity-100 transition-opacity"></div>
-          
-          <div className="mb-5 sm:mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
-              <MessageSquarePlus className="text-cyber-cyan shrink-0" />
+        <div className="bg-slate-900 p-6 rounded-xl col-span-1 md:col-span-2 lg:col-span-2 border border-slate-800 shadow-sm flex flex-col justify-between">
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold tracking-tight text-slate-200 mb-4 flex items-center gap-2">
+              <MessageSquarePlus className="text-blue-500 shrink-0 w-5 h-5" />
               Share Knowledge
             </h2>
             <p className="text-slate-400 text-sm mt-1">Broadcast new findings to the team instantly.</p>
@@ -232,22 +230,22 @@ export default function KnowItAll() {
             <div className="grid grid-cols-1 gap-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs sm:text-sm font-mono text-slate-400 mb-1.5 ml-1">Highlight Title</label>
+                  <label className="block text-xs font-mono text-slate-400 mb-1 ml-0.5">Highlight Title</label>
                   <input 
                     type="text" 
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="E.g., Bypassing MAC filtering..."
-                    className="w-full bg-slate-950/50 border border-slate-800 focus:border-cyber-cyan text-white p-3.5 rounded-2xl outline-none transition-all placeholder-slate-700 text-base"
+                    className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-slate-100 p-2.5 rounded-lg outline-none transition-all placeholder-slate-600 text-sm"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-xs sm:text-sm font-mono text-slate-400 mb-1.5 ml-1">Knowledge Category</label>
+                  <label className="block text-xs font-mono text-slate-400 mb-1 ml-0.5">Knowledge Category</label>
                   <div className="relative" ref={dropdownRef}>
                     <div
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className={`w-full bg-slate-950/50 border ${isDropdownOpen ? 'border-cyber-cyan shadow-[0_0_15px_rgba(0,240,255,0.15)]' : 'border-slate-800 hover:border-slate-700'} text-white p-3.5 rounded-2xl outline-none transition-all text-base cursor-pointer flex justify-between items-center group`}
+                      className={`w-full bg-slate-950 border ${isDropdownOpen ? 'border-blue-500' : 'border-slate-800 hover:border-slate-700'} text-slate-100 p-2.5 rounded-lg outline-none transition-all text-sm cursor-pointer flex justify-between items-center group`}
                     >
                       <span className="flex items-center gap-2">
                         <span className={FEED_CATEGORIES.find(c => c.id === postCategory)?.colorClass}>
@@ -255,11 +253,11 @@ export default function KnowItAll() {
                         </span>
                         <span>{FEED_CATEGORIES.find(c => c.id === postCategory)?.label}</span>
                       </span>
-                      <svg className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                      <svg className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                     </div>
                     
                     {isDropdownOpen && (
-                      <div className="absolute z-50 w-full mt-2 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden py-2 animate-fade-in-up origin-top">
+                      <div className="absolute z-50 w-full mt-1 bg-slate-900 border border-slate-800 rounded-lg shadow-xl overflow-hidden py-1 animate-fade-in-up origin-top">
                         {FEED_CATEGORIES.map(cat => (
                           <div
                             key={cat.id}
@@ -267,12 +265,12 @@ export default function KnowItAll() {
                               setPostCategory(cat.id);
                               setIsDropdownOpen(false);
                             }}
-                            className={`px-4 py-3 cursor-pointer transition-all flex items-center gap-3 hover:bg-slate-800 group ${postCategory === cat.id ? 'bg-slate-800/80 border-l-2 ' + cat.borderClass.replace('!', '') : 'border-l-2 border-transparent'}`}
+                            className={`px-3.5 py-2.5 cursor-pointer transition-all flex items-center gap-2 hover:bg-slate-800 group ${postCategory === cat.id ? 'bg-slate-800/80 border-l-2 ' + cat.borderClass.replace('!', '') : 'border-l-2 border-transparent'}`}
                           >
-                            <span className={`text-xl ${cat.colorClass}`}>
+                            <span className={`text-base ${cat.colorClass}`}>
                                {cat.id.split(' ')[0]} 
                             </span>
-                            <span className={`text-sm font-bold transition-colors ${postCategory === cat.id ? 'text-white' : 'text-slate-400 group-hover:text-white'}`}>
+                            <span className={`text-xs sm:text-sm font-medium transition-colors ${postCategory === cat.id ? 'text-slate-100' : 'text-slate-400 group-hover:text-slate-200'}`}>
                                 {cat.label}
                             </span>
                           </div>
@@ -283,58 +281,58 @@ export default function KnowItAll() {
                 </div>
               </div>
               <div>
-                <label className="block text-xs sm:text-sm font-mono text-slate-400 mb-1.5 ml-1">Main Text Body</label>
+                <label className="block text-xs font-mono text-slate-400 mb-1 ml-0.5">Main Text Body</label>
                 <textarea 
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
                   placeholder="What did you learn today?"
                   rows={3}
-                  className="w-full bg-slate-950/50 border border-slate-800 focus:border-cyber-purple text-white p-3.5 rounded-2xl outline-none transition-all resize-none placeholder-slate-700 text-base"
+                  className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-slate-100 p-2.5 rounded-lg outline-none transition-all resize-none placeholder-slate-600 text-sm"
                   required
                 />
               </div>
               <div className="flex items-center gap-4">
-                <label className="flex items-center gap-2 cursor-pointer bg-slate-950/50 border border-slate-800 hover:border-slate-600 px-4 py-2.5 rounded-2xl text-sm transition-all text-slate-400 hover:text-white">
-                  <Upload size={18} />
+                <label className="flex items-center gap-2 cursor-pointer bg-slate-950 border border-slate-800 hover:border-slate-700 px-3.5 py-2 rounded-lg text-xs transition-all text-slate-400 hover:text-slate-200">
+                  <Upload size={14} />
                   {image ? image.name : "Attach Image"}
                   <input type="file" className="hidden" accept="image/*" onChange={(e) => setImage(e.target.files[0])} />
                 </label>
               </div>
             </div>
-            <div className="flex justify-end pt-2">
+            <div className="flex justify-end pt-1">
               <button 
                 type="submit" 
                 disabled={isSubmitting || !title.trim() || !body.trim()}
-                className="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-white border border-slate-700 hover:border-cyber-cyan px-8 py-3.5 sm:py-3 rounded-2xl font-bold transition-all btn-press flex items-center justify-center gap-2 group/btn shadow-lg"
+                className="w-full sm:w-auto px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-medium transition-colors focus:ring-2 focus:ring-blue-500/50 flex items-center justify-center gap-2"
               >
-                {isSubmitting ? <Loader2 size={18} className="animate-spin shrink-0" /> : <Send size={18} className="shrink-0 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5 transition-transform text-cyber-cyan" />}
+                {isSubmitting ? <Loader2 size={16} className="animate-spin shrink-0" /> : <Send size={16} className="shrink-0" />}
                 {isSubmitting ? 'Transmitting...' : 'Broadcast'}
               </button>
             </div>
           </form>
         </div>
 
-        <div className="glass-card p-4 sm:p-6 rounded-3xl col-span-1 md:col-span-2 lg:col-span-1 border border-slate-800 shadow-xl bg-gradient-to-br from-slate-900 to-slate-800/50 flex flex-col relative overflow-hidden group min-h-[160px]">
+        <div className="bg-slate-900 p-6 rounded-xl col-span-1 md:col-span-2 lg:col-span-1 border border-slate-800 shadow-sm flex flex-col min-h-[160px]">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-sm font-bold text-amber-400 uppercase tracking-widest flex items-center gap-2">
+            <h3 className="text-xs font-bold text-amber-500 uppercase tracking-widest flex items-center gap-2">
               🏆 Top Researchers
             </h3>
           </div>
-          <div className="flex-1 overflow-y-auto space-y-2 custom-scrollbar">
+          <div className="flex-1 overflow-y-auto space-y-1.5 custom-scrollbar">
             {Object.entries(userScores || {})
               .map(([id, data]) => ({ id, profile: PROFILES.find(p => p.id === id), score: data.totalScore }))
               .filter(entry => entry.score > 0)
               .sort((a, b) => b.score - a.score)
               .slice(0, 5)
               .map((entry, idx) => (
-                <div key={entry.id} className="flex items-center justify-between p-2 rounded-lg bg-slate-950/40 border border-slate-800/50">
+                <div key={entry.id} className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800/60">
                   <div className="flex items-center gap-2">
-                    <span className={`text-xs font-bold w-4 text-center ${idx === 0 ? 'text-amber-400' : idx === 1 ? 'text-slate-300' : idx === 2 ? 'text-amber-700' : 'text-slate-600'}`}>
+                    <span className={`text-xs font-bold w-4 text-center ${idx === 0 ? 'text-amber-500' : idx === 1 ? 'text-slate-400' : idx === 2 ? 'text-amber-700' : 'text-slate-600'}`}>
                       {idx + 1}
                     </span>
-                    <span className={`text-xs font-bold ${entry.profile?.color || 'text-white'}`}>{entry.profile?.nickname || entry.id}</span>
+                    <span className={`text-xs font-medium ${entry.profile?.color || 'text-white'}`}>{entry.profile?.nickname || entry.id}</span>
                   </div>
-                  <span className="text-xs font-mono text-cyber-lime font-bold">{entry.score} XP</span>
+                  <span className="text-xs font-mono text-emerald-400 font-bold">{entry.score} XP</span>
                 </div>
             ))}
             {Object.keys(userScores || {}).filter(k => userScores[k].totalScore > 0).length === 0 && (
@@ -342,13 +340,12 @@ export default function KnowItAll() {
             )}
           </div>
         </div>
-
         {isLoading ? (
-          <div className="col-span-1 md:col-span-2 lg:col-span-3 flex justify-center p-12 sm:p-16 glass-card rounded-3xl border border-slate-800">
-            <Loader2 className="w-10 h-10 text-cyber-cyan animate-spin" />
+          <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm col-span-1 md:col-span-2 lg:col-span-3 flex items-center justify-center min-h-[200px]">
+            <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
           </div>
         ) : posts.length === 0 ? (
-          <div className="col-span-1 md:col-span-2 lg:col-span-3 glass-card p-12 sm:p-16 rounded-3xl border border-slate-800 text-center text-slate-500 italic">
+          <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm col-span-1 md:col-span-2 lg:col-span-3 flex items-center justify-center min-h-[200px] text-center text-slate-500 italic">
             No knowledge shared yet. Be the first to add a node to the network!
           </div>
         ) : (
@@ -358,31 +355,31 @@ export default function KnowItAll() {
               <div 
                 key={post.id} 
                 onClick={() => { setSelectedPost(post); markAsRead(post.id); }}
-                className={`glass-card p-3 sm:p-8 rounded-3xl transition-all duration-500 hover:-translate-y-1 flex flex-col group/card cursor-pointer ${getBentoSpan(index)} animate-slide-up overflow-hidden relative border-2 ${catConfig.borderClass} hover:${catConfig.glowClass} bg-slate-900/90 bg-gradient-to-br ${catConfig.bgGradient}`}
-                style={{ animationDelay: `${index * 50}ms` }}
+                className={`bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-sm transition-all duration-200 hover:-translate-y-0.5 flex flex-col group/card cursor-pointer ${getBentoSpan(index)} animate-slide-up overflow-hidden relative`}
+                style={{ animationDelay: `${index * 30}ms` }}
               >
-                {post.image_url && <img src={post.image_url} className="w-full h-40 object-cover mb-4 rounded-xl border border-slate-800/50" alt={`Image for: ${post.title}`} />}
+                {post.image_url && <img src={post.image_url} className="w-full h-40 object-cover mb-4 rounded-lg border border-slate-800/50" alt={`Image for: ${post.title}`} />}
                 {!readPosts.includes(post.id) && (
-                  <span className={`absolute top-3 right-3 text-[9px] font-bold uppercase tracking-wider ${catConfig.colorClass} bg-slate-900/80 px-2 py-0.5 rounded-full border ${catConfig.borderClass} animate-pulse shadow-lg`}>New</span>
+                  <span className={`absolute top-3 right-3 text-[9px] font-bold uppercase tracking-wider ${catConfig.colorClass} bg-slate-950 px-2 py-0.5 rounded-full border border-slate-850 shadow-sm`}>New</span>
                 )}
                 <div className="mb-2">
                   <span className={`text-[10px] sm:text-xs font-mono uppercase tracking-widest ${catConfig.colorClass} opacity-80`}>{post.category || '💡 General Insight'}</span>
                 </div>
                 <div>
-                  <h4 className="text-lg sm:text-xl font-bold text-white mb-3 group-hover/card:text-white transition-colors flex items-start gap-2 break-words">
+                  <h4 className="text-base sm:text-lg font-semibold text-slate-100 mb-2 group-hover/card:text-blue-400 transition-colors flex items-start gap-2 break-words">
                     <span className="line-clamp-2">{post.title}</span>
                   </h4>
-                  <p className="text-slate-400 text-sm sm:text-base leading-relaxed whitespace-pre-wrap line-clamp-4 break-words">{post.body}</p>
+                  <p className="text-slate-400 text-sm leading-relaxed whitespace-pre-wrap line-clamp-4 break-words">{post.body}</p>
                 </div>
-                <div className="mt-6 sm:mt-8 flex items-center justify-between gap-2 text-xs sm:text-sm text-slate-500 font-mono border-t border-slate-800/60 pt-4">
-                  <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="mt-6 flex items-center justify-between gap-2 text-xs text-slate-500 font-mono border-t border-slate-800/60 pt-4">
+                  <div className="flex items-center gap-2">
                     {post.author && (
-                      <span className="text-xs font-bold text-cyber-purple">{post.author}</span>
+                      <span className="text-xs font-bold text-slate-400">{post.author}</span>
                     )}
-                    <Clock size={14} className="text-cyber-pink/70 shrink-0" />
+                    <Clock size={12} className="text-slate-600 shrink-0" />
                     <span>{formatDate(post.created_at)}</span>
                   </div>
-                  <span className={`${catConfig.colorClass} opacity-0 group-hover/card:opacity-100 transition-opacity font-sans font-bold whitespace-nowrap`}>Read full &rarr;</span>
+                  <span className="text-blue-500 opacity-0 group-hover/card:opacity-100 transition-opacity font-sans font-medium whitespace-nowrap">Read full &rarr;</span>
                 </div>
               </div>
             );
@@ -397,17 +394,16 @@ export default function KnowItAll() {
           <button
             onClick={loadMore}
             disabled={isFetchingMore}
-            className="group relative px-8 py-3.5 bg-slate-900 border border-slate-700 hover:border-cyber-cyan text-white font-bold rounded-2xl transition-all shadow-lg hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none overflow-hidden flex items-center justify-center min-w-[220px] btn-press"
+            className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition-colors disabled:opacity-50 flex items-center justify-center min-w-[200px]"
           >
-            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-cyber-cyan/10 via-cyber-purple/10 to-cyber-pink/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             {isFetchingMore ? (
-              <span className="flex items-center gap-2 text-slate-300">
-                <Loader2 className="w-5 h-5 animate-spin text-cyber-cyan" />
+              <span className="flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
                 Accessing archives...
               </span>
             ) : (
-              <span className="flex items-center gap-2 relative z-10">
-                Load More Nodes <Sparkles size={16} className="text-cyber-cyan" />
+              <span className="flex items-center gap-2">
+                Load More Nodes
               </span>
             )}
           </button>
@@ -416,59 +412,56 @@ export default function KnowItAll() {
 
       {selectedPost && createPortal(
         <div 
-          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6 bg-slate-950/90 backdrop-blur-md transition-all animate-in fade-in duration-300"
+          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/80 transition-all duration-205 animate-in fade-in"
           onClick={() => setSelectedPost(null)}
         >
           <div 
-            className="glass-card w-full max-w-3xl h-[85vh] sm:h-auto sm:max-h-[85vh] rounded-t-[2.5rem] sm:rounded-3xl border-t sm:border border-cyber-cyan/30 shadow-2xl flex flex-col relative overflow-hidden animate-slide-up sm:animate-bounce-in"
+            className="bg-slate-900 w-full max-w-3xl h-[85vh] sm:h-auto sm:max-h-[85vh] rounded-t-2xl sm:rounded-xl border border-slate-800 shadow-xl flex flex-col relative overflow-hidden animate-slide-up"
             onClick={e => e.stopPropagation()}
           >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink"></div>
-            
             {/* Modal Header */}
-            <div className="flex justify-between items-start p-6 sm:p-8 border-b border-slate-800/60 shrink-0 bg-slate-900/80 backdrop-blur-md z-10">
+            <div className="flex justify-between items-start p-6 border-b border-slate-800 shrink-0 bg-slate-900 z-10">
               <div className="pr-12">
                 <div className="mb-2">
-                  <span className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-slate-400 border border-slate-700 px-2 py-1 rounded-md bg-slate-950/50">{selectedPost.category || '💡 General Insight'}</span>
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 border border-slate-800 px-2 py-1 rounded bg-slate-950">{selectedPost.category || '💡 General Insight'}</span>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight break-words mt-1">
+                <h3 className="text-lg sm:text-xl font-semibold text-slate-100 leading-tight break-words mt-1">
                   {selectedPost.title}
                 </h3>
-                <div className="flex items-center gap-2 mt-3 text-xs sm:text-sm text-slate-500 font-mono">
-                  <Clock size={12} className="text-cyber-pink/70 shrink-0" />
+                <div className="flex items-center gap-2 mt-2.5 text-xs text-slate-500 font-mono">
+                  <Clock size={12} className="text-slate-600 shrink-0" />
                   <span>{formatDate(selectedPost.created_at)}</span>
                 </div>
               </div>
               <button 
                 onClick={() => setSelectedPost(null)}
-                className="absolute top-6 right-6 text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 rounded-full p-2.5 transition-all btn-press shadow-lg border border-slate-700/50"
+                className="absolute top-6 right-6 text-slate-400 hover:text-slate-200 bg-slate-800 rounded-full p-2 transition-all border border-slate-700"
               >
-                <X size={20} className="shrink-0" />
+                <X size={16} className="shrink-0" />
               </button>
             </div>
 
             {/* Modal Content */}
-            <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin">
               {selectedPost.image_url && (
-                <div className="relative group">
-                  <div className="absolute -inset-1 bg-gradient-to-r from-cyber-cyan/20 to-cyber-purple/20 rounded-2xl blur opacity-75"></div>
+                <div className="relative">
                   <img 
                     src={selectedPost.image_url} 
-                    className="relative w-full max-h-96 object-contain rounded-xl border border-slate-700/50 shadow-2xl bg-slate-950" 
+                    className="w-full max-h-80 object-contain rounded-lg border border-slate-800 bg-slate-950" 
                     alt="Knowledge node visual" 
                   />
                 </div>
               )}
-              <div className="text-slate-200 text-base sm:text-lg leading-relaxed whitespace-pre-wrap break-words font-light tracking-wide">
+              <div className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap break-words">
                 {selectedPost.body}
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 sm:p-6 border-t border-slate-800/60 shrink-0 bg-slate-900/80 backdrop-blur-md flex justify-center sm:justify-end">
+            <div className="p-4 sm:p-6 border-t border-slate-800 shrink-0 bg-slate-900 flex justify-center sm:justify-end">
               <button 
                 onClick={() => setSelectedPost(null)}
-                className="w-full sm:w-auto px-8 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition-all border border-slate-700 hover:border-cyber-cyan/50 shadow-lg btn-press"
+                className="w-full sm:w-auto px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition-colors"
               >
                 Close Node
               </button>

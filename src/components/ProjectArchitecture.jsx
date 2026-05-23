@@ -10,14 +10,12 @@ export default function ProjectArchitecture() {
   };
 
   return (
-    <div className="glass-card p-4 sm:p-8 rounded-3xl border border-slate-800 bg-slate-950/50 backdrop-blur-md relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink" />
-      
-      <div className="mb-8">
-        <h2 className="text-xl sm:text-3xl font-bold text-cyber-cyan mb-2 flex items-center gap-2 sm:gap-3">
-          <Layers className="w-6 sm:w-10 h-6 sm:h-10" /> Course 1: WIDS Architecture
+    <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-sm animate-fade-in-up">
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold text-slate-100 mb-2 flex items-center gap-2">
+          <Layers className="w-5 h-5 text-blue-500" /> Course 1: WIDS Architecture
         </h2>
-        <p className="text-slate-400 text-sm sm:text-base">
+        <p className="text-slate-400 text-sm">
           Understand the structural design, data pipelines, and core philosophies driving the Host-Based Wireless Intrusion Detection System.
         </p>
       </div>
@@ -47,24 +45,24 @@ export default function ProjectArchitecture() {
             
             {/* Visual Pipeline */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-2 p-4 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs sm:text-sm">
-              <div className="flex flex-col items-center p-3 bg-slate-900 border border-slate-700 rounded-lg w-full sm:w-1/4">
-                <MonitorPlay className="w-6 h-6 text-emerald-400 mb-2" />
-                <span className="text-center">1. Airspace<br/><span className="text-slate-500 text-[10px]">802.11 RF</span></span>
+              <div className="flex flex-col items-center p-3 bg-slate-900 border border-slate-800 rounded-lg w-full sm:w-1/4">
+                <MonitorPlay className="w-5 h-5 text-emerald-400 mb-2" />
+                <span className="text-center text-xs">1. Airspace<br/><span className="text-slate-500 text-[10px]">802.11 RF</span></span>
               </div>
-              <Cable className="w-5 h-5 text-slate-600 rotate-90 sm:rotate-0" />
-              <div className="flex flex-col items-center p-3 bg-slate-900 border border-slate-700 rounded-lg w-full sm:w-1/4">
-                <Cpu className="w-6 h-6 text-cyber-cyan mb-2" />
-                <span className="text-center">2. ESP32<br/><span className="text-slate-500 text-[10px]">Promiscuous Rx</span></span>
+              <Cable className="w-4 h-4 text-slate-700 rotate-90 sm:rotate-0" />
+              <div className="flex flex-col items-center p-3 bg-slate-900 border border-slate-800 rounded-lg w-full sm:w-1/4">
+                <Cpu className="w-5 h-5 text-blue-400 mb-2" />
+                <span className="text-center text-xs">2. ESP32<br/><span className="text-slate-500 text-[10px]">Promiscuous Rx</span></span>
               </div>
-              <Cable className="w-5 h-5 text-slate-600 rotate-90 sm:rotate-0" />
-              <div className="flex flex-col items-center p-3 bg-slate-900 border border-slate-700 rounded-lg w-full sm:w-1/4">
-                <Server className="w-6 h-6 text-cyber-purple mb-2" />
-                <span className="text-center">3. Python Host<br/><span className="text-slate-500 text-[10px]">Serial Parsing</span></span>
+              <Cable className="w-4 h-4 text-slate-700 rotate-90 sm:rotate-0" />
+              <div className="flex flex-col items-center p-3 bg-slate-900 border border-slate-800 rounded-lg w-full sm:w-1/4">
+                <Server className="w-5 h-5 text-indigo-400 mb-2" />
+                <span className="text-center text-xs">3. Python Host<br/><span className="text-slate-500 text-[10px]">Serial Parsing</span></span>
               </div>
-              <Cable className="w-5 h-5 text-slate-600 rotate-90 sm:rotate-0" />
-              <div className="flex flex-col items-center p-3 bg-slate-900 border border-slate-700 rounded-lg w-full sm:w-1/4">
-                <ShieldCheck className="w-6 h-6 text-cyber-pink mb-2" />
-                <span className="text-center">4. Dashboard<br/><span className="text-slate-500 text-[10px]">UI Alert</span></span>
+              <Cable className="w-4 h-4 text-slate-700 rotate-90 sm:rotate-0" />
+              <div className="flex flex-col items-center p-3 bg-slate-900 border border-slate-800 rounded-lg w-full sm:w-1/4">
+                <ShieldCheck className="w-5 h-5 text-rose-400 mb-2" />
+                <span className="text-center text-xs">4. Dashboard<br/><span className="text-slate-500 text-[10px]">UI Alert</span></span>
               </div>
             </div>
 
@@ -80,15 +78,15 @@ export default function ProjectArchitecture() {
               Once the Python backend receives the serial data, it runs the frames through a dual-engine analysis system.
             </p>
             <div className="grid sm:grid-cols-2 gap-4 mt-4">
-              <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-700 border-l-4 border-l-cyber-cyan">
-                <h4 className="font-bold text-white mb-2">1. Signature-Based</h4>
-                <p className="text-sm text-slate-400">
+              <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 border-l-4 border-l-blue-500">
+                <h4 className="font-semibold text-slate-200 mb-2 text-sm sm:text-base">1. Signature-Based</h4>
+                <p className="text-xs sm:text-sm text-slate-400">
                   Compares incoming packets against known malicious static patterns. For example, if a packet's Frame Control byte is precisely <code>0xC0</code> (Deauth) and the reason code is <code>7</code>, it triggers an immediate signature match. Fast, but rigid.
                 </p>
               </div>
-              <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-700 border-l-4 border-l-cyber-purple">
-                <h4 className="font-bold text-white mb-2">2. Anomaly-Based</h4>
-                <p className="text-sm text-slate-400">
+              <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 border-l-4 border-l-indigo-500">
+                <h4 className="font-semibold text-slate-200 mb-2 text-sm sm:text-base">2. Anomaly-Based</h4>
+                <p className="text-xs sm:text-sm text-slate-400">
                   Maintains a rolling time-window of network events. If the frequency of certain frames exceeds a threshold (e.g., &gt;50 deauths per second, or multiple BSSIDs broadcasting the same SSID), the anomaly engine fires. Excellent for catching zero-day volumetric attacks.
                 </p>
               </div>
