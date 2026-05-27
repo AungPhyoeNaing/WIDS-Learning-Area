@@ -124,7 +124,7 @@ function CopyButton({ text }) {
 
 // ─── Main component ────────────────────────────────────────────
 export default function ChatAssistant() {
-  const { activeProfile: globalProfile, activeProfileId, setActiveProfile: setGlobalProfile, profiles, addScore } = useProfile();
+  const { activeProfile: globalProfile, activeProfileId, setActiveProfile: setGlobalProfile, profiles, addScore, userScores } = useProfile();
   const [isOpen, setIsOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [userApiKeys, setUserApiKeys] = useState({});
@@ -234,7 +234,30 @@ export default function ChatAssistant() {
       .slice(-6) // Limit API context to save tokens and prevent rate limits
       .map(m => ({ role: m.role === 'model' ? 'assistant' : 'user', content: m.text }));
 
-    const personalizedInstruction = SYSTEM_INSTRUCTION.replace('{activeProfileName}', currentProfile?.name || 'User');
+    let personalizedInstruction = SYSTEM_INSTRUCTION.replace('{activeProfileName}', currentProfile?.name || 'User');
+
+    if (userScores && Object.keys(userScores).length > 0) {
+      const validProfileIds = profiles.map(p => p.id);
+      const sortedProfiles = validProfileIds
+        .map(id => {
+          const profile = profiles.find(p => p.id === id);
+          return { id, name: profile?.name || id, score: userScores[id]?.totalScore || 0 };
+        })
+        .sort((a, b) => b.score - a.score); // Highest score first
+      
+      const bottomTwoIds = sortedProfiles.slice(-2).map(p => p.id);
+      const currentUserScore = userScores[activeProfileId]?.totalScore || 0;
+      
+      // Inject actual leaderboard scores into context
+      personalizedInstruction += `\n\n--- CURRENT LEADERBOARD ---\n`;
+      sortedProfiles.forEach((p, idx) => {
+        personalizedInstruction += `${idx + 1}. ${p.name}: ${p.score} XP\n`;
+      });
+      
+      if (bottomTwoIds.includes(activeProfileId)) {
+        personalizedInstruction += `\nIMPORTANT INSTRUCTION: The current user (${currentProfile?.name}, ${currentUserScore} XP) currently has one of the lowest XP scores in the system (bottom two). As an AI tutor, you MUST explicitly acknowledge their current score, and additionally encourage them to study more, practice in the CTF labs, and show up to the website daily to climb the leaderboard! Be motivating, supportive, and mention real scores to push them forward.`;
+      }
+    }
 
     // Add a placeholder streaming bubble
     const streamingId = Date.now();
@@ -319,7 +342,7 @@ export default function ChatAssistant() {
       setIsStreaming(false);
       abortRef.current = null;
     }
-  }, [messages, isStreaming, userApiKeys, activeProfileId, currentProfile]);
+  }, [messages, isStreaming, userApiKeys, activeProfileId, currentProfile, profiles, userScores]);
 
   const handleSend = () => {
     const text = input.trim();
