@@ -67,7 +67,10 @@ APP VIEWS & CURRENT STATE:
 5. Know-It-ALL: A social knowledge feed where team members post insights. Features author attribution and an intelligent "Mark as Read" system with glowing unread badges.
 6. Global Identity System: Users lock in their identity on the "Who Are You?" welcome screen. The entire app (Scores, Read Receipts, and Chatbot Persona) dynamically syncs to the active profile in the navbar.
 
-SCOPE: Answer ONLY about Wi-Fi security, the WIDS project, the app features, and the team. Acknowledge the specific UI features and states mentioned above if the user asks. Be concise and friendly.`;
+SCOPE AND RESTRICTIONS:
+- You MUST ONLY answer questions related to Wi-Fi security, cybersecurity, the WIDS project, the simulator features, and the team.
+- STRICT RULE: If the user asks about ANYTHING else (e.g., general programming, math, history, casual chat unrelated to WIDS/security), you MUST explicitly refuse to answer. Reply politely but firmly that you are a dedicated WIDS cybersecurity tutor and cannot assist with unrelated topics.
+- Acknowledge specific UI features and states mentioned above if relevant. Be concise and friendly.`;
 
 // ─── localStorage helpers ──────────────────────────────────────
 const HISTORY_KEY = (profileId) => `wids_chat_history_${profileId}`;
