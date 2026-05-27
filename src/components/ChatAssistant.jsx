@@ -398,12 +398,32 @@ export default function ChatAssistant() {
   const hasConversation = messages.length > 1;
   const showQuickPrompts = !hasConversation && !isStreaming;
 
+  // ─── Calculate Bottom Two ────────────────────────────────────
+  const validProfileIds = profiles.map(p => p.id);
+  const sortedProfiles = validProfileIds
+    .map(id => ({ id, score: userScores[id]?.totalScore || 0 }))
+    .sort((a, b) => b.score - a.score);
+  const bottomTwoIds = sortedProfiles.slice(-2).map(p => p.id);
+  const isBottomTwo = bottomTwoIds.includes(activeProfileId) && userScores && Object.keys(userScores).length > 0;
+
   // ─── Render ───────────────────────────────────────────────────
   return (
     <>
-      {/* Floating button */}
+      {/* Floating button & Noti box */}
       {!isOpen && (
-        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end gap-2 animate-float">
+        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[100] flex flex-col items-end gap-2 animate-float">
+          
+          {/* Motivation Noti Box */}
+          {isBottomTwo && (
+            <div className="bg-slate-800 border border-blue-500/30 shadow-lg rounded-xl p-3 max-w-[220px] mb-1 relative animate-pulse">
+              <div className="absolute -bottom-2 right-6 w-4 h-4 bg-slate-800 border-b border-r border-blue-500/30 transform rotate-45"></div>
+              <p className="text-xs text-blue-100 font-medium leading-relaxed flex items-start gap-1.5">
+                <span className="shrink-0 text-blue-400">🚀</span> 
+                <span>Hey {currentProfile?.name.split(' ')[0]}! You're falling behind on XP. Let's study and practice today to climb the leaderboard!</span>
+              </p>
+            </div>
+          )}
+
           <button
             onClick={() => setIsOpen(true)}
             aria-label="Open AI assistant"
