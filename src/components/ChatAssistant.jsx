@@ -214,7 +214,6 @@ export default function ChatAssistant() {
     const newMessages = [...messages, { role: 'user', text: userText }];
     setMessages(newMessages);
     setIsStreaming(true);
-    if (addScore) addScore('chat');
 
     const activeKey = userApiKeys[activeProfileId];
     if (!activeKey) {
@@ -225,6 +224,33 @@ export default function ChatAssistant() {
       }]);
       setIsStreaming(false);
       return;
+    }
+
+    // Evaluate message relevance in the background to award XP
+    if (addScore) {
+      fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${activeKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: [
+            { role: 'system', content: 'You are a relevance evaluator for a cybersecurity project called WIDS (Wi-Fi Intrusion Detection System). Evaluate if the user message is a valid, relevant question or statement regarding cybersecurity, the WIDS project, Wi-Fi security, or the simulator itself. It can be a simple greeting to start the conversation, or a technical question. If it is relevant or a valid greeting, reply with only "YES". If it is spam, gibberish, or completely unrelated to learning/project, reply with only "NO".' },
+            { role: 'user', content: userText },
+          ],
+          model: 'llama-3.1-8b-instant',
+          temperature: 0.1,
+          max_tokens: 10,
+        })
+      }).then(res => res.json()).then(data => {
+        const reply = data.choices?.[0]?.message?.content?.trim()?.toUpperCase() || '';
+        if (reply.includes('YES')) {
+          addScore('chat');
+        }
+      }).catch(err => {
+        console.error('Failed to evaluate message relevance:', err);
+      });
     }
 
     // Build message history (exclude error messages and limit context to last 6 messages)
