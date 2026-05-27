@@ -489,10 +489,13 @@ export default function ChatAssistant() {
                       <ReactMarkdown remarkPlugins={[remarkGfm]}
                         components={{
                           p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
-                          code: ({node, inline, ...props}) =>
-                            inline
-                              ? <code className="bg-slate-950 px-1.5 rounded text-blue-400" {...props} />
-                              : <code className="block bg-slate-950 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-800" {...props} />,
+                          code: ({node, className, children, ...props}) => {
+                            const match = /language-(\w+)/.exec(className || '');
+                            const isBlock = match || String(children).includes('\\n');
+                            return isBlock
+                              ? <code className="block bg-slate-950 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-800" {...props}>{children}</code>
+                              : <code className="bg-slate-950 px-1.5 rounded text-blue-400" {...props}>{children}</code>;
+                          }
                         }}
                       >{m.text}</ReactMarkdown>
                     </div>
@@ -544,10 +547,13 @@ export default function ChatAssistant() {
                         <ReactMarkdown remarkPlugins={[remarkGfm]}
                           components={{
                             p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
-                            code: ({node, inline, ...props}) =>
-                              inline
-                                ? <code className="bg-slate-950 px-1.5 rounded text-blue-400" {...props} />
-                                : <code className="block bg-slate-950 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-850" {...props} />,
+                            code: ({node, className, children, ...props}) => {
+                              const match = /language-(\w+)/.exec(className || '');
+                              const isBlock = match || String(children).includes('\\n');
+                              return isBlock
+                                ? <code className="block bg-slate-950 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-850" {...props}>{children}</code>
+                                : <code className="bg-slate-950 px-1.5 rounded text-blue-400" {...props}>{children}</code>;
+                            }
                           }}
                         >{m.text || ' '}</ReactMarkdown>
 
