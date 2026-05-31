@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Send, X, Loader2, Settings, UserCircle, Shield, Target, BookOpen, Cpu, Zap, Trash2, Copy, Check, RotateCcw, ChevronRight } from 'lucide-react';
+import { Send, X, Loader2, Settings, UserCircle, Shield, Target, BookOpen, Cpu, Zap, Trash2, Copy, Check, RotateCcw, ChevronRight, Maximize2, Minimize2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -70,7 +70,14 @@ APP VIEWS & CURRENT STATE:
 SCOPE AND RESTRICTIONS:
 - You MUST ONLY answer questions related to Wi-Fi security, cybersecurity, the WIDS project, the simulator features, and the team.
 - STRICT RULE: If the user asks about ANYTHING else (e.g., general programming, math, history, casual chat unrelated to WIDS/security), you MUST explicitly refuse to answer. Reply politely but firmly that you are a dedicated WIDS cybersecurity tutor and cannot assist with unrelated topics.
-- Acknowledge specific UI features and states mentioned above if relevant. Be concise and friendly.`;
+- Acknowledge specific UI features and states mentioned above if relevant. Be concise and friendly.
+
+FORMATTING RULES (CRITICAL FOR READABILITY):
+- Never write walls of text. Break complex topics into easily digestible chunks.
+- Use bold text (**keyword**) for key terminology, technologies, and numbers.
+- Use bullet points or numbered lists whenever explaining features, steps, or multiple items.
+- Use Markdown headers (### or ####) to cleanly separate distinct sections of your answer.
+- Keep paragraphs very short (1-3 sentences maximum).`;
 
 // ─── localStorage helpers ──────────────────────────────────────
 const HISTORY_KEY = (profileId) => `wids_chat_history_${profileId}`;
@@ -129,6 +136,7 @@ function CopyButton({ text }) {
 export default function ChatAssistant() {
   const { activeProfile: globalProfile, activeProfileId, setActiveProfile: setGlobalProfile, profiles, addScore, userScores } = useProfile();
   const [isOpen, setIsOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [userApiKeys, setUserApiKeys] = useState({});
   const [messages, setMessages] = useState([]);
@@ -394,6 +402,19 @@ export default function ChatAssistant() {
     }
   };
 
+  // ── Listen for custom text selection Ask AI event ───────────────
+  useEffect(() => {
+    const handleAskAI = (e) => {
+      setIsOpen(true);
+      if (e.detail?.query) {
+        // slight timeout to allow panel to open before sending message
+        setTimeout(() => sendMessage(e.detail.query), 100);
+      }
+    };
+    window.addEventListener('ask-ai-query', handleAskAI);
+    return () => window.removeEventListener('ask-ai-query', handleAskAI);
+  }, [sendMessage]);
+
   // ─── Has more than just the greeting ─────────────────────────
   const hasConversation = messages.length > 1;
   const showQuickPrompts = !hasConversation && !isStreaming;
@@ -427,7 +448,7 @@ export default function ChatAssistant() {
           <button
             onClick={() => setIsOpen(true)}
             aria-label="Open AI assistant"
-            className="group relative bg-blue-600 hover:bg-blue-700 p-1 rounded-full sm:p-1.5 shadow-md hover:scale-105 transition-all duration-200 flex items-center justify-center"
+            className="group relative bg-blue-600 hover:bg-blue-500 p-1 rounded-full sm:p-1.5 shadow-xl hover:shadow-blue-500/40 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center"
           >
             <img
               src="/apn_chat_bot.png"
@@ -440,10 +461,14 @@ export default function ChatAssistant() {
 
       {/* Chat panel */}
       {isOpen && (
-        <div className="fixed inset-x-0 bottom-0 sm:bottom-24 sm:right-6 sm:left-auto w-full sm:w-96 h-[95vh] sm:h-[36rem] bg-slate-900 rounded-t-2xl sm:rounded-xl shadow-xl z-[100] flex flex-col overflow-hidden animate-slide-up border border-slate-850">
+        <div className={`fixed inset-x-0 bottom-0 z-[100] flex flex-col overflow-hidden animate-slide-up border border-slate-700/50 shadow-2xl shadow-blue-900/20 backdrop-blur-xl bg-slate-950/80 ${
+          isFullscreen 
+            ? 'top-0 sm:top-0 sm:right-0 sm:left-0 w-full h-full rounded-none' 
+            : 'sm:bottom-24 sm:right-6 sm:left-auto w-full sm:w-[400px] h-[95vh] sm:h-[38rem] rounded-t-2xl sm:rounded-2xl'
+        }`}>
 
           {/* ── Header ── */}
-          <div className="bg-slate-900 p-4 flex justify-between items-center border-b border-slate-800 shrink-0">
+          <div className="bg-slate-900/50 backdrop-blur-md p-4 flex justify-between items-center border-b border-slate-700/50 shrink-0">
             <div className="flex items-center gap-3">
               <div className={`p-2 rounded-lg bg-slate-800 ${currentProfile?.color}`}>
                 {currentProfile && <currentProfile.icon size={16} />}
@@ -479,6 +504,14 @@ export default function ChatAssistant() {
                 className="text-slate-400 hover:text-slate-200 p-2 hover:bg-slate-800 rounded-lg transition-colors"
               >
                 <Settings size={16} />
+              </button>
+              {/* Fullscreen Toggle */}
+              <button
+                onClick={() => setIsFullscreen(!isFullscreen)}
+                title={isFullscreen ? "Minimize" : "Expand"}
+                className="text-slate-400 hover:text-slate-200 p-2 hover:bg-slate-800/60 rounded-lg transition-colors hidden sm:block"
+              >
+                {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
               </button>
               {/* Close */}
               <button
@@ -560,13 +593,20 @@ export default function ChatAssistant() {
                     <div className="p-3.5 rounded-xl text-sm max-w-[90%] sm:max-w-[85%] shadow-sm leading-relaxed bg-slate-800 text-slate-200 border border-slate-750">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}
                         components={{
-                          p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                          p: ({node, ...props}) => <p className="mb-3 last:mb-0 leading-relaxed text-slate-300" {...props} />,
+                          h1: ({node, ...props}) => <h1 className="text-lg font-extrabold text-slate-100 tracking-tight mb-3 mt-4 border-b border-slate-700/60 pb-1.5" {...props} />,
+                          h2: ({node, ...props}) => <h2 className="text-base font-bold text-slate-200 tracking-tight mb-2 mt-4" {...props} />,
+                          h3: ({node, ...props}) => <h3 className="text-xs font-semibold text-blue-400 uppercase tracking-wider mb-2 mt-3" {...props} />,
+                          ul: ({node, ...props}) => <ul className="list-disc list-outside ml-5 mb-3 space-y-1.5 marker:text-blue-500" {...props} />,
+                          ol: ({node, ...props}) => <ol className="list-decimal list-outside ml-5 mb-3 space-y-1.5 marker:text-blue-500" {...props} />,
+                          li: ({node, ...props}) => <li className="leading-relaxed text-slate-300 pl-1" {...props} />,
+                          strong: ({node, ...props}) => <strong className="font-semibold text-amber-400 bg-amber-950/30 px-1 rounded-sm" {...props} />,
                           code: ({node, className, children, ...props}) => {
                             const match = /language-(\w+)/.exec(className || '');
-                            const isBlock = match || String(children).includes('\\n');
+                            const isBlock = match || String(children).includes('\n');
                             return isBlock
-                              ? <code className="block bg-slate-950 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-800" {...props}>{children}</code>
-                              : <code className="bg-slate-950 px-1.5 rounded text-blue-400" {...props}>{children}</code>;
+                              ? <code className="block bg-slate-950/80 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-800/80 text-slate-300 shadow-inner" {...props}>{children}</code>
+                              : <code className="bg-slate-900/80 text-emerald-400 font-mono text-xs px-1.5 py-0.5 rounded border border-slate-700/50" {...props}>{children}</code>;
                           }
                         }}
                       >{m.text}</ReactMarkdown>
@@ -591,12 +631,19 @@ export default function ChatAssistant() {
                   </div>
                 )}
 
-                {/* Conversation messages (skip index 0 = greeting, already rendered) */}
                 {messages.slice(1).map((m, i) => (
-                  <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div key={i} className={`flex items-end gap-2.5 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    
+                    {/* AI Avatar */}
+                    {m.role === 'model' && (
+                      <div className="w-7 h-7 rounded-full border border-blue-500/30 overflow-hidden flex-shrink-0 bg-slate-900 shadow-sm shadow-blue-500/10 mb-1">
+                        <img src="/apn_chat_bot.png" alt="AI" className="w-full h-full object-cover" />
+                      </div>
+                    )}
+
                     {m.isError ? (
                       /* ── Error card with retry ── */
-                      <div className="max-w-[90%] sm:max-w-[85%] space-y-2">
+                      <div className="max-w-[80%] sm:max-w-[75%] space-y-2">
                         <div className="p-3 rounded-lg bg-red-950/60 border border-red-500/25 text-red-300 text-xs flex items-start gap-2">
                           <span className="text-red-400 shrink-0">⚠️</span>
                           <span>{m.text}</span>
@@ -611,20 +658,27 @@ export default function ChatAssistant() {
                       </div>
                     ) : (
                       /* ── Normal message bubble ── */
-                      <div className={`relative group/bubble p-3.5 rounded-xl text-sm max-w-[90%] sm:max-w-[85%] shadow-sm leading-relaxed ${
+                      <div className={`relative group/bubble p-3.5 rounded-2xl text-sm max-w-[80%] sm:max-w-[75%] shadow-sm leading-relaxed ${
                         m.role === 'user'
-                          ? 'bg-blue-600/10 text-slate-100 border border-blue-500/20'
-                          : 'bg-slate-800 text-slate-200 border border-slate-750'
+                          ? 'bg-gradient-to-br from-blue-600/20 to-blue-600/5 text-slate-100 border border-blue-500/30 rounded-br-sm backdrop-blur-sm'
+                          : 'bg-slate-800/80 text-slate-200 border border-slate-700/50 rounded-bl-sm backdrop-blur-sm'
                       }`}>
                         <ReactMarkdown remarkPlugins={[remarkGfm]}
                           components={{
-                            p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                            p: ({node, ...props}) => <p className="mb-3 last:mb-0 leading-relaxed text-slate-300" {...props} />,
+                            h1: ({node, ...props}) => <h1 className="text-lg font-extrabold text-slate-100 tracking-tight mb-3 mt-4 border-b border-slate-700/60 pb-1.5" {...props} />,
+                            h2: ({node, ...props}) => <h2 className="text-base font-bold text-slate-200 tracking-tight mb-2 mt-4" {...props} />,
+                            h3: ({node, ...props}) => <h3 className="text-xs font-semibold text-blue-400 uppercase tracking-wider mb-2 mt-3" {...props} />,
+                            ul: ({node, ...props}) => <ul className="list-disc list-outside ml-5 mb-3 space-y-1.5 marker:text-blue-500" {...props} />,
+                            ol: ({node, ...props}) => <ol className="list-decimal list-outside ml-5 mb-3 space-y-1.5 marker:text-blue-500" {...props} />,
+                            li: ({node, ...props}) => <li className="leading-relaxed text-slate-300 pl-1" {...props} />,
+                            strong: ({node, ...props}) => <strong className="font-semibold text-amber-400 bg-amber-950/30 px-1 rounded-sm" {...props} />,
                             code: ({node, className, children, ...props}) => {
                               const match = /language-(\w+)/.exec(className || '');
-                              const isBlock = match || String(children).includes('\\n');
+                              const isBlock = match || String(children).includes('\n');
                               return isBlock
-                                ? <code className="block bg-slate-950 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-850" {...props}>{children}</code>
-                                : <code className="bg-slate-950 px-1.5 rounded text-blue-400" {...props}>{children}</code>;
+                                ? <code className="block bg-slate-950/80 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-800/80 text-slate-300 shadow-inner" {...props}>{children}</code>
+                                : <code className="bg-slate-900/80 text-emerald-400 font-mono text-xs px-1.5 py-0.5 rounded border border-slate-700/50" {...props}>{children}</code>;
                             }
                           }}
                         >{m.text || ' '}</ReactMarkdown>
@@ -640,19 +694,29 @@ export default function ChatAssistant() {
                         )}
                       </div>
                     )}
+                    
+                    {/* User Avatar */}
+                    {m.role === 'user' && (
+                      <div className={`w-7 h-7 rounded-full border flex-shrink-0 flex items-center justify-center bg-slate-900 shadow-sm mb-1 ${currentProfile?.border || 'border-slate-700'}`}>
+                        {currentProfile && React.createElement(currentProfile.icon, { size: 14, className: currentProfile.color })}
+                      </div>
+                    )}
                   </div>
                 ))}
 
                 {/* Thinking indicator (before streaming bubble appears) */}
                 {isStreaming && messages[messages.length - 1]?.role === 'user' && (
-                  <div className="flex justify-start">
-                    <div className="flex items-center gap-2 px-3 py-2 bg-slate-900/60 border border-slate-850 rounded-lg">
-                      <span className="flex gap-1">
-                        {[0, 1, 2].map(d => (
-                          <span key={d} className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: `${d * 150}ms` }} />
-                        ))}
-                      </span>
-                      <span className="text-[10px] text-slate-600 font-mono">Thinking...</span>
+                  <div className="flex justify-start items-end gap-2.5">
+                    {/* AI Avatar */}
+                    <div className="w-7 h-7 rounded-full border border-blue-500/30 overflow-hidden flex-shrink-0 bg-slate-900 shadow-sm shadow-blue-500/10 mb-1">
+                      <img src="/apn_chat_bot.png" alt="AI" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex items-center gap-3 px-4 py-3 bg-slate-800/80 border border-slate-700/50 rounded-2xl rounded-bl-sm backdrop-blur-sm">
+                      <div className="relative flex items-center justify-center w-4 h-4">
+                        <span className="absolute inset-0 rounded-full border-2 border-blue-500/20 border-t-blue-500 animate-spin"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                      </div>
+                      <span className="text-[10px] text-slate-400 font-mono tracking-wider uppercase">Generating...</span>
                     </div>
                   </div>
                 )}

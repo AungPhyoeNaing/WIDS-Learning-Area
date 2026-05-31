@@ -24,6 +24,12 @@
       font-size: 16px !important;
     }
   }
+
+  /* Allow text selection inside buttons for Ask AI feature */
+  button, [role="button"] {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+  }
 }
 
 @layer utilities {

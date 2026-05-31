@@ -5,6 +5,7 @@ import CTFLabs from './components/CTFLabs';
 import LearningHub from './components/LearningHub';
 import KnowledgeOfTheDay from './components/KnowledgeOfTheDay';
 import ChatAssistant from './components/ChatAssistant';
+import SelectionAssistant from './components/SelectionAssistant';
 import KnowItAll from './components/KnowItAll';
 import ProfileSelector from './components/ProfileSelector';
 import { useProfile } from './contexts/ProfileContext';
@@ -243,6 +244,7 @@ export default function App() {
           </div>
         </main>
 
+        <SelectionAssistant />
         <ChatAssistant />
         <footer className="border-t border-slate-900 bg-slate-950 mt-8 sm:mt-12 py-6 sm:py-8">
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
