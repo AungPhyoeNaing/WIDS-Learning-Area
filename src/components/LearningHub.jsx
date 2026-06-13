@@ -26,7 +26,7 @@ export default function LearningHub() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-slate-900 border border-slate-800 p-1.5 rounded-xl flex overflow-x-auto snap-x scroll-p-2 items-center gap-1.5 relative hide-scrollbar">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-1.5 rounded-xl flex overflow-x-auto snap-x scroll-p-2 items-center gap-1.5 relative hide-scrollbar shadow-sm">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -43,11 +43,11 @@ export default function LearningHub() {
               }}
               className={`flex-none sm:flex-1 relative flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 snap-start border ${
                 isActive
-                  ? 'bg-blue-600/10 text-blue-400 border-blue-500/20'
-                  : 'text-slate-400 border-transparent hover:text-slate-200 hover:bg-slate-800/30'
+                  ? 'bg-blue-50 dark:bg-blue-600/10 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-500/20'
+                  : 'text-slate-600 dark:text-slate-400 border-transparent hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/30'
               }`}
             >
-              <Icon className={`w-4 h-4 transition-colors ${isActive ? 'text-blue-400' : ''}`} />
+              <Icon className={`w-4 h-4 transition-colors ${isActive ? 'text-blue-600 dark:text-blue-400' : ''}`} />
               <span className="whitespace-nowrap">{tab.label}</span>
               {!readSections.includes(tab.id) && (
                 <span className="w-1.5 h-1.5 rounded-full bg-rose-500 flex-shrink-0" />

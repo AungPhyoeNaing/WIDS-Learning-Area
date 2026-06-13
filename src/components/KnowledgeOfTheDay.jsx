@@ -31,13 +31,13 @@ const STATIC_FACTS = [
 ];
 
 const CATEGORY_COLORS = {
-  ATTACK: "bg-red-500/10 text-red-400 border-red-500/20",
-  HARDWARE: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-  PROTOCOL: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-  DEFENSE: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-  CONCEPT: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
-  CODING: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-  DEFAULT: "bg-slate-800 text-slate-300 border-slate-700"
+  ATTACK: "bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border-red-200 dark:border-red-500/20",
+  HARDWARE: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/20",
+  PROTOCOL: "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-500/20",
+  DEFENSE: "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/20",
+  CONCEPT: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-500/20",
+  CODING: "bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-500/20",
+  DEFAULT: "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700"
 };
 
 const CACHE_KEY = 'wids_daily_insight_cache';
@@ -230,22 +230,22 @@ export default function KnowledgeOfTheDay() {
   const badgeColor = factData && CATEGORY_COLORS[factData.category] ? CATEGORY_COLORS[factData.category] : CATEGORY_COLORS.DEFAULT;
 
   return (
-    <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm max-w-5xl mx-auto transition-all duration-300">
+    <div className="p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm max-w-5xl mx-auto transition-all duration-300">
       <div className="flex items-center justify-center gap-3 mb-6">
-        <div className="p-2.5 rounded-lg bg-blue-600/10 border border-blue-500/20">
-          <Sparkles className="w-5 h-5 text-blue-500" />
+        <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-600/10 border border-blue-200 dark:border-blue-500/20">
+          <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-500" />
         </div>
         <div className="text-left">
-          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-slate-100">Daily Insight</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Daily Insight</h2>
           <p className="text-[10px] text-slate-500 tracking-wider uppercase flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Wireless Security Intel
           </p>
         </div>
       </div>
 
-      <div className="relative min-h-[160px] w-full flex flex-col items-center justify-center bg-slate-950/40 rounded-xl border border-slate-850 p-6 transition-all duration-500 shadow-inner">
+      <div className="relative min-h-[160px] w-full flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950/40 rounded-xl border border-slate-200 dark:border-slate-850 p-6 transition-all duration-500 shadow-inner">
         {loading ? (
-          <div className="flex flex-col items-center gap-3 text-blue-500 animate-pulse">
+          <div className="flex flex-col items-center gap-3 text-blue-600 dark:text-blue-500 animate-pulse">
             <Loader2 className="w-6 h-6 animate-spin" />
             <span className="text-xs font-mono tracking-wider uppercase">Decrypting Intel...</span>
           </div>
@@ -263,7 +263,7 @@ export default function KnowledgeOfTheDay() {
             </span>
             
             <div className="relative w-full max-w-3xl mx-auto mb-2">
-              <p className="text-slate-200 text-base sm:text-lg leading-relaxed italic text-center">
+              <p className="text-slate-800 dark:text-slate-200 text-base sm:text-lg leading-relaxed italic text-center">
                 "{factData.fact}"
               </p>
             </div>
@@ -277,33 +277,33 @@ export default function KnowledgeOfTheDay() {
           {!deepDive && !deepDiveLoading && !deepDiveError && (
             <button 
               onClick={handleDeepDive}
-              className="mt-6 text-sm font-medium text-slate-300 hover:text-slate-100 flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-all"
+              className="mt-6 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 transition-all"
             >
               Deep Dive <ChevronDown className="w-4 h-4" />
             </button>
           )}
 
           {deepDiveLoading && (
-            <div className="flex items-center gap-3 text-slate-500 text-xs font-mono mt-6 bg-slate-950 px-4 py-2 rounded-lg border border-slate-800">
-              <Loader2 className="w-4 h-4 animate-spin text-blue-500" /> Accessing deeper archives...
+            <div className="flex items-center gap-3 text-slate-600 dark:text-slate-500 text-xs font-mono mt-6 bg-slate-50 dark:bg-slate-950 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800">
+              <Loader2 className="w-4 h-4 animate-spin text-blue-600 dark:text-blue-500" /> Accessing deeper archives...
             </div>
           )}
 
           {deepDiveError && (
-            <div className="text-xs text-red-400 mt-6 flex items-center gap-2 bg-red-950/20 px-4 py-2 rounded-lg border border-red-500/20">
+            <div className="text-xs text-red-600 dark:text-red-400 mt-6 flex items-center gap-2 bg-red-50 dark:bg-red-950/20 px-4 py-2 rounded-lg border border-red-200 dark:border-red-500/20">
               <AlertCircle className="w-4 h-4" /> {deepDiveError}
             </div>
           )}
 
           {deepDive && (
-            <div className="mt-6 w-full max-w-4xl mx-auto p-6 sm:p-8 bg-slate-950 border border-slate-850 rounded-xl text-left relative overflow-hidden animate-in slide-in-from-top-6 duration-700">
+            <div className="mt-6 w-full max-w-4xl mx-auto p-6 sm:p-8 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-xl text-left relative overflow-hidden animate-in slide-in-from-top-6 duration-700 shadow-sm">
               <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
               
-              <h4 className="text-slate-200 font-semibold text-sm sm:text-base mb-4 flex items-center gap-2 uppercase tracking-widest pb-3 border-b border-slate-850">
-                <BookOpen className="w-4 h-4 text-blue-500" /> Technical Breakdown
+              <h4 className="text-slate-800 dark:text-slate-200 font-semibold text-sm sm:text-base mb-4 flex items-center gap-2 uppercase tracking-widest pb-3 border-b border-slate-200 dark:border-slate-850">
+                <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-500" /> Technical Breakdown
               </h4>
               
-              <div className="prose prose-sm prose-invert max-w-none text-slate-300">
+              <div className="prose prose-sm dark:prose-invert max-w-none text-slate-700 dark:text-slate-300">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {deepDive}
                 </ReactMarkdown>
@@ -322,7 +322,7 @@ export default function KnowledgeOfTheDay() {
         {loading ? 'Analyzing...' : 'Generate New Insight'}
       </button>
 
-      <div className="mt-8 pt-4 border-t border-slate-850 text-[10px] text-slate-600 font-mono flex items-center justify-center gap-2">
+      <div className="mt-8 pt-4 border-t border-slate-200 dark:border-slate-850 text-[10px] text-slate-500 dark:text-slate-600 font-mono flex items-center justify-center gap-2">
         <BookOpen className="w-3.5 h-3.5" />
         SECURE-INFOSYS AI AGENT • PROBABILISTIC KNOWLEDGE BASE
       </div>

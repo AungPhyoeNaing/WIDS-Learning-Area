@@ -125,7 +125,7 @@ function CopyButton({ text }) {
     <button
       onClick={handle}
       title="Copy message"
-      className="opacity-0 group-hover/bubble:opacity-100 transition-opacity absolute top-2 right-2 p-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-750"
+      className="opacity-0 group-hover/bubble:opacity-100 transition-opacity absolute top-2 right-2 p-1 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-750"
     >
       {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
     </button>
@@ -436,9 +436,9 @@ export default function ChatAssistant() {
           
           {/* Motivation Noti Box */}
           {isBottomTwo && (
-            <div className="bg-slate-800 border border-blue-500/30 shadow-lg rounded-xl p-3 max-w-[220px] mb-1 relative animate-pulse">
-              <div className="absolute -bottom-2 right-6 w-4 h-4 bg-slate-800 border-b border-r border-blue-500/30 transform rotate-45"></div>
-              <p className="text-xs text-blue-100 font-medium leading-relaxed flex items-start gap-1.5">
+            <div className="bg-white dark:bg-slate-800 border border-blue-500/30 shadow-lg rounded-xl p-3 max-w-[220px] mb-1 relative animate-pulse">
+              <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white dark:bg-slate-800 border-b border-r border-blue-500/30 transform rotate-45"></div>
+              <p className="text-xs text-blue-900 dark:text-blue-100 font-medium leading-relaxed flex items-start gap-1.5">
                 <span className="shrink-0 text-blue-400">🚀</span> 
                 <span>Hey {currentProfile?.name.split(' ')[0]}! You're falling behind on XP. Let's study and practice today to climb the leaderboard!</span>
               </p>
@@ -453,7 +453,7 @@ export default function ChatAssistant() {
             <img
               src="/apn_chat_bot.png"
               alt="AI Assistant"
-              className="w-12 h-12 sm:w-14 sm:h-14 object-cover rounded-full border border-slate-800 group-hover:rotate-12 transition-transform duration-300 drop-shadow-sm bg-slate-900"
+              className="w-12 h-12 sm:w-14 sm:h-14 object-cover rounded-full border border-slate-200 dark:border-slate-800 group-hover:rotate-12 transition-transform duration-300 drop-shadow-sm bg-white dark:bg-slate-900"
             />
           </button>
         </div>
@@ -461,23 +461,23 @@ export default function ChatAssistant() {
 
       {/* Chat panel */}
       {isOpen && (
-        <div className={`fixed inset-x-0 bottom-0 z-[100] flex flex-col overflow-hidden animate-slide-up border border-slate-700/50 shadow-2xl shadow-blue-900/20 backdrop-blur-xl bg-slate-950/80 ${
+        <div className={`fixed inset-x-0 bottom-0 z-[100] flex flex-col overflow-hidden animate-slide-up border border-slate-200 dark:border-slate-700/50 shadow-2xl shadow-blue-900/20 backdrop-blur-xl bg-white/90 dark:bg-slate-950/80 ${
           isFullscreen 
             ? 'top-0 sm:top-0 sm:right-0 sm:left-0 w-full h-full rounded-none' 
             : 'sm:bottom-24 sm:right-6 sm:left-auto w-full sm:w-[400px] h-[95vh] sm:h-[38rem] rounded-t-2xl sm:rounded-2xl'
         }`}>
 
           {/* ── Header ── */}
-          <div className="bg-slate-900/50 backdrop-blur-md p-4 flex justify-between items-center border-b border-slate-700/50 shrink-0">
+          <div className="bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-md p-4 flex justify-between items-center border-b border-slate-200 dark:border-slate-700/50 shrink-0">
             <div className="flex items-center gap-3">
-              <div className={`p-2 rounded-lg bg-slate-800 ${currentProfile?.color}`}>
+              <div className={`p-2 rounded-lg bg-slate-100 dark:bg-slate-800 ${currentProfile?.color}`}>
                 {currentProfile && <currentProfile.icon size={16} />}
               </div>
               <div className="flex flex-col">
-                <h3 className="font-semibold text-slate-100 text-sm sm:text-base leading-none">WIDS AI Tutor</h3>
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 text-sm sm:text-base leading-none">WIDS AI Tutor</h3>
                 <div className="flex items-center gap-1.5 mt-1">
                   <span className="text-[10px] text-slate-500 uppercase tracking-tighter">Active:</span>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${currentProfile?.color.replace('text-', 'border-').replace('400', '500/20')} bg-slate-950 ${currentProfile?.color}`}>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${currentProfile?.color.replace('text-', 'border-').replace('400', '500/20')} bg-white dark:bg-slate-950 ${currentProfile?.color}`}>
                     {currentProfile?.name}
                   </span>
                   {/* Online indicator */}
@@ -492,7 +492,7 @@ export default function ChatAssistant() {
                 <button
                   onClick={handleClear}
                   title="Clear conversation"
-                  className="text-slate-500 hover:text-red-400 p-2 hover:bg-slate-800 rounded-lg transition-colors"
+                  className="text-slate-500 hover:text-red-600 dark:hover:text-red-400 p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
                 >
                   <Trash2 size={15} />
                 </button>
@@ -501,7 +501,7 @@ export default function ChatAssistant() {
               <button
                 onClick={() => setShowSettings(!showSettings)}
                 title="Settings"
-                className="text-slate-400 hover:text-slate-200 p-2 hover:bg-slate-800 rounded-lg transition-colors"
+                className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
               >
                 <Settings size={16} />
               </button>
@@ -509,7 +509,7 @@ export default function ChatAssistant() {
               <button
                 onClick={() => setIsFullscreen(!isFullscreen)}
                 title={isFullscreen ? "Minimize" : "Expand"}
-                className="text-slate-400 hover:text-slate-200 p-2 hover:bg-slate-800/60 rounded-lg transition-colors hidden sm:block"
+                className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 p-2 hover:bg-slate-100 dark:hover:bg-slate-800/60 rounded-lg transition-colors hidden sm:block"
               >
                 {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
               </button>
@@ -517,7 +517,7 @@ export default function ChatAssistant() {
               <button
                 onClick={() => setIsOpen(false)}
                 title="Close"
-                className="text-slate-400 hover:text-slate-200 p-2 hover:bg-slate-800 rounded-lg transition-colors"
+                className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
               >
                 <X size={16} />
               </button>
@@ -526,9 +526,9 @@ export default function ChatAssistant() {
 
           {/* ── Settings panel ── */}
           {showSettings ? (
-            <div className="flex-1 p-5 overflow-y-auto space-y-6 bg-slate-950/20">
+            <div className="flex-1 p-5 overflow-y-auto space-y-6 bg-slate-50/50 dark:bg-slate-950/20">
               <div>
-                <h4 className="text-slate-200 font-semibold mb-3 flex items-center gap-2 text-sm uppercase tracking-wider">
+                <h4 className="text-slate-800 dark:text-slate-200 font-semibold mb-3 flex items-center gap-2 text-sm uppercase tracking-wider">
                   <UserCircle size={16} className="text-blue-500" /> Switch Profile
                 </h4>
                 <div className="grid grid-cols-1 gap-2">
@@ -541,13 +541,13 @@ export default function ChatAssistant() {
                       }}
                       className={`flex items-center justify-between p-3 rounded-lg text-sm transition-all ${
                         activeProfileId === p.id
-                          ? 'bg-slate-800 border border-blue-500/20 shadow-sm'
-                          : 'bg-slate-900/40 border border-transparent hover:border-slate-800'
+                          ? 'bg-slate-100 dark:bg-slate-800 border border-blue-500/20 shadow-sm'
+                          : 'bg-slate-50 dark:bg-slate-900/40 border border-transparent hover:border-slate-300 dark:hover:border-slate-800'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         {React.createElement(p.icon, { size: 14, className: p.color })}
-                        <span className="text-slate-200 font-medium">{p.name}</span>
+                        <span className="text-slate-800 dark:text-slate-200 font-medium">{p.name}</span>
                       </div>
                       {activeProfileId === p.id && (
                         <div className="w-2 h-2 rounded-full bg-blue-500" />
@@ -557,18 +557,18 @@ export default function ChatAssistant() {
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-slate-850">
-                <h4 className="text-slate-200 font-semibold mb-3 flex items-center gap-2 text-sm uppercase tracking-wider">
+              <div className="pt-6 border-t border-slate-200 dark:border-slate-850">
+                <h4 className="text-slate-800 dark:text-slate-200 font-semibold mb-3 flex items-center gap-2 text-sm uppercase tracking-wider">
                   <Shield size={16} className="text-blue-500" /> API Configuration
                 </h4>
-                <label className="text-xs text-slate-400 mb-2 block">
+                <label className="text-xs text-slate-600 dark:text-slate-400 mb-2 block">
                   Personal Groq Key for {currentProfile?.name}:
                 </label>
                 <input
                   type="password"
                   value={userApiKeys[activeProfileId] || ''}
                   onChange={(e) => updateApiKeyInSupabase(activeProfileId, e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   placeholder="gsk_..."
                 />
                 <p className="mt-2 text-[10px] text-slate-500 italic">Keys are synced to your WIDS profile.</p>
@@ -585,28 +585,28 @@ export default function ChatAssistant() {
           ) : (
             <>
               {/* ── Messages area ── */}
-              <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-950/20">
+              <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50/50 dark:bg-slate-950/20">
 
                 {/* Greeting + quick prompts */}
                 {messages.slice(0, 1).map((m, i) => (
                   <div key={i} className="flex justify-start">
-                    <div className="p-3.5 rounded-xl text-sm max-w-[90%] sm:max-w-[85%] shadow-sm leading-relaxed bg-slate-800 text-slate-200 border border-slate-750">
+                    <div className="p-3.5 rounded-xl text-sm max-w-[90%] sm:max-w-[85%] shadow-sm leading-relaxed bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-750">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}
                         components={{
-                          p: ({node, ...props}) => <p className="mb-3 last:mb-0 leading-relaxed text-slate-300" {...props} />,
-                          h1: ({node, ...props}) => <h1 className="text-lg font-extrabold text-slate-100 tracking-tight mb-3 mt-4 border-b border-slate-700/60 pb-1.5" {...props} />,
-                          h2: ({node, ...props}) => <h2 className="text-base font-bold text-slate-200 tracking-tight mb-2 mt-4" {...props} />,
-                          h3: ({node, ...props}) => <h3 className="text-xs font-semibold text-blue-400 uppercase tracking-wider mb-2 mt-3" {...props} />,
+                          p: ({node, ...props}) => <p className="mb-3 last:mb-0 leading-relaxed text-inherit" {...props} />,
+                          h1: ({node, ...props}) => <h1 className="text-lg font-extrabold text-inherit tracking-tight mb-3 mt-4 border-b border-slate-200 dark:border-slate-700/60 pb-1.5" {...props} />,
+                          h2: ({node, ...props}) => <h2 className="text-base font-bold text-inherit tracking-tight mb-2 mt-4" {...props} />,
+                          h3: ({node, ...props}) => <h3 className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-2 mt-3" {...props} />,
                           ul: ({node, ...props}) => <ul className="list-disc list-outside ml-5 mb-3 space-y-1.5 marker:text-blue-500" {...props} />,
                           ol: ({node, ...props}) => <ol className="list-decimal list-outside ml-5 mb-3 space-y-1.5 marker:text-blue-500" {...props} />,
-                          li: ({node, ...props}) => <li className="leading-relaxed text-slate-300 pl-1" {...props} />,
-                          strong: ({node, ...props}) => <strong className="font-semibold text-amber-400 bg-amber-950/30 px-1 rounded-sm" {...props} />,
+                          li: ({node, ...props}) => <li className="leading-relaxed text-inherit pl-1" {...props} />,
+                          strong: ({node, ...props}) => <strong className="font-semibold text-amber-500 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 px-1 rounded-sm" {...props} />,
                           code: ({node, className, children, ...props}) => {
                             const match = /language-(\w+)/.exec(className || '');
                             const isBlock = match || String(children).includes('\n');
                             return isBlock
-                              ? <code className="block bg-slate-950/80 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-800/80 text-slate-300 shadow-inner" {...props}>{children}</code>
-                              : <code className="bg-slate-900/80 text-emerald-400 font-mono text-xs px-1.5 py-0.5 rounded border border-slate-700/50" {...props}>{children}</code>;
+                              ? <code className="block bg-slate-50 dark:bg-slate-950/80 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-200 dark:border-slate-800/80 text-slate-800 dark:text-slate-300 shadow-inner" {...props}>{children}</code>
+                              : <code className="bg-slate-50 dark:bg-slate-900/80 text-emerald-600 dark:text-emerald-400 font-mono text-xs px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700/50" {...props}>{children}</code>;
                           }
                         }}
                       >{m.text}</ReactMarkdown>
@@ -622,10 +622,10 @@ export default function ChatAssistant() {
                       <button
                         key={i}
                         onClick={() => sendMessage(p.text)}
-                        className="w-full text-left flex items-center gap-2 px-3 py-2.5 rounded-lg bg-slate-900/60 border border-slate-850 hover:border-blue-500/20 hover:bg-slate-800/40 text-slate-300 hover:text-white text-sm transition-all group/chip"
+                        className="w-full text-left flex items-center gap-2 px-3 py-2.5 rounded-lg bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-850 hover:border-blue-500/20 hover:bg-slate-50 dark:hover:bg-slate-800/40 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm transition-all group/chip shadow-sm"
                       >
                         <span className="flex-1 text-xs sm:text-sm">{p.label}</span>
-                        <ChevronRight size={12} className="text-slate-600 group-hover/chip:text-blue-400 transition-colors shrink-0" />
+                        <ChevronRight size={12} className="text-slate-400 dark:text-slate-600 group-hover/chip:text-blue-400 transition-colors shrink-0" />
                       </button>
                     ))}
                   </div>
@@ -636,7 +636,7 @@ export default function ChatAssistant() {
                     
                     {/* AI Avatar */}
                     {m.role === 'model' && (
-                      <div className="w-7 h-7 rounded-full border border-blue-500/30 overflow-hidden flex-shrink-0 bg-slate-900 shadow-sm shadow-blue-500/10 mb-1">
+                      <div className="w-7 h-7 rounded-full border border-blue-500/30 overflow-hidden flex-shrink-0 bg-white dark:bg-slate-900 shadow-sm shadow-blue-500/10 mb-1">
                         <img src="/apn_chat_bot.png" alt="AI" className="w-full h-full object-cover" />
                       </div>
                     )}
@@ -644,7 +644,7 @@ export default function ChatAssistant() {
                     {m.isError ? (
                       /* ── Error card with retry ── */
                       <div className="max-w-[80%] sm:max-w-[75%] space-y-2">
-                        <div className="p-3 rounded-lg bg-red-950/60 border border-red-500/25 text-red-300 text-xs flex items-start gap-2">
+                        <div className="p-3 rounded-lg bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-500/25 text-red-600 dark:text-red-300 text-xs flex items-start gap-2">
                           <span className="text-red-400 shrink-0">⚠️</span>
                           <span>{m.text}</span>
                         </div>
@@ -660,25 +660,25 @@ export default function ChatAssistant() {
                       /* ── Normal message bubble ── */
                       <div className={`relative group/bubble p-3.5 rounded-2xl text-sm max-w-[80%] sm:max-w-[75%] shadow-sm leading-relaxed ${
                         m.role === 'user'
-                          ? 'bg-gradient-to-br from-blue-600/20 to-blue-600/5 text-slate-100 border border-blue-500/30 rounded-br-sm backdrop-blur-sm'
-                          : 'bg-slate-800/80 text-slate-200 border border-slate-700/50 rounded-bl-sm backdrop-blur-sm'
+                          ? 'bg-gradient-to-br from-blue-600/20 to-blue-600/5 text-slate-900 dark:text-slate-100 border border-blue-200 dark:border-blue-500/30 rounded-br-sm backdrop-blur-sm'
+                          : 'bg-white dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700/50 rounded-bl-sm backdrop-blur-sm'
                       }`}>
                         <ReactMarkdown remarkPlugins={[remarkGfm]}
                           components={{
-                            p: ({node, ...props}) => <p className="mb-3 last:mb-0 leading-relaxed text-slate-300" {...props} />,
-                            h1: ({node, ...props}) => <h1 className="text-lg font-extrabold text-slate-100 tracking-tight mb-3 mt-4 border-b border-slate-700/60 pb-1.5" {...props} />,
-                            h2: ({node, ...props}) => <h2 className="text-base font-bold text-slate-200 tracking-tight mb-2 mt-4" {...props} />,
-                            h3: ({node, ...props}) => <h3 className="text-xs font-semibold text-blue-400 uppercase tracking-wider mb-2 mt-3" {...props} />,
+                            p: ({node, ...props}) => <p className="mb-3 last:mb-0 leading-relaxed text-inherit" {...props} />,
+                            h1: ({node, ...props}) => <h1 className="text-lg font-extrabold text-inherit tracking-tight mb-3 mt-4 border-b border-slate-200 dark:border-slate-700/60 pb-1.5" {...props} />,
+                            h2: ({node, ...props}) => <h2 className="text-base font-bold text-inherit tracking-tight mb-2 mt-4" {...props} />,
+                            h3: ({node, ...props}) => <h3 className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-2 mt-3" {...props} />,
                             ul: ({node, ...props}) => <ul className="list-disc list-outside ml-5 mb-3 space-y-1.5 marker:text-blue-500" {...props} />,
                             ol: ({node, ...props}) => <ol className="list-decimal list-outside ml-5 mb-3 space-y-1.5 marker:text-blue-500" {...props} />,
-                            li: ({node, ...props}) => <li className="leading-relaxed text-slate-300 pl-1" {...props} />,
-                            strong: ({node, ...props}) => <strong className="font-semibold text-amber-400 bg-amber-950/30 px-1 rounded-sm" {...props} />,
+                            li: ({node, ...props}) => <li className="leading-relaxed text-inherit pl-1" {...props} />,
+                            strong: ({node, ...props}) => <strong className="font-semibold text-amber-500 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 px-1 rounded-sm" {...props} />,
                             code: ({node, className, children, ...props}) => {
                               const match = /language-(\w+)/.exec(className || '');
                               const isBlock = match || String(children).includes('\n');
                               return isBlock
-                                ? <code className="block bg-slate-950/80 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-800/80 text-slate-300 shadow-inner" {...props}>{children}</code>
-                                : <code className="bg-slate-900/80 text-emerald-400 font-mono text-xs px-1.5 py-0.5 rounded border border-slate-700/50" {...props}>{children}</code>;
+                                ? <code className="block bg-slate-50 dark:bg-slate-950/80 p-3 rounded-lg text-xs overflow-x-auto my-2 border border-slate-200 dark:border-slate-800/80 text-slate-800 dark:text-slate-300 shadow-inner" {...props}>{children}</code>
+                                : <code className="bg-slate-50 dark:bg-slate-900/80 text-emerald-600 dark:text-emerald-400 font-mono text-xs px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700/50" {...props}>{children}</code>;
                             }
                           }}
                         >{m.text || ' '}</ReactMarkdown>
@@ -697,7 +697,7 @@ export default function ChatAssistant() {
                     
                     {/* User Avatar */}
                     {m.role === 'user' && (
-                      <div className={`w-7 h-7 rounded-full border flex-shrink-0 flex items-center justify-center bg-slate-900 shadow-sm mb-1 ${currentProfile?.border || 'border-slate-700'}`}>
+                      <div className={`w-7 h-7 rounded-full border flex-shrink-0 flex items-center justify-center bg-slate-100 dark:bg-slate-900 shadow-sm mb-1 ${currentProfile?.border || 'border-slate-200 dark:border-slate-700'}`}>
                         {currentProfile && React.createElement(currentProfile.icon, { size: 14, className: currentProfile.color })}
                       </div>
                     )}
@@ -708,15 +708,15 @@ export default function ChatAssistant() {
                 {isStreaming && messages[messages.length - 1]?.role === 'user' && (
                   <div className="flex justify-start items-end gap-2.5">
                     {/* AI Avatar */}
-                    <div className="w-7 h-7 rounded-full border border-blue-500/30 overflow-hidden flex-shrink-0 bg-slate-900 shadow-sm shadow-blue-500/10 mb-1">
+                    <div className="w-7 h-7 rounded-full border border-blue-500/30 overflow-hidden flex-shrink-0 bg-slate-100 dark:bg-slate-900 shadow-sm shadow-blue-500/10 mb-1">
                       <img src="/apn_chat_bot.png" alt="AI" className="w-full h-full object-cover" />
                     </div>
-                    <div className="flex items-center gap-3 px-4 py-3 bg-slate-800/80 border border-slate-700/50 rounded-2xl rounded-bl-sm backdrop-blur-sm">
+                    <div className="flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/50 rounded-2xl rounded-bl-sm backdrop-blur-sm">
                       <div className="relative flex items-center justify-center w-4 h-4">
                         <span className="absolute inset-0 rounded-full border-2 border-blue-500/20 border-t-blue-500 animate-spin"></span>
                         <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
                       </div>
-                      <span className="text-[10px] text-slate-400 font-mono tracking-wider uppercase">Generating...</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono tracking-wider uppercase">Generating...</span>
                     </div>
                   </div>
                 )}
@@ -725,7 +725,7 @@ export default function ChatAssistant() {
               </div>
 
               {/* ── Input bar ── */}
-              <div className="p-3 bg-slate-900 border-t border-slate-800 flex items-end gap-2 shrink-0">
+              <div className="p-3 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-end gap-2 shrink-0">
                 <div className="flex-1 min-w-0">
                   <textarea
                     ref={textareaRef}
@@ -734,7 +734,7 @@ export default function ChatAssistant() {
                     onChange={e => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Ask about WIDS…"
-                    className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none overflow-hidden leading-relaxed text-sm"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none overflow-hidden leading-relaxed text-sm"
                   />
                 </div>
                 <button

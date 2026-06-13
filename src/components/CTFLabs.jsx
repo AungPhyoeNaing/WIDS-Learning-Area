@@ -25,15 +25,15 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>A WIDS sensor captured these frames from the air. Analyze the output and determine what type of attack is happening.</p>
-        <div className="bg-[#0D1117] border border-slate-600 rounded font-mono text-xs sm:text-sm leading-relaxed p-2 sm:p-4 space-y-2 sm:space-y-3 shadow-inner overflow-x-auto">
-          <div className="text-slate-500 whitespace-nowrap">[12:34:56] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-900/60 text-red-400 border border-red-500 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold">[Dot11Deauth]</span> Reason Code 7</div>
-          <div className="text-slate-500 whitespace-nowrap">[12:34:56] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-900/60 text-red-400 border border-red-500 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold">[Dot11Deauth]</span> Reason Code 7</div>
-          <div className="text-slate-500 whitespace-nowrap">[12:34:57] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-900/60 text-red-400 border border-red-500 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold">[Dot11Deauth]</span> Reason Code 7</div>
+        <div className="bg-slate-50 dark:bg-[#0D1117] border border-slate-300 dark:border-slate-600 rounded font-mono text-xs sm:text-sm leading-relaxed p-2 sm:p-4 space-y-2 sm:space-y-3 shadow-inner overflow-x-auto">
+          <div className="text-slate-500 whitespace-nowrap">[12:34:56] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-400 dark:text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-100 dark:bg-red-900/60 text-red-600 dark:text-red-400 border border-red-300 dark:border-red-500 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold">[Dot11Deauth]</span> Reason Code 7</div>
+          <div className="text-slate-500 whitespace-nowrap">[12:34:56] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-400 dark:text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-100 dark:bg-red-900/60 text-red-600 dark:text-red-400 border border-red-300 dark:border-red-500 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold">[Dot11Deauth]</span> Reason Code 7</div>
+          <div className="text-slate-500 whitespace-nowrap">[12:34:57] <span className="text-emerald-400 font-bold">AA:BB:CC:DD:EE:FF</span> <span className="text-slate-400 dark:text-slate-600">→</span> <span className="text-blue-400 font-bold">11:22:33:44:55:66</span> <span className="bg-red-100 dark:bg-red-900/60 text-red-600 dark:text-red-400 border border-red-300 dark:border-red-500 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold">[Dot11Deauth]</span> Reason Code 7</div>
         </div>
-        <div className="bg-blue-900/20 border-l-4 border-blue-500 p-3 rounded-r text-sm text-blue-200">
-          <strong className="text-blue-300">🔬 From the Simulator:</strong> This matches the <strong>Live Sensor Console</strong> when the <strong>Kick User</strong> attack is active. Each line: <span className="text-slate-300">timestamp</span>, <span className="text-emerald-400">source MAC</span>, <span className="text-blue-400">destination MAC</span>, <span className="text-red-400">attack tag</span>.
+        <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-3 rounded-r text-sm text-blue-800 dark:text-blue-200">
+          <strong className="text-blue-600 dark:text-blue-300">🔬 From the Simulator:</strong> This matches the <strong>Live Sensor Console</strong> when the <strong>Kick User</strong> attack is active. Each line: <span className="text-slate-700 dark:text-slate-300">timestamp</span>, <span className="text-emerald-400">source MAC</span>, <span className="text-blue-400">destination MAC</span>, <span className="text-red-500 dark:text-red-400">attack tag</span>.
         </div>
-        <p className="font-bold text-white">Which attack type do these captured frames represent?</p>
+        <p className="font-bold text-slate-900 dark:text-white">Which attack type do these captured frames represent?</p>
       </div>
     ),
     options: [
@@ -53,21 +53,21 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>Every 802.11 frame starts with a <strong>Frame Control</strong> field. The first byte encodes the <strong>Type</strong> and <strong>Subtype</strong>.</p>
-        <div className="bg-black border border-slate-700 rounded p-2 sm:p-4 font-mono text-xs sm:text-sm text-slate-400 shadow-inner overflow-x-auto whitespace-nowrap">
+        <div className="bg-slate-50 dark:bg-black border border-slate-300 dark:border-slate-700 rounded p-2 sm:p-4 font-mono text-xs sm:text-sm text-slate-500 dark:text-slate-400 shadow-inner overflow-x-auto whitespace-nowrap">
           <span className="text-slate-500">/* Frame Control byte breakdown */</span><br/>
           <span className="text-slate-400">Bit:&nbsp;&nbsp; 7&nbsp;&nbsp; 6&nbsp;&nbsp; 5&nbsp;&nbsp; 4&nbsp;&nbsp; 3&nbsp;&nbsp; 2&nbsp;&nbsp; 1&nbsp;&nbsp; 0</span><br/>
-          <span className="text-white">| Protocol | Type | Subtype |</span><br/>
+          <span className="text-slate-900 dark:text-white">| Protocol | Type | Subtype |</span><br/>
           <span className="text-slate-500">Deauth = Type 00 (Management), Subtype 1100 (decimal 12 = 0xC0)</span>
         </div>
         <p>Below is the raw hex dump. The <strong>Frame Control</strong> byte is highlighted.</p>
-        <div className="bg-black p-2 sm:p-4 rounded border border-slate-700 font-mono text-[11px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
+        <div className="bg-slate-50 dark:bg-black p-2 sm:p-4 rounded border border-slate-300 dark:border-slate-700 font-mono text-[11px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
           0000 &nbsp; 00 00 11 22 33 44 55 66 77 88 99 aa bb cc dd ee <br/>
-          0010 &nbsp; ff <span className="text-white font-bold bg-blue-900/50 px-1 border border-blue-500 rounded">c0</span> 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+          0010 &nbsp; ff <span className="text-slate-900 dark:text-white font-bold bg-blue-100 dark:bg-blue-900/50 px-1 border border-blue-300 dark:border-blue-500 rounded">c0</span> 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
         </div>
-        <div className="bg-blue-900/20 border-l-4 border-blue-500 p-3 rounded-r text-sm text-blue-200">
-          <strong className="text-blue-300">🔬 From the Simulator:</strong> Every <span className="text-red-400">[Dot11Deauth]</span> packet in the console has this <code className="bg-slate-800 px-1 rounded">0xC0</code> byte. The WIDS matches this hex signature.
+        <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-3 rounded-r text-sm text-blue-800 dark:text-blue-200">
+          <strong className="text-blue-600 dark:text-blue-300">🔬 From the Simulator:</strong> Every <span className="text-red-500 dark:text-red-400">[Dot11Deauth]</span> packet in the console has this <code className="bg-slate-200 dark:bg-slate-800 px-1 rounded">0xC0</code> byte. The WIDS matches this hex signature.
         </div>
-        <p className="font-bold text-white">Enter the 2-character hex value of the Frame Control byte for a Deauth frame.</p>
+        <p className="font-bold text-slate-900 dark:text-white">Enter the 2-character hex value of the Frame Control byte for a Deauth frame.</p>
       </div>
     ),
     answer: (val) => { const cleaned = val.toLowerCase().trim().replace('0x', ''); return cleaned === 'c0'; }
@@ -83,19 +83,19 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>A company uses three APs on channels <strong>1</strong>, <strong>6</strong>, and <strong>11</strong> — the only non-overlapping 2.4 GHz channels. The security team has budget for <strong>two</strong> ESP32 sensors; each listens to one channel at a time.</p>
-        <div className="bg-slate-900 border border-slate-700 rounded p-4 text-sm">
-          <p className="text-slate-300 font-bold mb-2">Network Layout</p>
+        <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded p-4 text-sm">
+          <p className="text-slate-700 dark:text-slate-300 font-bold mb-2">Network Layout</p>
           <div className="flex items-center gap-px sm:gap-1 text-[10px] sm:text-xs font-mono">
             {[1,2,3,4,5,6,7,8,9,10,11].map(ch => (
-              <div key={ch} className={`flex-1 text-center py-1 sm:py-1.5 rounded ${ch === 1 || ch === 6 || ch === 11 ? 'bg-emerald-900/60 text-emerald-400 font-bold' : 'bg-slate-800 text-slate-600'}`}>{ch}</div>
+              <div key={ch} className={`flex-1 text-center py-1 sm:py-1.5 rounded ${ch === 1 || ch === 6 || ch === 11 ? 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-400 font-bold' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-600'}`}>{ch}</div>
             ))}
           </div>
           <p className="text-slate-500 text-xs sm:text-sm mt-2">Ch 1, 6, and 11 do not overlap.</p>
         </div>
-        <div className="bg-yellow-900/20 border-l-4 border-yellow-500 p-3 rounded-r text-sm text-yellow-200">
-          <strong className="text-yellow-300">⚠️ Constraint:</strong> A sensor on channel 1 <strong>cannot</strong> hear traffic on channel 6 or 11.
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-3 rounded-r text-sm text-yellow-800 dark:text-yellow-200">
+          <strong className="text-yellow-600 dark:text-yellow-300">⚠️ Constraint:</strong> A sensor on channel 1 <strong>cannot</strong> hear traffic on channel 6 or 11.
         </div>
-        <p className="font-bold text-white">Best way to deploy two sensors to monitor all three APs?</p>
+        <p className="font-bold text-slate-900 dark:text-white">Best way to deploy two sensors to monitor all three APs?</p>
       </div>
     ),
     options: [
@@ -115,19 +115,19 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>The 802.11 frame header contains multiple fields in a specific order. Given this hex dump of a captured frame:</p>
-        <div className="bg-black p-2 sm:p-4 rounded border border-slate-700 font-mono text-[11px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
-          <span className="text-emerald-400">08 00</span> <span className="text-blue-400">00 00</span> <span className="text-yellow-400">AA:BB:CC:DD:EE:FF</span> <span className="text-purple-400">11:22:33:44:55:66</span>
+        <div className="bg-slate-50 dark:bg-black p-2 sm:p-4 rounded border border-slate-300 dark:border-slate-700 font-mono text-[11px] sm:text-sm text-slate-500 leading-relaxed tracking-widest shadow-inner overflow-x-auto whitespace-nowrap">
+          <span className="text-emerald-400">08 00</span> <span className="text-blue-400">00 00</span> <span className="text-yellow-600 dark:text-yellow-400">AA:BB:CC:DD:EE:FF</span> <span className="text-purple-400">11:22:33:44:55:66</span>
         </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-[11px] sm:text-sm font-mono bg-slate-900/50 p-3 sm:p-4 rounded border border-slate-700">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-[11px] sm:text-sm font-mono bg-white dark:bg-slate-900/50 p-3 sm:p-4 rounded border border-slate-200 dark:border-slate-700">
           <div><span className="text-emerald-400">08 00</span> = Frame Control</div>
           <div><span className="text-blue-400">00 00</span> = Duration</div>
-          <div><span className="text-yellow-400">6 bytes</span> = Address 1 (Destination)</div>
+          <div><span className="text-yellow-600 dark:text-yellow-400">6 bytes</span> = Address 1 (Destination)</div>
           <div><span className="text-purple-400">6 bytes</span> = Address 2 (Source)</div>
         </div>
-        <div className="bg-blue-900/20 border-l-4 border-blue-500 p-3 rounded-r text-sm text-blue-200">
-          <strong className="text-blue-300">🔬 From the Simulator:</strong> The console prints <span className="text-emerald-400">source</span> → <span className="text-blue-400">destination</span> — these are the MAC addresses extracted from Address 2 and Address 1 in the frame header.
+        <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-3 rounded-r text-sm text-blue-800 dark:text-blue-200">
+          <strong className="text-blue-600 dark:text-blue-300">🔬 From the Simulator:</strong> The console prints <span className="text-emerald-400">source</span> → <span className="text-blue-400">destination</span> — these are the MAC addresses extracted from Address 2 and Address 1 in the frame header.
         </div>
-        <p className="font-bold text-white">In the 802.11 frame header, which field contains the 6-byte MAC address of the device that <em>sent</em> the frame?</p>
+        <p className="font-bold text-slate-900 dark:text-white">In the 802.11 frame header, which field contains the 6-byte MAC address of the device that <em>sent</em> the frame?</p>
       </div>
     ),
     options: [
@@ -148,13 +148,13 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>You are a security analyst reviewing an alert from your WIDS. The log shows:</p>
-        <div className="bg-slate-900 border border-slate-700 rounded p-4 text-sm text-slate-300 leading-relaxed">
+        <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded p-4 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
           <p><em>"Over 3,000 deauthentication frames were sent from a single MAC address (AA:BB:CC:DD:EE:FF) to all clients on the corporate network within 5 seconds. All employees in the building lost Wi-Fi connectivity momentarily."</em></p>
         </div>
-        <div className="bg-yellow-900/20 border-l-4 border-yellow-500 p-3 rounded-r text-sm text-yellow-200">
-          <strong className="text-yellow-300">🔍 Key observation:</strong> The number of frames (3,000 in 5s) and the target (all clients) rules out normal network behavior.
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-3 rounded-r text-sm text-yellow-800 dark:text-yellow-200">
+          <strong className="text-yellow-600 dark:text-yellow-300">🔍 Key observation:</strong> The number of frames (3,000 in 5s) and the target (all clients) rules out normal network behavior.
         </div>
-        <p className="font-bold text-white">What type of attack does this describe?</p>
+        <p className="font-bold text-slate-900 dark:text-white">What type of attack does this describe?</p>
       </div>
     ),
     options: [
@@ -174,12 +174,12 @@ const CHALLENGES = [
     question: (
       <div className="space-y-4">
         <p>A WIDS alert fired for a suspected <strong>Evil Twin</strong> attack. The corporate network broadcasts the SSID <code>CORP-WIFI</code>.</p>
-        <div className="bg-[#0D1117] border border-slate-600 rounded font-mono text-xs sm:text-sm leading-relaxed p-2 sm:p-4 shadow-inner overflow-x-auto">
-          <div className="text-slate-400">SSID: CORP-WIFI | BSSID: <span className="text-emerald-400">AA:11:22:33:44:55</span> | Ch: 6 | Crypto: WPA3</div>
-          <div className="text-slate-400">SSID: CORP-WIFI | BSSID: <span className="text-emerald-400">AA:11:22:33:44:56</span> | Ch: 1 | Crypto: WPA3</div>
-          <div className="text-slate-400">SSID: CORP-WIFI | BSSID: <span className="text-red-400">FF:EE:DD:CC:BB:AA</span> | Ch: 11 | Crypto: OPN</div>
+        <div className="bg-slate-50 dark:bg-[#0D1117] border border-slate-300 dark:border-slate-600 rounded font-mono text-xs sm:text-sm leading-relaxed p-2 sm:p-4 shadow-inner overflow-x-auto">
+          <div className="text-slate-500 dark:text-slate-400">SSID: CORP-WIFI | BSSID: <span className="text-emerald-400">AA:11:22:33:44:55</span> | Ch: 6 | Crypto: WPA3</div>
+          <div className="text-slate-500 dark:text-slate-400">SSID: CORP-WIFI | BSSID: <span className="text-emerald-400">AA:11:22:33:44:56</span> | Ch: 1 | Crypto: WPA3</div>
+          <div className="text-slate-500 dark:text-slate-400">SSID: CORP-WIFI | BSSID: <span className="text-red-400">FF:EE:DD:CC:BB:AA</span> | Ch: 11 | Crypto: OPN</div>
         </div>
-        <p className="font-bold text-white">Why does the WIDS flag the third AP as a Rogue/Evil Twin?</p>
+        <p className="font-bold text-slate-900 dark:text-white">Why does the WIDS flag the third AP as a Rogue/Evil Twin?</p>
       </div>
     ),
     options: [
@@ -193,14 +193,14 @@ const CHALLENGES = [
 function ProgressBar({ completed, total }) {
   return (
     <div className="flex items-center gap-3 mb-6">
-      <span className="text-sm font-medium text-slate-400 flex-shrink-0">
-        <span className="text-blue-500 font-bold">{completed}</span>/{total} Flags
+      <span className="text-sm font-medium text-slate-500 flex-shrink-0">
+        <span className="text-blue-600 dark:text-blue-500 font-bold">{completed}</span>/{total} Flags
       </span>
-      <div className="flex-1 h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-850">
-        <div className="h-full bg-blue-600 rounded-full transition-all duration-500" style={{ width: `${(completed / total) * 100}%` }} />
+      <div className="flex-1 h-2 bg-slate-200 dark:bg-slate-950 rounded-full overflow-hidden border border-slate-300 dark:border-slate-850">
+        <div className="h-full bg-blue-500 dark:bg-blue-600 rounded-full transition-all duration-500" style={{ width: `${(completed / total) * 100}%` }} />
       </div>
       {completed === total && (
-        <span className="text-emerald-400 font-semibold text-xs flex-shrink-0">All flags captured! 🎉</span>
+        <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-xs flex-shrink-0">All flags captured! 🎉</span>
       )}
     </div>
   );
@@ -227,8 +227,8 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
 
   if (isLocked) {
     return (
-      <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm relative overflow-hidden opacity-50 grayscale transition-all flex items-center justify-center min-h-[120px]">
-        <div className="absolute top-0 left-0 w-1.5 h-full bg-slate-700" />
+      <div className="p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm relative overflow-hidden opacity-50 grayscale transition-all flex items-center justify-center min-h-[120px]">
+        <div className="absolute top-0 left-0 w-1.5 h-full bg-slate-300 dark:bg-slate-700" />
         <div className="flex flex-col items-center gap-2 text-slate-500">
           <Lock className="w-8 h-8 mb-1" />
           <p className="font-bold text-sm tracking-widest uppercase">Challenge Locked</p>
@@ -250,15 +250,15 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
 
   if (isCompleted) {
     return (
-      <div className="border border-emerald-500/30 rounded-xl p-4 sm:p-5 bg-emerald-950/10 relative overflow-hidden opacity-90 transition-all duration-200">
+      <div className="border border-emerald-500/30 rounded-xl p-4 sm:p-5 bg-emerald-50 dark:bg-emerald-950/10 relative overflow-hidden opacity-90 transition-all duration-200">
         <div className="absolute top-0 left-0 w-1.5 h-full bg-emerald-500" />
         <div className="flex items-center gap-3">
-          <div className="p-1.5 rounded-full bg-emerald-950 border border-emerald-500/30 flex-shrink-0"><CheckCircle2 className="w-5 h-5 text-emerald-400" /></div>
+          <div className="p-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950 border border-emerald-500/30 flex-shrink-0"><CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /></div>
           <div className="min-w-0">
-            <h3 className="text-sm sm:text-base font-semibold text-emerald-400 flex flex-wrap items-center gap-2">
-              {challenge.title} <span className="text-[10px] bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/20 whitespace-nowrap">Flag captured 🚩</span>
+            <h3 className="text-sm sm:text-base font-semibold text-emerald-600 dark:text-emerald-400 flex flex-wrap items-center gap-2">
+              {challenge.title} <span className="text-[10px] bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/20 whitespace-nowrap">Flag captured 🚩</span>
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">Completed — view the next challenge below.</p>
+            <p className="text-xs text-slate-600 dark:text-slate-500 mt-0.5">Completed — view the next challenge below.</p>
           </div>
         </div>
       </div>
@@ -281,17 +281,17 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
   };
 
   return (
-      <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm relative overflow-hidden card-pop">
+      <div className="p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm relative overflow-hidden card-pop">
         <div className={`absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b ${c.gradient}`} />
         <div className="flex items-start gap-3 mb-4">
           <div className={`p-2 rounded-lg ${c.iconBg} border ${c.iconBorder} flex-shrink-0`}><Icon className={`w-4 sm:w-5 h-4 sm:h-5 ${c.iconText}`} /></div>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-lg font-medium text-slate-200 mb-2">Challenge {challengeIndex + 1}: {challenge.title}</h3>
-              <span className="text-[10px] font-mono bg-slate-800 text-slate-500 border border-slate-700 px-1.5 py-0.5 rounded uppercase tracking-wider">Flag: {challenge.flag}</span>
-              {challenge.maxScore && <span className="text-[10px] text-cyber-lime font-mono">+{challenge.maxScore}pts</span>}
+              <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-2">Challenge {challengeIndex + 1}: {challenge.title}</h3>
+              <span className="text-[10px] font-mono bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-300 dark:border-slate-700 px-1.5 py-0.5 rounded uppercase tracking-wider">Flag: {challenge.flag}</span>
+              {challenge.maxScore && <span className="text-[10px] text-emerald-600 dark:text-cyber-lime font-mono">+{challenge.maxScore}pts</span>}
             </div>
-            <p className="text-sm sm:text-base text-slate-400 mt-1">{challenge.subtitle}</p>
+            <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-1">{challenge.subtitle}</p>
           </div>
         </div>
 
@@ -299,7 +299,7 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
 
       {!isCompleted && !hintRevealed && (
         <div className="mt-4">
-          <button onClick={() => setHintRevealed(true)} className="text-xs font-semibold text-amber-400 hover:text-white flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-800 border border-slate-700 hover:bg-slate-750 transition-colors">
+          <button onClick={() => setHintRevealed(true)} className="text-xs font-semibold text-amber-600 dark:text-amber-400 hover:text-amber-800 dark:hover:text-white flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-750 transition-colors">
             <Key className="w-3.5 h-3.5" /> Decrypt Hint (-10 pts)
           </button>
         </div>
@@ -318,20 +318,20 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
                 onClick={() => handleMultiChoice(opt.value)}
                 disabled={isRevealed}
                 className={`w-full text-left p-3 sm:p-4 rounded-lg text-sm sm:text-base font-medium border transition-all flex items-start gap-3 ${
-                  isCorrect ? 'bg-emerald-900/30 border-emerald-500 text-emerald-200' :
-                  isWrong ? 'bg-red-900/30 border-red-500 text-red-200' :
-                  isRevealed && opt.correct ? 'bg-emerald-900/20 border-emerald-500/50 text-emerald-300' :
-                  'bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-800 hover:border-slate-500'
+                  isCorrect ? 'bg-emerald-100 dark:bg-emerald-900/30 border-emerald-400 dark:border-emerald-500 text-emerald-800 dark:text-emerald-200' :
+                  isWrong ? 'bg-red-100 dark:bg-red-900/30 border-red-400 dark:border-red-500 text-red-800 dark:text-red-200' :
+                  isRevealed && opt.correct ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-300 dark:border-emerald-500/50 text-emerald-600 dark:text-emerald-300' :
+                  'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-500'
                 }`}
               >
                 <span className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center text-[10px] font-bold mt-0.5 ${
                   isCorrect ? 'border-emerald-500 bg-emerald-500 text-white' :
                   isWrong ? 'border-red-500 bg-red-500 text-white' :
-                  'border-slate-600 text-transparent'
+                  'border-slate-300 dark:border-slate-600 text-transparent'
                 }`}>{isCorrect ? '✓' : isWrong ? '✗' : ''}</span>
                 <div>
-                  <span className={isCorrect || (isRevealed && opt.correct) ? 'text-emerald-300' : isWrong ? 'text-red-200' : 'text-slate-200'}>{opt.label}</span>
-                  {(isRevealed || (hintRevealed && opt.correct)) && <p className={`text-xs sm:text-sm mt-1 sm:mt-2 ${opt.correct ? 'text-emerald-400' : 'text-slate-400'}`}>{opt.hint}</p>}
+                  <span className={isCorrect || (isRevealed && opt.correct) ? 'text-emerald-600 dark:text-emerald-300' : isWrong ? 'text-red-600 dark:text-red-200' : 'text-slate-700 dark:text-slate-200'}>{opt.label}</span>
+                  {(isRevealed || (hintRevealed && opt.correct)) && <p className={`text-xs sm:text-sm mt-1 sm:mt-2 ${opt.correct ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400'}`}>{opt.hint}</p>}
                 </div>
               </button>
             );
@@ -347,7 +347,7 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
               value={textValue} onChange={(e) => setTextValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleTextSubmit()}
               aria-label="Enter hex flag answer"
-              className="px-4 py-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 w-full sm:w-32 text-sm font-mono text-center uppercase"
+              className="px-4 py-3 rounded-lg bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 text-slate-900 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 w-full sm:w-32 text-sm font-mono text-center uppercase"
             />
             <button onClick={handleTextSubmit} aria-label="Submit answer" className="w-full sm:w-auto px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors focus:ring-2 focus:ring-blue-500/50">
               Submit Flag
@@ -363,9 +363,9 @@ function ChallengeCard({ challenge, challengeIndex, onComplete, isCompleted, isL
             </div>
           )}
           {hintRevealed && submitAttempts === 0 && (
-             <div className="mt-3 p-3 bg-slate-950 border border-slate-800 rounded flex items-start gap-2">
+             <div className="mt-3 p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded flex items-start gap-2">
                <Key className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-               <p className="text-xs sm:text-sm text-slate-400">Hint: Review the highlighted text or key values explicitly mentioned in the question prompt.</p>
+               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">Hint: Review the highlighted text or key values explicitly mentioned in the question prompt.</p>
              </div>
           )}
           {challenge.answer(textValue) && (
@@ -386,16 +386,16 @@ function ScoreBoard({ score, totalPossible, elapsed }) {
   return (
     <div className="flex flex-wrap items-center gap-6 text-sm">
       <div className="flex items-center gap-2">
-        <Flag className="w-4 h-4 text-emerald-400" />
-        <span className="text-slate-400">Score:</span>
-        <span className="text-white font-semibold font-mono text-base">{score}</span>
-        <span className="text-slate-600">/ {totalPossible}</span>
+        <Flag className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+        <span className="text-slate-500 dark:text-slate-400">Score:</span>
+        <span className="text-slate-900 dark:text-white font-semibold font-mono text-base">{score}</span>
+        <span className="text-slate-400 dark:text-slate-600">/ {totalPossible}</span>
       </div>
       {elapsed > 0 && (
         <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-indigo-400" />
-          <span className="text-slate-400">Time:</span>
-          <span className="text-white font-mono">{Math.floor(elapsed / 60)}m {elapsed % 60}s</span>
+          <Clock className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
+          <span className="text-slate-500 dark:text-slate-400">Time:</span>
+          <span className="text-slate-900 dark:text-white font-mono">{Math.floor(elapsed / 60)}m {elapsed % 60}s</span>
         </div>
       )}
     </div>
@@ -405,20 +405,20 @@ function ScoreBoard({ score, totalPossible, elapsed }) {
 function CompletionBanner({ score, totalPossible, onReset }) {
   const pct = Math.round((score / totalPossible) * 100);
   const grade = pct >= 90 ? 'S' : pct >= 75 ? 'A' : pct >= 50 ? 'B' : 'C';
-  const gradeColor = grade === 'S' ? 'text-emerald-400' : grade === 'A' ? 'text-blue-400' : grade === 'B' ? 'text-indigo-400' : 'text-amber-500';
+  const gradeColor = grade === 'S' ? 'text-emerald-500 dark:text-emerald-400' : grade === 'A' ? 'text-blue-500 dark:text-blue-400' : grade === 'B' ? 'text-indigo-500 dark:text-indigo-400' : 'text-amber-600 dark:text-amber-500';
   return (
-    <div className="mt-6 sm:mt-8 p-6 sm:p-8 bg-slate-950 border border-slate-850 rounded-xl text-center">
-      <Flag className="w-10 h-10 text-emerald-400 mx-auto mb-3" />
-      <h3 className="text-lg font-medium text-slate-200 mb-2">Operation Complete 🎉</h3>
-      <div className="inline-block bg-slate-900 border border-slate-800 rounded-lg p-4 my-3 text-center min-w-[140px]">
+    <div className="mt-6 sm:mt-8 p-6 sm:p-8 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-xl text-center shadow-sm">
+      <Flag className="w-10 h-10 text-emerald-500 dark:text-emerald-400 mx-auto mb-3" />
+      <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-2">Operation Complete 🎉</h3>
+      <div className="inline-block bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-4 my-3 text-center min-w-[140px]">
         <p className={`text-4xl font-bold ${gradeColor} mb-1`}>{grade}</p>
-        <p className="text-base text-slate-200 font-semibold">{score} / {totalPossible}</p>
+        <p className="text-base text-slate-800 dark:text-slate-200 font-semibold">{score} / {totalPossible}</p>
         <p className="text-[10px] text-slate-500">{pct}% accuracy</p>
       </div>
-      <p className="text-slate-400 text-sm max-w-lg mx-auto mb-4 leading-relaxed">
+      <p className="text-slate-600 dark:text-slate-400 text-sm max-w-lg mx-auto mb-4 leading-relaxed">
         You've completed all {CHALLENGES.length} challenges. Return to the <strong>Live Simulation</strong> to apply your skills in real-time, or reset your progress to try again.
       </p>
-      <button onClick={onReset} className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition-colors">
+      <button onClick={onReset} className="px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium transition-colors">
         Reset Progress
       </button>
     </div>
@@ -469,20 +469,20 @@ export default function CTFLabs() {
 
   return (
     <div className="space-y-6 animate-fade-in-up">
-      <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-sm relative overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl shadow-sm relative overflow-hidden">
         <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20"><Flag className="w-5 h-5 text-emerald-400" /></div>
+            <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-500/10 border border-emerald-300 dark:border-emerald-500/20"><Flag className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /></div>
             <div>
-              <h2 className="text-xl font-semibold tracking-tight text-slate-200 mb-4">Capture The Flag Challenges</h2>
-              <p className="text-slate-400 text-sm mt-0.5">Test your Wi-Fi security knowledge. Each challenge awards up to 100pts — wrong answers cost 20pts.</p>
+              <h2 className="text-xl font-semibold tracking-tight text-slate-800 dark:text-slate-200 mb-4">Capture The Flag Challenges</h2>
+              <p className="text-slate-600 dark:text-slate-400 text-sm mt-0.5">Test your Wi-Fi security knowledge. Each challenge awards up to 100pts — wrong answers cost 20pts.</p>
             </div>
           </div>
           <ScoreBoard score={score} totalPossible={totalPossible} elapsed={elapsed} />
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-sm relative overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl shadow-sm relative overflow-hidden">
         <ProgressBar completed={completed.length} total={CHALLENGES.length} />
 
         <div className="space-y-6">

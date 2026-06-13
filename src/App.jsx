@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ShieldCheck, Activity, BookOpen, Flag, Github, Menu, X, Sparkles, MessageSquare, UserCircle, LogOut } from 'lucide-react';
+import { ShieldCheck, Activity, BookOpen, Flag, Github, Menu, X, Sparkles, MessageSquare, UserCircle, LogOut, Sun, Moon, Monitor } from 'lucide-react';
 import SimulationDashboard from './components/SimulationDashboard';
 import CTFLabs from './components/CTFLabs';
 import LearningHub from './components/LearningHub';
@@ -9,6 +9,7 @@ import SelectionAssistant from './components/SelectionAssistant';
 import KnowItAll from './components/KnowItAll';
 import ProfileSelector from './components/ProfileSelector';
 import { useProfile } from './contexts/ProfileContext';
+import { useTheme } from './contexts/ThemeContext';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -21,11 +22,11 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-slate-950 flex items-center justify-center p-8">
-          <div className="p-6 rounded-xl border border-slate-800 bg-slate-900 shadow-sm max-w-lg text-center animate-bounce-in">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-8">
+          <div className="p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm max-w-lg text-center animate-bounce-in">
             <ShieldCheck className="w-12 h-12 text-red-500 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold tracking-tight text-slate-200 mb-4">Oops! Something broke</h2>
-            <p className="text-slate-400 text-sm sm:text-base mb-6">{this.state.error?.message || 'An unexpected error occurred.'}</p>
+            <h2 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-200 mb-4">Oops! Something broke</h2>
+            <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base mb-6">{this.state.error?.message || 'An unexpected error occurred.'}</p>
             <button onClick={() => window.location.reload()} className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors focus:ring-2 focus:ring-blue-500/50">
               Reload Application
             </button>
@@ -55,6 +56,7 @@ function ViewWrapper({ children }) {
 
 export default function App() {
   const { isProfileSelected, activeProfile, activeProfileId, clearProfile, userScores } = useProfile();
+  const { theme, setTheme, isDark } = useTheme();
   const [activeView, setActiveView] = useState(() => localStorage.getItem('wids_view') || 'simulation');
   const [isAttackActive, setIsAttackActive] = useState(false);
   const [attackType, setAttackType] = useState(null);
@@ -104,15 +106,15 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-slate-950 text-slate-300 font-sans">
-        <nav className="bg-slate-950/85 backdrop-blur-md border-b border-slate-900 sticky top-0 z-50">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-300 font-sans transition-colors duration-300">
+        <nav className="bg-white/85 dark:bg-slate-950/85 backdrop-blur-md border-b border-slate-200 dark:border-slate-900 sticky top-0 z-50 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
-                <ShieldCheck className="h-7 w-7 text-blue-500" />
+                <ShieldCheck className="h-7 w-7 text-blue-600 dark:text-blue-500" />
                 <span className="ml-2.5 font-semibold text-base sm:text-lg tracking-tight">
-                  <span className="text-slate-100 font-bold">WIDS</span>{' '}
-                  <span className="text-slate-400">Simulator</span>
+                  <span className="text-slate-900 dark:text-slate-100 font-bold">WIDS</span>{' '}
+                  <span className="text-slate-500 dark:text-slate-400">Simulator</span>
                 </span>
               </div>
 
@@ -127,8 +129,8 @@ export default function App() {
                         onClick={() => navigate(item.id)}
                         className={`flex items-center px-3 lg:px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                           activeView === item.id
-                            ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20'
-                            : 'text-slate-400 border border-transparent hover:bg-slate-900 hover:text-slate-200'
+                            ? 'bg-blue-100/50 dark:bg-blue-600/10 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20'
+                            : 'text-slate-600 dark:text-slate-400 border border-transparent hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-slate-200'
                         }`}
                       >
                         <Icon className="mr-1 lg:mr-2 h-4 w-4" />
@@ -138,10 +140,22 @@ export default function App() {
                   })}
                 </div>
 
-                {/* Profile indicator + switch */}
-                <div className="flex items-center gap-2 ml-2 pl-3 border-l border-slate-800">
+                <div className="flex items-center gap-2 ml-2 pl-3 border-l border-slate-200 dark:border-slate-800">
+                  {/* Theme Toggle */}
+                  <div className="flex items-center bg-slate-100 dark:bg-slate-900 rounded-lg p-1 mr-1">
+                    <button onClick={() => setTheme('light')} className={`p-1.5 rounded-md transition-colors ${theme === 'light' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`} title="Light Mode">
+                      <Sun className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => setTheme('system')} className={`p-1.5 rounded-md transition-colors ${theme === 'system' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-300'}`} title="System Preference">
+                      <Monitor className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => setTheme('dark')} className={`p-1.5 rounded-md transition-colors ${theme === 'dark' ? 'bg-slate-800 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'}`} title="Dark Mode">
+                      <Moon className="w-4 h-4" />
+                    </button>
+                  </div>
+
                   {/* XP Badge */}
-                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400" title="Study Score XP">
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 text-amber-600 dark:text-amber-400" title="Study Score XP">
                     <span className="text-sm">🏆</span>
                     <span className="text-xs font-bold font-mono">{userScores[activeProfileId]?.totalScore || 0}</span>
                   </div>
@@ -150,7 +164,7 @@ export default function App() {
                     <ProfileIcon className={`w-3.5 h-3.5 ${activeProfile.color}`} />
                     <span className={`text-xs font-bold ${activeProfile.color}`}>{activeProfile.nickname}</span>
                   </div>
-                  <button onClick={clearProfile} title="Switch Profile" className="p-1.5 rounded-md text-slate-500 hover:text-red-400 hover:bg-slate-900 transition-colors">
+                  <button onClick={clearProfile} title="Switch Profile" className="p-1.5 rounded-md text-slate-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">
                     <LogOut className="w-4 h-4" />
                   </button>
                 </div>
@@ -159,7 +173,7 @@ export default function App() {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-                className="md:hidden text-slate-500 hover:text-slate-900 p-2"
+                className="md:hidden text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 p-2"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -168,11 +182,20 @@ export default function App() {
 
           {/* Mobile dropdown menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden border-t border-slate-800/50 bg-slate-950/90 backdrop-blur-xl">
+            <div className="md:hidden border-t border-slate-200 dark:border-slate-800/50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl">
               <div className="px-3 sm:px-4 py-2 sm:py-3 space-y-1">
+                {/* Mobile theme toggle */}
+                <div className="flex items-center justify-between px-3 py-2.5 mb-2 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-100 dark:border-slate-800">
+                  <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Theme</span>
+                  <div className="flex items-center bg-slate-200 dark:bg-slate-900 rounded-lg p-1">
+                    <button onClick={() => setTheme('light')} className={`p-1.5 rounded-md transition-colors ${theme === 'light' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'}`}><Sun className="w-4 h-4" /></button>
+                    <button onClick={() => setTheme('system')} className={`p-1.5 rounded-md transition-colors ${theme === 'system' ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-300'}`}><Monitor className="w-4 h-4" /></button>
+                    <button onClick={() => setTheme('dark')} className={`p-1.5 rounded-md transition-colors ${theme === 'dark' ? 'bg-slate-800 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'}`}><Moon className="w-4 h-4" /></button>
+                  </div>
+                </div>
                 {/* Mobile profile indicator */}
                 <div className="flex flex-col gap-2 mb-2">
-                  <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400">
+                  <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 rounded-lg bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 text-amber-600 dark:text-amber-400">
                     <span className="text-xs font-bold uppercase tracking-wider">Study Score</span>
                     <span className="text-sm font-bold font-mono flex items-center gap-1.5"><span className="text-base">🏆</span> {userScores[activeProfileId]?.totalScore || 0} XP</span>
                   </div>
@@ -180,9 +203,9 @@ export default function App() {
                     <div className="flex items-center gap-2">
                       <ProfileIcon className={`w-4 h-4 ${activeProfile.color}`} />
                       <span className={`text-sm font-bold ${activeProfile.color}`}>{activeProfile.nickname}</span>
-                      {activeProfile.role === 'supervisor' && <span className="text-[9px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded-full font-bold">SUP</span>}
+                      {activeProfile.role === 'supervisor' && <span className="text-[9px] bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400 px-1.5 py-0.5 rounded-full font-bold">SUP</span>}
                     </div>
-                    <button onClick={clearProfile} className="text-xs text-slate-400 hover:text-red-400 font-medium">Switch</button>
+                    <button onClick={clearProfile} className="text-xs text-slate-500 dark:text-slate-400 hover:text-red-500 dark:hover:text-red-400 font-medium">Switch</button>
                   </div>
                 </div>
                 {navItems.map((item) => {
@@ -193,8 +216,8 @@ export default function App() {
                       onClick={() => navigate(item.id)}
                       className={`w-full flex items-center px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all ${
                         activeView === item.id
-                          ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20'
-                          : 'text-slate-400 border border-transparent hover:bg-slate-900 hover:text-slate-200'
+                          ? 'bg-blue-100/50 dark:bg-blue-600/10 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20'
+                          : 'text-slate-600 dark:text-slate-400 border border-transparent hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-slate-200'
                       }`}
                     >
                       <Icon className="mr-2.5 h-4 w-4" />
@@ -209,14 +232,14 @@ export default function App() {
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
           <div className="mb-6 sm:mb-8 animate-fade-in-up">
-            <h1 className="text-3xl font-semibold tracking-tight text-slate-100 mb-6">
+            <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100 mb-6">
               {activeView === 'simulation' && 'Wireless Intrusion Detection Sandbox'}
               {activeView === 'ctf' && 'Interactive Security Challenges'}
               {activeView === 'learning' && 'Learning Hub'}
               {activeView === 'knowledge' && 'Daily Insight'}
               {activeView === 'knowitall' && 'Know-It-ALL Knowledge Share'}
             </h1>
-            <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-3xl">
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
               {activeView === 'simulation' && 'Deploy virtual ESP32 sniffers to detect common 802.11 attacks in real-time. Understand how raw management frames are manipulated by adversaries.'}
               {activeView === 'ctf' && 'Test your understanding of Wi-Fi protocol vulnerabilities through hands-on gamified tasks.'}
               {activeView === 'learning' && 'A deep dive into the project architecture, hardware specs, and system diagnostics.'}
@@ -246,13 +269,13 @@ export default function App() {
 
         <SelectionAssistant />
         <ChatAssistant />
-        <footer className="border-t border-slate-900 bg-slate-950 mt-8 sm:mt-12 py-6 sm:py-8">
+        <footer className="border-t border-slate-200 dark:border-slate-900 bg-slate-50 dark:bg-slate-950 mt-8 sm:mt-12 py-6 sm:py-8 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-slate-600" />
+              <ShieldCheck className="w-4 h-4 text-slate-400 dark:text-slate-600" />
               <span className="text-xs sm:text-sm text-slate-500 font-mono">WIDS Simulator v1.0</span>
             </div>
-            <p className="text-xs sm:text-sm text-slate-600 font-mono flex items-center gap-2">
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-600 font-mono flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80" />
               Local Client-Side • React + Tailwind CSS • Built for curious minds
             </p>

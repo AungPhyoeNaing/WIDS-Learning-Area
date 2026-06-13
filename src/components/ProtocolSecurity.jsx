@@ -7,31 +7,31 @@ export default function ProtocolSecurity() {
   const toggleSection = (idx) => setOpenSection(openSection === idx ? -1 : idx);
 
   return (
-    <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-sm animate-fade-in-up">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl shadow-sm animate-fade-in-up">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold text-slate-100 mb-2 flex items-center gap-2">
-          <Network className="w-5 h-5 text-blue-500" /> Course 2: Protocol Security
+        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-2">
+          <Network className="w-5 h-5 text-blue-600 dark:text-blue-500" /> Course 2: Protocol Security
         </h2>
-        <p className="text-slate-400 text-sm">
+        <p className="text-slate-600 dark:text-slate-400 text-sm">
           A deep dive into the 802.11 MAC layer, frame structures, and how vulnerabilities in legacy protocols enable wireless attacks.
         </p>
       </div>
 
       <div className="space-y-2">
         <Accordion title="2.1 Anatomy of an 802.11 Frame" icon={FileCode2} isOpen={openSection === 0} onClick={() => toggleSection(0)}>
-          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+          <div className="space-y-4 text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
             <p>
               Wi-Fi packets (frames) are structurally different from standard Ethernet packets. A typical 802.11 Management Frame header consists of 24 bytes before the actual payload begins.
             </p>
-            <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs overflow-x-auto text-slate-400">
-              <span className="text-blue-400">Frame Control (2B)</span> | 
-              <span className="text-indigo-400"> Duration (2B)</span> | 
-              <span className="text-emerald-400"> Addr1: Dest (6B)</span> | 
-              <span className="text-slate-300"> Addr2: Source (6B)</span> | 
-              <span className="text-slate-300"> Addr3: BSSID (6B)</span> | 
-              <span className="text-amber-500"> Seq Ctrl (2B)</span>
+            <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-4 font-mono text-xs overflow-x-auto text-slate-600 dark:text-slate-400">
+              <span className="text-blue-600 dark:text-blue-400">Frame Control (2B)</span> | 
+              <span className="text-indigo-600 dark:text-indigo-400"> Duration (2B)</span> | 
+              <span className="text-emerald-600 dark:text-emerald-400"> Addr1: Dest (6B)</span> | 
+              <span className="text-slate-700 dark:text-slate-300"> Addr2: Source (6B)</span> | 
+              <span className="text-slate-700 dark:text-slate-300"> Addr3: BSSID (6B)</span> | 
+              <span className="text-amber-600 dark:text-amber-500"> Seq Ctrl (2B)</span>
             </div>
-            <div className="bg-slate-950 border border-slate-800 rounded-lg p-4 font-mono text-xs text-slate-400 mt-2">
+            <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg p-4 font-mono text-xs text-slate-600 dark:text-slate-400 mt-2">
               # Example Hex of a Deauth Frame Header<br/>
               C0 00 3A 01 FF FF FF FF FF FF 11 22 33 44 55 66 11 22 33 44 55 66 00 00
             </div>
@@ -42,7 +42,7 @@ export default function ProtocolSecurity() {
         </Accordion>
 
         <Accordion title="2.2 The Deauthentication Vulnerability" icon={Shield} isOpen={openSection === 1} onClick={() => toggleSection(1)}>
-          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+          <div className="space-y-4 text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
             <p>
               In WPA2 networks, data frames are heavily encrypted using AES. However, to allow devices to connect and disconnect smoothly, <strong>Management Frames are sent entirely in plaintext</strong>. 
             </p>
@@ -56,7 +56,7 @@ export default function ProtocolSecurity() {
         </Accordion>
 
         <Accordion title="2.3 ARP Poisoning & MITM" icon={AlertTriangle} isOpen={openSection === 2} onClick={() => toggleSection(2)}>
-          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+          <div className="space-y-4 text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
             <p>
               The Address Resolution Protocol (ARP) translates IP addresses to MAC addresses. It is inherently trust-based. If a device receives an ARP Reply, it caches the MAC address without verifying if the sender is actually authorized.
             </p>
@@ -70,7 +70,7 @@ export default function ProtocolSecurity() {
         </Accordion>
 
         <Accordion title="2.4 Evil Twin & Rogue AP" icon={Search} isOpen={openSection === 3} onClick={() => toggleSection(3)}>
-          <div className="space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+          <div className="space-y-4 text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
             <p>
               An Evil Twin attack involves spinning up a malicious Access Point with the exact same SSID (name) as the legitimate network. Attackers often amplify their TX power to overpower the real router, forcing devices to auto-connect to the twin.
             </p>
