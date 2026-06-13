@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { Activity, WifiOff, ShieldAlert, MonitorPlay, Power, Sliders, ShieldCheck, Lightbulb, Search, Settings, Terminal, Trash2, Download, X, AlertTriangle, Radio } from 'lucide-react';
+import { Activity, WifiOff, ShieldAlert, MonitorPlay, Power, Sliders, ShieldCheck, Lightbulb, Search, Settings, Terminal, Trash2, Download, X, AlertTriangle, Radio, Router, Laptop, RefreshCw } from 'lucide-react';
 import { useSimulation } from '../hooks/useSimulation';
 
 // ─── Signal Meter ──────────────────────────────────────────────
@@ -50,7 +50,7 @@ function RssiHistory({ packets, maxPoints = 20 }) {
 }
 
 // ─── Channel Spectrum Visualizer ───────────────────────────────
-function ChannelSpectrum({ sensorChannel, targetChannel, isAttackActive, sensorOn, isMitigated }) {
+function ChannelSpectrum({ sensorChannel, targetChannel, isAttackActive, sensorOn }) {
   const canSee = isAttackActive && sensorOn && sensorChannel === targetChannel;
   const wrongCh = isAttackActive && sensorOn && sensorChannel !== targetChannel;
   return (
@@ -67,12 +67,10 @@ function ChannelSpectrum({ sensorChannel, targetChannel, isAttackActive, sensorO
           const isSensor = ch === sensorChannel && sensorOn;
           const isTarget = ch === targetChannel;
           const isActive = isTarget && canSee;
-          const isBlocked = isTarget && isMitigated;
           const hasInterference = isTarget && wrongCh;
           return (
             <div key={ch} className="flex-1 relative group">
               <div className={`h-full w-full rounded-sm transition-all duration-300 flex items-center justify-center text-[7px] sm:text-[9px] font-semibold font-mono ${
-                isBlocked ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-500/30' :
                 isActive ? 'bg-rose-100 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-300 dark:border-rose-500/30 animate-pulse' :
                 isSensor ? 'bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-300 dark:border-blue-500/30' :
                 hasInterference ? 'bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-500/30' :
@@ -83,7 +81,7 @@ function ChannelSpectrum({ sensorChannel, targetChannel, isAttackActive, sensorO
               </div>
               {isTarget && (
                 <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
-                  isBlocked ? 'bg-emerald-500' : isActive ? 'bg-rose-500 animate-pulse' : 'bg-slate-400 dark:bg-slate-500'
+                  isActive ? 'bg-rose-500 animate-pulse' : 'bg-slate-400 dark:bg-slate-500'
                 }`} />
               )}
             </div>
@@ -103,12 +101,10 @@ function PacketDistribution({ packets }) {
   const total = packets.length;
   if (total === 0) return null;
   const attack = packets.filter(p => p.isAttack).length;
-  const blocked = packets.filter(p => p.isBlocked).length;
-  const normal = total - attack - blocked;
+  const normal = total - attack;
   const aPct = (attack / total) * 100;
-  const bPct = (blocked / total) * 100;
   const nPct = (normal / total) * 100;
-  if (nPct === 0 && aPct === 0 && bPct === 0) return null;
+  if (nPct === 0 && aPct === 0) return null;
   return (
     <div className="mt-4">
       <div className="flex items-center justify-between mb-1.5">
@@ -116,77 +112,151 @@ function PacketDistribution({ packets }) {
         <div className="flex items-center gap-3 text-[9px] font-semibold text-slate-700 dark:text-slate-400">
           {normal > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-blue-500" /> {normal}</span>}
           {attack > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-rose-500" /> {attack}</span>}
-          {blocked > 0 && <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-emerald-500" /> {blocked}</span>}
         </div>
       </div>
       <div className="h-3 bg-slate-200/80 dark:bg-slate-950 rounded-full overflow-hidden flex shadow-inner">
         {nPct > 0 && <div className="h-full bg-blue-500 dark:bg-blue-600/60 transition-all duration-500" style={{ width: `${nPct}%` }} />}
         {attack > 0 && <div className="h-full bg-rose-500 dark:bg-rose-600/60 transition-all duration-500" style={{ width: `${aPct}%` }} />}
-        {bPct > 0 && <div className="h-full bg-emerald-500 dark:bg-emerald-600/60 transition-all duration-500" style={{ width: `${bPct}%` }} />}
       </div>
     </div>
   );
 }
 
 // ─── Network Topology Diagram ──────────────────────────────────
-function NetworkTopology({ isAttackActive, attackType, isMitigated, sensorOn }) {
-  const arrowColor = isMitigated ? '#10b981' : (isAttackActive ? '#f43f5e' : '#475569');
-  const attackLabel = 
-    attackType === 'DEAUTH' ? 'Deauth flood' : 
-    attackType === 'ROGUE_AP' ? 'Fake Beacon' : 
-    attackType === 'MAC_SPOOF' ? 'Spoofed Data' : 
-    'ARP Poisoning';
-  return (
-    <div className="flex flex-col md:flex-row items-center justify-center gap-3 sm:gap-6 py-2">
-      {/* Attacker */}
-      <div className="flex flex-col items-center gap-1">
-        <div className={`w-12 sm:w-14 h-12 sm:h-14 rounded-xl flex items-center justify-center border transition-all ${
-          isAttackActive && !isMitigated ? 'bg-rose-100 dark:bg-rose-950/20 border-rose-400 dark:border-rose-500/40' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
-        }`}>
-          <WifiOff className={`w-6 h-6 ${isAttackActive && !isMitigated ? 'text-rose-600 dark:text-rose-400' : 'text-slate-400 dark:text-slate-500'}`} />
-        </div>
-        <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Attacker</span>
-        {isAttackActive && !isMitigated && <span className="text-[8px] text-rose-600 dark:text-rose-400 font-mono font-semibold">{attackLabel}</span>}
-        {isMitigated && <span className="text-[8px] text-emerald-600 dark:text-emerald-400 font-mono font-semibold">Blocked</span>}
-      </div>
+function NetworkTopology({ isAttackActive, attackType, sensorOn }) {
+  const Node = ({ icon: Icon, label, subtext, type }) => {
+    let bg = 'bg-slate-100 dark:bg-slate-900/50';
+    let border = 'border-slate-200 dark:border-slate-800';
+    let text = 'text-slate-600 dark:text-slate-400';
+    let sub = 'text-slate-500 dark:text-slate-500';
+    let iconCol = 'text-slate-500 dark:text-slate-500';
 
-      {/* Arrow */}
-      <div className="flex flex-col items-center relative">
-        <div className={`w-10 sm:w-16 h-0.5 ${isMitigated ? 'bg-emerald-500' : isAttackActive ? 'bg-rose-500' : 'bg-slate-300 dark:bg-slate-800'}`} />
-        <div className={`absolute -right-1.5 top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-l-4 border-transparent border-l-current ${isMitigated ? 'text-emerald-500' : isAttackActive ? 'text-rose-500' : 'text-slate-300 dark:text-slate-800'}`} />
-        {isAttackActive && !isMitigated && (
-          <span className="absolute -top-5 text-[7px] sm:text-[8px] text-rose-600 dark:text-rose-400 font-mono font-semibold whitespace-nowrap animate-pulse">→ malicious frames</span>
+    if (type === 'attacker') {
+      bg = 'bg-rose-50 dark:bg-rose-950/20'; border = 'border-rose-400 dark:border-rose-500/40'; text = 'text-rose-700 dark:text-rose-400'; sub = 'text-rose-600 dark:text-rose-400'; iconCol = 'text-rose-600 dark:text-rose-400';
+    } else if (type === 'victim') {
+      bg = 'bg-amber-50 dark:bg-amber-950/30'; border = 'border-amber-400 dark:border-amber-500/30'; text = 'text-amber-700 dark:text-amber-400'; sub = 'text-amber-600 dark:text-amber-400'; iconCol = 'text-amber-600 dark:text-amber-400';
+    } else if (type === 'normal') {
+      bg = 'bg-blue-50 dark:bg-blue-950/20'; border = 'border-blue-400 dark:border-blue-500/30'; text = 'text-blue-700 dark:text-blue-400'; sub = 'text-blue-600 dark:text-blue-400'; iconCol = 'text-blue-600 dark:text-blue-400';
+    } else if (type === 'mitigated') {
+      bg = 'bg-emerald-50 dark:bg-emerald-950/20'; border = 'border-emerald-400 dark:border-emerald-500/30'; text = 'text-emerald-700 dark:text-emerald-400'; sub = 'text-emerald-600 dark:text-emerald-400'; iconCol = 'text-emerald-600 dark:text-emerald-400';
+    }
+
+    return (
+      <div className="flex flex-col items-center gap-1.5 w-16 sm:w-24">
+        <div className={`w-10 sm:w-14 h-10 sm:h-14 rounded-xl flex items-center justify-center border shadow-sm transition-all duration-300 ${bg} ${border}`}>
+          <Icon className={`w-5 sm:w-6 h-5 sm:h-6 ${iconCol}`} />
+        </div>
+        <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-wide text-center leading-tight ${text}`}>{label}</span>
+        {subtext && <span className={`text-[8px] sm:text-[9px] font-mono font-semibold ${sub} text-center leading-tight`}>{subtext}</span>}
+      </div>
+    );
+  };
+
+  const Arrow = ({ label, type, dir = 'right' }) => {
+    let line = 'bg-slate-300 dark:bg-slate-700';
+    let text = 'text-slate-500 dark:text-slate-400';
+    let head = 'text-slate-300 dark:text-slate-700';
+    let animate = false;
+
+    if (type === 'attack') {
+      line = 'bg-rose-400 dark:bg-rose-500'; text = 'text-rose-600 dark:text-rose-400'; head = 'text-rose-400 dark:text-rose-500'; animate = true;
+    } else if (type === 'mitigated') {
+      line = 'bg-emerald-400 dark:bg-emerald-500'; text = 'text-emerald-600 dark:text-emerald-400'; head = 'text-emerald-400 dark:text-emerald-500';
+    } else if (type === 'normal') {
+      line = 'bg-blue-300 dark:bg-blue-700'; text = 'text-blue-600 dark:text-blue-400'; head = 'text-blue-300 dark:text-blue-700';
+    }
+
+    return (
+      <div className="flex flex-col items-center relative mx-1 sm:mx-4">
+        <div className="relative flex items-center">
+          {dir === 'left' && <div className={`w-0 h-0 border-t-[4px] sm:border-t-[5px] border-b-[4px] sm:border-b-[5px] border-r-[5px] sm:border-r-[6px] border-transparent border-r-current ${head} mr-[-1px]`} />}
+          <div className={`w-8 sm:w-16 h-[2px] sm:h-[3px] rounded-full ${line}`} />
+          {dir === 'right' && <div className={`w-0 h-0 border-t-[4px] sm:border-t-[5px] border-b-[4px] sm:border-b-[5px] border-l-[5px] sm:border-l-[6px] border-transparent border-l-current ${head} ml-[-1px]`} />}
+          {dir === 'both' && (
+            <>
+              <div className={`absolute left-0 w-0 h-0 border-t-[4px] sm:border-t-[5px] border-b-[4px] sm:border-b-[5px] border-r-[5px] sm:border-r-[6px] border-transparent border-r-current ${head}`} />
+              <div className={`absolute right-0 w-0 h-0 border-t-[4px] sm:border-t-[5px] border-b-[4px] sm:border-b-[5px] border-l-[5px] sm:border-l-[6px] border-transparent border-l-current ${head}`} />
+            </>
+          )}
+        </div>
+        
+        {label && (
+          <span className={`absolute -top-4 sm:-top-5 text-[7px] sm:text-[9px] font-mono font-semibold whitespace-nowrap ${text} ${animate ? 'animate-pulse' : ''}`}>
+            {label}
+          </span>
         )}
-        {isMitigated && (
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2">
-            <ShieldCheck className="w-4 sm:w-5 h-4 sm:h-5 text-emerald-600 dark:text-emerald-400 animate-bounce" />
+        {type === 'mitigated' && (
+          <div className="absolute -top-6 sm:-top-7 left-1/2 -translate-x-1/2">
+            <ShieldCheck className="w-4 sm:w-5 h-4 sm:h-5 text-emerald-500 dark:text-emerald-400 animate-bounce" />
           </div>
         )}
       </div>
+    );
+  };
 
-      {/* Victim */}
-      <div className="flex flex-col items-center gap-1.5">
-        <div className={`w-12 sm:w-16 h-12 sm:h-16 rounded-xl flex items-center justify-center border ${
-          isAttackActive && !isMitigated ? 'bg-amber-100 dark:bg-amber-950/30 border-amber-400 dark:border-amber-500/30' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
-        }`}>
-          <Activity className={`w-5 sm:w-6 h-5 sm:h-6 ${isAttackActive && !isMitigated ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400 dark:text-slate-500'}`} />
-        </div>
-        <span className="text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wide">Victim</span>
-        {isAttackActive && !isMitigated && <span className="text-[10px] sm:text-xs text-amber-600 dark:text-amber-400 font-mono font-semibold">Disconnecting</span>}
+  if (!isAttackActive) {
+    return (
+      <div className="flex items-start sm:items-center justify-center py-4 sm:py-2 overflow-x-auto">
+        <Node icon={Laptop} label="Client" subtext="Connected" type="normal" />
+        <div className="mt-3 sm:mt-0"><Arrow label="Legitimate Traffic" type="normal" dir="both" /></div>
+        <Node icon={Router} label="Access Point" subtext="Gateway" type="neutral" />
       </div>
-    </div>
-  );
+    );
+  }
+
+  if (attackType === 'DEAUTH') {
+    return (
+      <div className="flex items-start sm:items-center justify-center py-4 sm:py-2 overflow-x-auto">
+        <Node icon={WifiOff} label="Attacker" subtext="Deauth Flood" type="attacker" />
+        <div className="mt-3 sm:mt-0"><Arrow label="Spoofed Deauths" type="attack" dir="right" /></div>
+        <Node icon={Laptop} label="Client" subtext="Disconnecting" type="victim" />
+      </div>
+    );
+  }
+
+  if (attackType === 'ROGUE_AP') {
+    return (
+      <div className="flex items-start sm:items-center justify-center py-4 sm:py-2 overflow-x-auto">
+        <Node icon={Router} label="Rogue AP" subtext="Evil Twin" type="attacker" />
+        <div className="mt-3 sm:mt-0"><Arrow label="Fake Beacons" type="attack" dir="left" /></div>
+        <Node icon={Laptop} label="Client" subtext="Tricked" type="victim" />
+      </div>
+    );
+  }
+
+  if (attackType === 'MAC_SPOOF') {
+    return (
+      <div className="flex items-start sm:items-center justify-center py-4 sm:py-2 overflow-x-auto">
+        <Node icon={Laptop} label="Attacker" subtext="Spoofed MAC" type="attacker" />
+        <div className="mt-3 sm:mt-0"><Arrow label="Bypassing ACL" type="attack" dir="right" /></div>
+        <Node icon={Router} label="Access Point" subtext="Fooled" type="victim" />
+      </div>
+    );
+  }
+
+  if (attackType === 'ARP_SPOOF') {
+    return (
+      <div className="flex items-start sm:items-center justify-center py-4 sm:py-2 overflow-x-auto">
+        <Node icon={Laptop} label="Client" subtext="Poisoned ARP" type="victim" />
+        <div className="mt-3 sm:mt-0"><Arrow label="Intercepted" type="attack" dir="right" /></div>
+        <Node icon={AlertTriangle} label="Attacker" subtext="MITM" type="attacker" />
+        <div className="mt-3 sm:mt-0"><Arrow label="Forwarded" type="attack" dir="right" /></div>
+        <Node icon={Router} label="Gateway" subtext="Unaware" type="neutral" />
+      </div>
+    );
+  }
+
+  return null;
 }
 
 // ─── Stats Bar ─────────────────────────────────────────────────
-function StatsBar({ packets, totalCaptured, isAttackActive, attackType, sensorOn, sensorChannel, targetChannel, isMitigated }) {
+function StatsBar({ packets, totalCaptured, isAttackActive, attackType, sensorOn, sensorChannel, targetChannel }) {
   const total = packets.length;
   const attackPkts = packets.filter(p => p.isAttack).length;
-  const blockedPkts = packets.filter(p => p.isBlocked).length;
-  const normalPkts = total - attackPkts - blockedPkts;
+  const normalPkts = total - attackPkts;
   const detected = isAttackActive && sensorOn && sensorChannel === targetChannel;
   return (
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 sm:gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
       <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-gradient-to-b from-white to-slate-50 dark:from-slate-900 dark:to-slate-900 shadow-sm text-center card-pop">
         <p className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white font-mono">{totalCaptured}</p>
         <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-500 uppercase tracking-wider mt-1 font-semibold">Total seen</p>
@@ -201,18 +271,14 @@ function StatsBar({ packets, totalCaptured, isAttackActive, attackType, sensorOn
       </div>
       <div className="p-5 rounded-xl border border-rose-200 dark:border-slate-800 bg-gradient-to-b from-rose-50/60 to-white dark:from-slate-900 dark:to-slate-900 shadow-sm text-center card-pop">
         <p className={`text-xl sm:text-2xl font-extrabold font-mono ${attackPkts > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-slate-300 dark:text-slate-600'}`}>{attackPkts}</p>
-        <p className="text-[10px] sm:text-xs text-rose-600/70 dark:text-slate-500 uppercase tracking-wider mt-1 font-semibold">{isMitigated ? 'Malicious' : (detected ? 'Attacks' : 'Anomalies')}</p>
-      </div>
-      <div className="p-5 rounded-xl border border-emerald-200 dark:border-slate-800 bg-gradient-to-b from-emerald-50/60 to-white dark:from-slate-900 dark:to-slate-900 shadow-sm text-center card-pop">
-        <p className={`text-xl sm:text-2xl font-extrabold font-mono ${blockedPkts > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-300 dark:text-slate-600'}`}>{blockedPkts}</p>
-        <p className="text-[10px] sm:text-xs text-emerald-600/70 dark:text-slate-500 uppercase tracking-wider mt-1 font-semibold">Blocked</p>
+        <p className="text-[10px] sm:text-xs text-rose-600/70 dark:text-slate-500 uppercase tracking-wider mt-1 font-semibold">{detected ? 'Attacks' : 'Anomalies'}</p>
       </div>
     </div>
   );
 }
 
 // ─── Detection Badge ────────────────────────────────────────────
-function DetectionBadge({ isAttackActive, attackType, sensorOn, sensorChannel, targetChannel, isMitigated }) {
+function DetectionBadge({ isAttackActive, attackType, sensorOn, sensorChannel, targetChannel }) {
   const canSee = isAttackActive && sensorOn && sensorChannel === targetChannel;
   if (!canSee && !isAttackActive) return null;
   if (!sensorOn) return (
@@ -223,16 +289,6 @@ function DetectionBadge({ isAttackActive, attackType, sensorOn, sensorChannel, t
   if (isAttackActive && sensorOn && sensorChannel !== targetChannel) return (
     <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 dark:bg-amber-950/30 border border-amber-400 dark:border-amber-500/20 text-xs font-medium text-amber-800 dark:text-amber-400 shadow-sm">
       <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" /> Wrong channel — tune to Ch {targetChannel}
-    </div>
-  );
-  if (isMitigated) return (
-    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-400 dark:border-emerald-500/20 text-xs font-medium text-emerald-800 dark:text-emerald-400 shadow-sm">
-      <ShieldCheck className="w-3 h-3" /> Mitigated — {
-        attackType === 'DEAUTH' ? 'Deauth' : 
-        attackType === 'ROGUE_AP' ? 'Rogue AP' : 
-        attackType === 'MAC_SPOOF' ? 'MAC Spoof' : 
-        'ARP Spoof'
-      } blocked
     </div>
   );
   if (canSee) return (
@@ -290,13 +346,12 @@ function PacketDetail({ pkt, onClose }) {
 export default function SimulationDashboard({ isAttackActive, attackType, setAttackState }) {
   const [sensorOn, setSensorOn] = useState(false);
   const [sensorChannel, setSensorChannel] = useState(1);
-  const [isMitigated, setIsMitigated] = useState(false);
   const [filter, setFilter] = useState('');
   const [intensity, setIntensity] = useState('medium');
   const [detailPkt, setDetailPkt] = useState(null);
   const consoleRef = useRef(null);
 
-  const { packets, totalCaptured } = useSimulation(isAttackActive, attackType, sensorOn, sensorChannel, isMitigated, intensity);
+  const { packets, totalCaptured } = useSimulation(isAttackActive, attackType, sensorOn, sensorChannel, intensity);
   const targetChannel = 6;
   const latestRssi = packets.length > 0 ? packets[0].rssi : -60;
 
@@ -305,14 +360,19 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
   }, [packets]);
 
   const triggerAttack = useCallback((type) => {
-    setIsMitigated(false);
     if (isAttackActive && attackType === type) setAttackState(false, null);
     else setAttackState(true, type);
   }, [isAttackActive, attackType, setAttackState]);
 
-  const handleMitigate = () => setIsMitigated(true);
+  const handleReset = () => {
+    setSensorOn(false);
+    setSensorChannel(1);
+    setAttackState(false, null);
+    setIntensity('medium');
+    setFilter('');
+  };
 
-  const clearConsole = () => { setAttackState(false, null); setIsMitigated(false); };
+  const clearConsole = () => { setAttackState(false, null); };
 
   const exportLogs = () => {
     const lines = packets.map(p => `[${p.timestamp}] ${p.source} → ${p.dest} [${p.subtype}] ${p.info} (${p.rssi}dBm)${p.isBlocked ? ' [BLOCKED]' : ''}`);
@@ -379,7 +439,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
             </div>
 
             {/* Channel Spectrum Visualizer */}
-            <ChannelSpectrum sensorChannel={sensorChannel} targetChannel={targetChannel} isAttackActive={isAttackActive} sensorOn={sensorOn} isMitigated={isMitigated} />
+            <ChannelSpectrum sensorChannel={sensorChannel} targetChannel={targetChannel} isAttackActive={isAttackActive} sensorOn={sensorOn} />
 
             <div className="bg-blue-50/80 dark:bg-blue-950/30 border-l-3 border-blue-500 p-3 text-xs text-slate-700 dark:text-slate-300 rounded-r mt-4">
                <strong className="flex items-center text-blue-700 dark:text-blue-400 mb-1">
@@ -393,33 +453,15 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
 
       {/* ─── 2. Attack Control Panel ─── */}
       <div className="p-6 rounded-xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
-        {isMitigated && (
-           <div className="absolute inset-0 bg-white/98 dark:bg-slate-950/95 z-20 flex flex-col items-center justify-center border-2 border-emerald-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 text-center animate-bounce-in">
-              <ShieldCheck className="w-16 sm:w-20 h-16 sm:h-20 text-emerald-500 mb-4" />
-              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">Threat Neutralized</h2>
-              <div className="bg-emerald-50/60 dark:bg-slate-900/80 border border-emerald-200 dark:border-slate-800 p-4 rounded-lg text-slate-700 dark:text-slate-300 mb-6 max-w-md text-xs sm:text-sm">
-                <strong className="flex items-center justify-center text-emerald-700 dark:text-emerald-400 mb-2">
-                  <Lightbulb className="w-4 h-4 mr-2" /> Active Mitigation Active
-                </strong>
-                Your WIDS has transformed from a passive listener into an active firewall. It generated a rule targeting the attacker's MAC address and is now dropping their malicious frames before they can harm the network.
-              </div>
-              <button onClick={() => triggerAttack(attackType)} aria-label="Reset simulation" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors focus:ring-2 focus:ring-blue-500/50 btn-press">
-                Reset Simulation
-              </button>
-           </div>
-        )}
-
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4 border-b border-slate-200 dark:border-slate-800 pb-4">
           <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-200 flex items-center">
             <MonitorPlay className="mr-2 h-5 w-5 flex-shrink-0 text-blue-600 dark:text-blue-500" /> <span>2. Threat Generator</span>
           </h2>
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-            <DetectionBadge isAttackActive={isAttackActive} attackType={attackType} sensorOn={sensorOn} sensorChannel={sensorChannel} targetChannel={targetChannel} isMitigated={isMitigated} />
-            {isAttackActive && sensorOn && sensorChannel === targetChannel && !isMitigated && (
-              <button onClick={handleMitigate} aria-label="Deploy active mitigation against attacker" className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-colors focus:ring-2 focus:ring-emerald-500/50 flex items-center shadow-sm btn-press">
-                <ShieldCheck className="w-4 sm:w-5 h-4 sm:h-5 mr-1 sm:mr-2" /> <span className="hidden sm:inline">Deploy Mitigation</span><span className="sm:hidden">Mitigate</span>
-              </button>
-            )}
+            <DetectionBadge isAttackActive={isAttackActive} attackType={attackType} sensorOn={sensorOn} sensorChannel={sensorChannel} targetChannel={targetChannel} />
+            <button onClick={handleReset} aria-label="Reset the simulation to default state" className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold transition-colors focus:ring-2 focus:ring-slate-500/50 flex items-center shadow-sm btn-press text-xs sm:text-sm">
+              <RefreshCw className="w-4 sm:w-5 h-4 sm:h-5 mr-1 sm:mr-2" /> <span className="hidden sm:inline">Reset Simulation</span><span className="sm:hidden">Reset</span>
+            </button>
           </div>
         </div>
 
@@ -443,7 +485,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
               {!sensorOn && <span className="text-[9px] text-slate-500 font-medium">(sensor offline)</span>}
               {sensorOn && !isAttackActive && <span className="text-[9px] text-emerald-600 animate-pulse">monitoring...</span>}
             </div>
-            <NetworkTopology isAttackActive={isAttackActive} attackType={attackType} isMitigated={isMitigated} sensorOn={sensorOn} />
+            <NetworkTopology isAttackActive={isAttackActive} attackType={attackType} sensorOn={sensorOn} />
           </div>
         )}
 
@@ -479,7 +521,7 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
             <h3 className="text-lg font-bold text-slate-900 dark:text-slate-200 mb-2">Live Packet Statistics</h3>
             {packets.length > 0 && <span className="text-[10px] text-slate-500 dark:text-slate-600 font-mono">Click a packet for details</span>}
           </div>
-          <StatsBar packets={packets} totalCaptured={totalCaptured} isAttackActive={isAttackActive} attackType={attackType} sensorOn={sensorOn} sensorChannel={sensorChannel} targetChannel={targetChannel} isMitigated={isMitigated} />
+          <StatsBar packets={packets} totalCaptured={totalCaptured} isAttackActive={isAttackActive} attackType={attackType} sensorOn={sensorOn} sensorChannel={sensorChannel} targetChannel={targetChannel} />
           <PacketDistribution packets={packets} />
         </div>
       )}

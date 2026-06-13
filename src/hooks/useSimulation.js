@@ -25,7 +25,7 @@ const INTENSITY_SPEEDS = {
   high: { attack: 200, normal: 1000 }
 };
 
-export const useSimulation = (isAttackActive, attackType, sensorOn, sensorChannel, isMitigated, intensity = 'medium') => {
+export const useSimulation = (isAttackActive, attackType, sensorOn, sensorChannel, intensity = 'medium') => {
   const [packets, setPackets] = useState([]);
   const totalCaptured = useRef(0);
 
@@ -73,10 +73,6 @@ export const useSimulation = (isAttackActive, attackType, sensorOn, sensorChanne
           attackerMac = 'CC:CC:CC:CC:CC:CC';
           newPacket = { ...newPacket, source: attackerMac, dest: '11:22:33:44:55:66', subtype: 'ARP Reply', info: 'Poisoning: Gateway 192.168.1.1 is at CC:CC:CC:CC:CC:CC' };
         }
-
-        if (isMitigated) {
-          newPacket = { ...newPacket, subtype: 'BLOCKED', info: `Firewall dropped malicious packet from ${attackerMac}`, isBlocked: true, isAttack: false };
-        }
       } else {
         const bg = BG_TYPES[Math.floor(Math.random() * BG_TYPES.length)];
         newPacket = {
@@ -98,7 +94,7 @@ export const useSimulation = (isAttackActive, attackType, sensorOn, sensorChanne
     }, intervalSpeed);
 
     return () => { if (intervalId) clearInterval(intervalId); };
-  }, [isAttackActive, attackType, sensorOn, sensorChannel, isMitigated, intensity]);
+  }, [isAttackActive, attackType, sensorOn, sensorChannel, intensity]);
 
   return { packets, totalCaptured: totalCaptured.current };
 };
