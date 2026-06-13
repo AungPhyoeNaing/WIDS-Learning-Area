@@ -339,10 +339,10 @@ export default function SimulationDashboard({ isAttackActive, attackType, setAtt
                 onClick={() => setSensorOn(!sensorOn)}
                 aria-label={sensorOn ? 'Power off ESP32 sensor' : 'Power on ESP32 sensor'}
                 className={`w-14 sm:w-16 h-14 sm:h-16 rounded-full flex items-center justify-center border-4 transition-all duration-300 flex-shrink-0 btn-press ${
-                  sensorOn ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-500 text-blue-600 dark:text-blue-400 shadow-md shadow-blue-500/10' : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 hover:border-blue-400 dark:hover:border-slate-600 hover:shadow-sm'
+                  sensorOn ? 'bg-blue-600 dark:bg-blue-950/40 border-blue-600 dark:border-blue-500 shadow-lg shadow-blue-500/30' : 'bg-slate-100 dark:bg-slate-900 border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 hover:bg-white dark:hover:bg-slate-800 shadow-inner'
                 }`}
               >
-                <Power className={`w-6 sm:w-8 h-6 sm:h-8 ${sensorOn ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`} />
+                <Power className={`w-6 sm:w-8 h-6 sm:h-8 transition-colors ${sensorOn ? 'text-white dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`} />
               </button>
               <div>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-200 mb-2">ESP32 Power</h3>
